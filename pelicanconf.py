@@ -74,7 +74,7 @@ MENUITEMS = [('slashdot', 'http://slashdot.org'),
              ('stackoverflow', 'https://stackoverflow.com')]
 
 AUTHORS_BIO = {
-  "Damien Martin": {
+  "damien martin": {
     "name": "Damien Martin",
     "cover": "https://casper.ghost.org/v1.0.0/images/team.jpg",
     "image": "assets/images/avatar.png",
@@ -82,7 +82,7 @@ AUTHORS_BIO = {
     "linkedin": "kiwidamien",
     "github": "kiwidamien",
     "location": "USA",
-    "bio": "This is the place for a small biography with max 200 characters. Well, now 100 are left. Cool, hugh?"
+    "bio": "I a data scientist with an interest in what drives the world. Background in Physics, Math, and Computer Science. Interested in Algorithms, Games, Books, Music, and Martial Arts. That is, when I am not off taking pictures somewhere! "
   }
 }
 
