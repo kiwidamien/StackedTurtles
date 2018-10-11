@@ -46,6 +46,10 @@ THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
 # for code blocks
 COLOR_SCHEME_CSS = 'monokai.css'
 
+
+## Allow notebooks to generate markup
+MARKUP = ('md', 'ipynb')
+
 ## Allow my custom css / custom images to be found
 STATIC_PATHS = ['assets', 'extra/favicon.ico', 'images']
 
