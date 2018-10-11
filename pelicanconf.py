@@ -69,7 +69,8 @@ HEADER_COVERS_BY_CATEGORY = {
 }
 
 # These appear on the left pull out bar
-MENUITEMS = [('slashdot', 'http://slashdot.org'),
+MENUITEMS = [('About this blog', SITEURL + '/about.html'),
+             ('slashdot', 'http://slashdot.org'),
              ('metis', 'https://thisismetis.com'),
              ('stackoverflow', 'https://stackoverflow.com')]
 
