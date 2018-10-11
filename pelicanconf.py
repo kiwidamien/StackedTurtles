@@ -34,7 +34,8 @@ DEFAULT_PAGINATION = False
 LOAD_CONTENT_CACHE = False
 
 PLUGIN_PATHS = ['/Users/damien/pelican-plugins']
-PLUGINS = ['assets', 'gravatar', 'neighbors', 'subcategory', 'series', 'readtime']
+PLUGINS = ['assets', 'gravatar', 'neighbors', 'subcategory', 'series', 'readtime', 'ipynb.markup',
+           'pelican_fontawesome', 'pelican_alias', 'render_math']
 
 #THEME = '/Users/damien/pelican-themes/stye'
 THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
@@ -46,7 +47,7 @@ THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
 COLOR_SCHEME_CSS = 'monokai.css'
 
 ## Allow my custom css / custom images to be found
-STATIC_PATHS = ['assets', 'extra/favicon.ico']
+STATIC_PATHS = ['assets', 'extra/favicon.ico', 'images']
 
 EXTRA_PATH_METADATA = {
     'extra/favicon.ico': {'path': 'favicon.ico'},
