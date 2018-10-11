@@ -37,7 +37,7 @@ PLUGIN_PATHS = ['/Users/damien/pelican-plugins']
 PLUGINS = ['assets', 'gravatar', 'neighbors', 'subcategory', 'series', 'readtime']
 
 #THEME = '/Users/damien/pelican-themes/stye'
-THEME = '/Users/damien/pelican-themes/attila'  # Nice jumbotron, no left sidebar
+THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
 #THEME = '/Users/damien/pelican-themes/pure'    # Missing nicely formatted tables
 #THEME = '/Users/damien/pelican-themes/flex'
 
