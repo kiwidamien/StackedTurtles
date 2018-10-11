@@ -267,16 +267,27 @@ Now we have our long form "tidy" dataset:
 
 ## Summary and next up
 
-* Going long to wide, where each element in the wide table comes from a single row.
-  * Use `DataFrame.pivot`
-  * Reasonably straight-forward
-* Going long to wide, where each element in the wide table is an aggregation of multiple rows.
-  * Use `DataFrame.pivot_table`
-  * Will generate a copy of the aggregation for each unused varaible. This could strain memory if the number of columns is large. Possible work arounds are to `group_by` first (as described [here]()), or select only the columns you are interested in.
-* Going from wide to long:
-  * Usually done to store the data in tidy format.
-  * Can be done partially (i.e. convert some variables from wide format to long)
-  * Uses the `DataFrame.melt` command
+<ul>
+  <li> Going long to wide, where each element in the wide table comes from a single row.
+    <ul>
+      <li> Use <code>DataFrame.pivot</code></li>
+      <li> Reasonably straight-forward</li>
+    </ul>
+  </li>
+  <li> Going long to wide, where each element in the wide table is an aggregation of multiple rows.
+    <ul>
+      <li> Use <code>DataFrame.pivot_table</code> </li>
+      <li> Will generate a copy of the aggregation for each unused varaible. This could strain memory if the number of columns is large. Possible work arounds are to `group_by` first, or select only the columns you are interested in.</li>
+    </ul>
+  </li>
+  <li> Going from wide to long:
+    <ul>
+      <li> Usually done to store the data in tidy format.</li>
+      <li> Can be done partially (i.e. convert some variables from wide format to long)</li>
+      <li> Uses the <code>DataFrame.melt</code> command</li>
+    </ul>
+  </li>
+</ul>
 
 Other articles on reshaping data you might be interested in:
 
