@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Using Folium: What is the furthest you can get from Starbucks in Seattle?</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="" rel="canonical" />
+
+  <!-- Feed -->
+
+  <link href="/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+    <link href="/assets/css/mystyle.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html" rel="canonical" />
+
+        <meta name="description" content="It seems that Starbucks is ubiquitous in Seattle. Where in Seattle is furthest from a Starbucks store? In order to work this out, we...">
+
+        <meta name="author" content="Damien Martin">
+
+        <meta name="tags" content="geocoding">
+        <meta name="tags" content="visualization">
+        <meta name="tags" content="folium">
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="Stacked Turtles" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Stacked Turtles" />
+    <meta property="og:description" content="View the blog." />
+    <meta property="og:url" content="" />
+      <meta property="og:image" content="/assets/images/tools.png" />
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="/author/damien-martin.html">
+  <meta property="og:url" content="/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html">
+  <meta property="og:title" content="Using Folium: What is the furthest you can get from Starbucks in Seattle?">
+  <meta property="article:published_time" content="2017-04-08 20:30:00-07:00">
+            <meta property="og:description" content="It seems that Starbucks is ubiquitous in Seattle. Where in Seattle is furthest from a Starbucks store? In order to work this out, we...">
+
+            <meta propery="og:image" content="/assets/images/github.png">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="http://slashdot.org" role="presentation">slashdot</a></li>
+          <li><a href="https://thisismetis.com" role="presentation">metis</a></li>
+          <li><a href="https://stackoverflow.com" role="presentation">stackoverflow</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Using Folium: What is the furthest you can get from Starbucks in Seattle?</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="/author/damien-martin.html">Damien martin</a>
+            | <time datetime="Sat 08 April 2017">Sat 08 April 2017</time>
+        </span>
+        <span class="post-meta">
+          Filed under: <b><a href="/category/portfolio.html">Portfolio</a></b>
+        </span>
+
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-image: url('assets/images/github.png')">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>It seems that Starbucks is ubiquitous in Seattle. Where in Seattle is furthest from a Starbucks store?</p>
+<p>In order to work this out, we need a list of all the stores in Seattle. The open data project <a href="https://opendata.socrata.com/">Socrata</a> makes it easy to find out - you can pull the address, as well as longitude and latitude  all the Starbucks locations in the any given city.</p>
+<p>This question was also a fun way for me to experiment with methods for presenting data and calculations on maps. My ultimate goal was to have something people could interact with on this blog, without having to install extra plugins.</p>
+<h2>Methodolgy</h2>
+<p>First we had to decide what counted as "Seattle" for the purposes of this calculation. To make it easy to reproduce similar calculations for other cities, I decided that I would choose the bounding longitudes as the lower quartile and upper quartiles of longitudes for stores retrieved by Socrata. The same cut was made for the latitudes. This restriction hopefully makes an interesting answer, rather than telling us the middle of a residential district like <em>Magnolia</em>.</p>
+<p>I broke Seattle into regions, called <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Voronoi Cells</a>. The idea is that each region has single Starbucks store in it, and is defined as the collection of points that are closest to that Starbucks. For example, taking a square city with two stores, the line halfway between the stores divides the city in two: on one side you are closer to store #1, on the other you are closer to store #2.</p>
+<div class="veronoi" style="width:20%;margin-left:auto;margin-right:auto">
+<svg>
+<rect x ="0" y="0" width="125" height="200"
+      style="fill:yellow;fill-opacity:0.1;stroke-opacity:0.9"/>
+<rect x ="125" y="0" width="125" height="200"
+      style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9"/>
+<circle cx="50" cy="40" r="15" stroke="yellow" stroke-width="2"
+        fill="yellow" />
+<circle cx = "200" cy = "40" r="15"
+        stroke="green" stroke-width ="2" fill="cyan" />
+<line x1="125" y1="0" x2="125" y2="200"
+      style="stroke:rgb(0,0,0);stroke-width:2" />
+<text x="46" y="45">1</text>
+<text x="195" y="45">2</text>
+<text x="10" y="140">Region closer to 1</text>
+<text x="130" y="140">Region closer to 2</text>
+</svg>
+</div>
+
+<p>Adding a third store changes the picture. Placing it toward the bottom of the city, but centered horizontally gives the following cells:</p>
+<div class="veronoi" style="width:20%;margin-left:auto;margin-right:auto">
+  <svg width="250" height="200">
+  <rect x ="0" y="0" width="125" height="80" style="fill:yellow;fill-opacity:0.1;stroke-opacity:0.9"/>
+  <rect x ="125" y="0" width="125" height="80" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9"/>
+  <rect x="0" y="80" width="250" height ="120" style="fill:green;fill-opacity:0.1;stroke-opacity:0.9"/>
+  <circle cx="50" cy="40" r="15" stroke="yellow" stroke-width="2" fill="yellow" />
+  <circle cx = "200" cy = "40" r="15" stroke="green" stroke-width ="2" fill="cyan"></circle>
+  <circle cx = "125" cy = "120" r="15" stroke="green" stroke-width ="2" fill="green" />
+   <line x1="125" y1="0" x2="125" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
+   <line x1="0" y1="80" x2="250" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
+   <text x="46" y="45">1</text>
+   <text x="195" y="45">2</text>
+   <text x="121" y="125">3</text>
+</svg>
+</div>
+
+<p>If the third store is directly below store 1, we get</p>
+<div class="veronoi" style="width:20%;margin-left:auto;margin-right:auto">
+  <svg width="250" height="200">
+  <rect x ="0" y="0" width="125" height="80" style="fill:yellow;fill-opacity:0.1;stroke-opacity:0.9"/>
+   <polygon points="250,0 125,0 125,80 189,200 250,200" style="fill:blue;fill-opacity:0.1;" />
+   <polygon points="0,80 125,80 189,200 0,200"
+   style="fill:green;fill-opacity:0.1;stroke-opacity:0.9"/>
+  <circle cx="50" cy="40" r="15" stroke="yellow" stroke-width="2" fill="yellow" />
+  <circle cx = "200" cy = "40" r="15" stroke="green" stroke-width ="2" fill="cyan" />
+  <circle cx = "50" cy = "120" r="15" stroke="green" stroke-width ="2" fill="green" />
+   <line x1="125" y1="0" x2="125" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
+   <line x1="0" y1="80" x2="125" y2="80" style="stroke:rgb(0,0,0);stroke-width:2" />
+   <!--
+   midpoint between 1 and 2:
+   [ (200,40) + (50,120)]/2 = (125,80)
+   Gradient of line joining them:
+   Dy/Dx = (120-40)/(50-200) = -80/150
+   Gradient of normal
+   150/80 = 15/8 = 1.875
+
+   Eqn of line:
+   y - 80 = (150/80)(x - 125)
+   -->
+   <line x1="125" y1="80" x2="189" y2="200" style="stroke:rgb(0,0,0);stroke-width:2" />
+   <text x="46" y="45">1</text>
+   <text x="195" y="45">2</text>
+   <text x="45" y="125">3</text>
+</svg>
+</div>
+
+<p>The location furthest from a Starbucks has to either by an intersection point between the regions (the examples with three stores have one intersection point, the example with two stores has none), or a point on the boundary of the city. I was able to use <code>scipy.spatial.Voronoi</code> to calculate the Voronoi cells and get a list of intersection points, rather than trying to do it by hand. It was useful practice to annotate the maps with the cells as well.</p>
+<h2>The map</h2>
+<p>Here is the final map produced. You can highlight the Voronoi cells by mousing over them to get an idea of how large an area each store "controls". You can also bring up information about the stores by clicking on them.</p>
+<div style="width:10%;float:left;"></div>
+
+<div style="width:80%;margin-left: auto; margin-right:auto;">
+<iframe width="100%" height="600" src="furthest_starbucks.html" frameborder="0" align="center" allowfullscreen></iframe>
+</div>
+
+<p>We find that the furthest we can get from Starbucks in Seattle is the corner of Meridian Avenue North with North 36th street (a few streets north of Gas Works Park), shown as an orange dot. The bounding box is also shown in orange.</p>
+<h2>Folium compared to other packages</h2>
+<p>There are many ways to plot data on top of maps with Python. Here are a few I considered before using folium:</p>
+<h4>Basemap (part of matplotlib)</h4>
+<p>This is a great way to create attractive graphs in Python. There are lots of tutorials, and the package is well documented. The disadvantages are that basemap expects you to obtain and manage shapefiles, and the output are static images (like the plots in matplotlib). This is easy to work with in an interactive environment, but makes it difficult to just the results of your work to someone else.</p>
+<p>Tutorials for basemap:</p>
+<ol>
+<li><a href="http://www.datadependence.com/2016/06/creating-map-visualisations-in-python/">Creating attractive informative maps visualizations in Python with Basemap</a></li>
+<li><a href="http://sensitivecities.com/so-youd-like-to-make-a-map-using-python-EN.html#.WOncl1KZOgQ">So you'd like to make a map using (basemap) python</a></li>
+</ol>
+<h4>Plot.ly</h4>
+<p>This was one of the slickest options I considered. To use it, you need to create an account (free trials are offered), and it seemed difficult to embed directly on a static site. These considerations led me to dismiss <code>Plot.ly</code> fairly early, although it looks like a good option if you don't mind paying for an account.</p>
+<h4>Bokeh</h4>
+<p>Bokeh is a collection of plots that uses the <strong>grammar of graphics</strong> to build up plots. The plots are interactive on the development machine, and you can setup your server to run Bokeh plots to allow other people to interact with your plots online. When working with static pages on a server designed to serve static pages, I would have to either embed or link to an external Bokeh plot. If I was running this off my own server, using Bokeh would certainly be viable.</p>
+<h4>Folium</h4>
+<p>Folium seems to be the extension of the now defunct <strong>Vincent</strong> package for python. Folium makes maps that use <strong>Leaflet.js</strong> to remain interactive, so you can save the output to HTML. Anyone with a browser can open the HTML (or visit it on your blog) and still pan, zoom, and have the interactive mouse-overs and tool tips still function.</p>
+<p>The downside to folium is that there are a <a href="http://www.digital-geography.com/python-and-webmaps-folium/#.WOnulFKZOgT">lot</a> <a href="https://greek0.net/blog/2016/01/27/plotting_maps_with_folium/">of</a> <a href="https://blog.dominodatalab.com/creating-interactive-crime-maps-with-folium/">great</a> <a href="https://ocefpaf.github.io/python4oceanographers/blog/2015/12/14/geopandas_folium/">tutorials</a> ..... for version 0.2.0. The current version, 0.3.0, introduced a lot of reorganization and the documentation is lagging. All of the tutorials have commands that break in version 0.3.0. For example, in 0.2.0 the command to create a dot on the map was <code>folium.Map.circle_marker</code>, while in 0.3.0 it is <code>folium.CircleMarker</code>. The documentation is improving, and GitHub has a collection of 0.3.0 <a href="https://github.com/python-visualization/folium/tree/master/examples">examples</a>.</p>
+<p>Once written, the code is very readable, and there is great integration with Open Street Maps, so you don't have to keep your own shape files on hand. One of the goals of this project was to be able to refer back to it as an example of how to use folium 0.3.0!</p>
+<h4>Geoplotlib and Kartograph.py</h4>
+<p>I only found out about these package once I had completed the project.</p>
+<p>It looks like geoplotlib only produces static maps, similar to Basemap, but seems like it is very expressive and able to do a lot without much code. It is also integrated with GeoPandas.</p>
+<p>Kartograph is designed to produce maps in python that are then coverted into SVG elements with embedded javascript, to enable the maps to be shared with anyone with a browser.</p>
+<p>I will experiment with both of these in a future blog post.</p>
+<h3>Useful links</h3>
+<ul>
+<li>
+<p><a href="https://github.com/kiwidamien/StarbucksVeronoi">The github page</a> for this project, or use a direct link to the <a href="https://github.com/kiwidamien/StarbucksVeronoi/blob/master/TidyStarbuckSeattle.ipynb">Python notebook</a>. You can experiment with your own choice of city.</p>
+</li>
+<li>
+<p><a href="https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-World/xy4y-c4mk">Socrata list of Starbucks Stores</a></p>
+</li>
+<li>
+<p><a href="https://github.com/python-visualization/folium/tree/master/examples">Folium 0.3.0 example repository</a></p>
+</li>
+<li>
+<p><a href="https://github.com/andrea-cuttone/geoplotlib">Geoplotlib</a> and <a href="http://kartograph.org">Kartograph</a> projects.</p>
+</li>
+</ul>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Using Folium: What is the furthest you can get from Starbucks in Seattle?&amp;url=/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="/tag/geocoding.html">geocoding</a><a href="/tag/visualization.html">visualization</a><a href="/tag/folium.html">folium</a>                </aside>
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="/munging-with-multiindices-election-data.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">Munging with MultiIndices: election data</h2>
+                            <p class="post-nav-excerpt">We show how to take an Excel spreadsheet, with merged column headings, and process it...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="/ab_calc/">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">A/B Test simulator</h2>
+                            <p class="post-nav-excerpt">Determine the sample size needed to discover differences between two treatments, given...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="/theme/js/script.js"></script>
+  
+</body>
+</html>
