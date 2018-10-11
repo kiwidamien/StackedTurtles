@@ -6,7 +6,7 @@ Summary: How much does your name say about your age? We use the database of name
 
 Names go in and out of fashion; by knowing someone's name you can get some idea of how old they are. For example, if you were meeting someone called Gertrude or Wilma, you would probably assume that they were reasonable old (the median age of a living Gertrude in 2017 is 80, while the median age of a living Wilma is 75). Other names have only recently come into fashion; for example Zoe is a relatively young name with a median age of 11.
 
-There can be interesting cultural stories for why names go in an out of fashion. Take my name, Damien, as an example. The social security administration publishes the number of children born with a given name for each year. Here is the graph for number of Damien's born in the US per year:
+There  can be interesting cultural stories for why names go in an out of fashion. Take my name, Damien, as an example. The social security administration publishes the number of children born with a given name for each year. Here is the graph for number of Damien's born in the US per year:
 ![Damien's born in the US per year](images/names/damien_us.png)
 
 We can see "Damien" went from being a relatively obscure name before 1970, and then started increasing in popularity until the 1980s, when it underwent a steep decline. I am reasonably sure I know the culprit:
