@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Munging with MultiIndices: election data</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="https://kiwidamien.github.io" rel="canonical" />
+
+  <!-- Feed -->
+        <link href="https://kiwidamien.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Stacked Turtles Full Atom Feed" />
+          <link href="https://kiwidamien.github.io/feeds/posts.atom.xml" type="application/atom+xml" rel="alternate" title="Stacked Turtles Categories Atom Feed" />
+
+  <link href="https://kiwidamien.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://kiwidamien.github.io/theme/css/code_blocks/monokai.css" rel="stylesheet">
+
+    <!-- CSS specified by the user -->
+    <link href="https://kiwidamien.github.io/assets/css/mystyle.css" type="text/css" rel="stylesheet" />
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="https://kiwidamien.github.io/munging-with-multiindices-election-data.html" rel="canonical" />
+
+        <meta name="description" content="We show how to take an Excel spreadsheet, with merged column headings, and process it for further analysis.">
+
+        <meta name="author" content="Damien Martin">
+
+        <meta name="tags" content="Data munging">
+        <meta name="tags" content="Pandas">
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="Stacked Turtles" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Stacked Turtles" />
+    <meta property="og:description" content="View the blog." />
+    <meta property="og:url" content="https://kiwidamien.github.io" />
+      <meta property="og:image" content="https://kiwidamien.github.io/assets/images/tools.png" />
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="https://kiwidamien.github.io/author/damien-martin.html">
+  <meta property="og:url" content="https://kiwidamien.github.io/munging-with-multiindices-election-data.html">
+  <meta property="og:title" content="Munging with MultiIndices: election data">
+  <meta property="article:published_time" content="2018-09-27 11:00:00-07:00">
+            <meta property="og:description" content="We show how to take an Excel spreadsheet, with merged column headings, and process it for further analysis.">
+
+            <meta propery="og:image" content="https://kiwidamien.github.io/assets/images/pandas.png">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="http://slashdot.org" role="presentation">slashdot</a></li>
+          <li><a href="https://thisismetis.com" role="presentation">metis</a></li>
+          <li><a href="https://stackoverflow.com" role="presentation">stackoverflow</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span id="home-button" class="nav-button">
+                <a class="home-button" href="https://kiwidamien.github.io" title="Home"><i class="ic ic-arrow-left"></i> Home</a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Munging with MultiIndices: election data</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://kiwidamien.github.io/author/damien-martin.html">Damien martin</a>
+            | <time datetime="Thu 27 September 2018">Thu 27 September 2018</time>
+        </span>
+        <span class="post-meta">
+          Filed under: <b><a href="https://kiwidamien.github.io/category/posts.html">Posts</a></b>
+        </span>
+
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-image: url('assets/images/pandas.png')">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>There is lots of data available for the <a href="https://data.opendatasoft.com/explore/dataset/usa-2016-presidential-election-by-county@public/">2016</a> and <a href="https://www.kaggle.com/joelwilson/2012-2016-presidential-elections">2012 presidential</a> elections, broken down to the county level.</p>
+<p>The other election years can typically be found in the form of PDFs, and have to be manually converted. Finding a comprehensive list of election results for multiple years is challenging. Stephen Wolf of the Daily Kos has created an <a href="https://drive.google.com/folderview?id=0Bz_uFI8VY7xLekx0cWdVcGhJblk&amp;usp=sharing">Excel spreadsheet</a> from <a href="http://uselectionatlas.org/">Dave Leip's Atlas</a>, which gives the election results back as far as 1828.</p>
+<p>The trouble is, the Excel sheet is difficult to import into Pandas.
+<img alt="Screenshot of presidential election spreadsheet" src="images/presidential_spreadsheet_screenshot.png"></p>
+<p>Note the data is <em>wide</em>, with a multiple headers. The <code>Year</code> spans multiple columns, which is then broken down by candidate. Also note that some years have two candidates, while other years have three or more.</p>
+<p>The data shown in the screenshot are shown by percentages of the vote. If we scroll across to column <strong>HG</strong>, the votes are reported again in raw numbers.</p>
+<p>Our goal is to read the data into the following format:</p>
+<div class="highlight"><pre><span></span>year,state,votes,candidate,party,short_state
+2016,Alabama,729547,&quot;Clinton, Hillary&quot;,Democratic,AL
+2016,Alaska,116454,&quot;Clinton, Hillary&quot;,Democratic,AK
+2016,Arizona,1161167,&quot;Clinton, Hillary&quot;,Democratic,AZ
+2016,Arkansas,380494,&quot;Clinton, Hillary&quot;,Democratic,AR
+2016,California,8753788,&quot;Clinton, Hillary&quot;,Democratic,CA
+2016,Colorado,1338870,&quot;Clinton, Hillary&quot;,Democratic,CO
+2016,Connecticut,897572,&quot;Clinton, Hillary&quot;,Democratic,CT
+</pre></div>
+
+
+<p>In this post we will walk through the main steps, but a repository including the full code for processing this data set is available <a href="https://github.com/kiwidamien/presidential_election_data">here</a>.</p>
+<h2>Dealing with a MultiIndex</h2>
+<p>Let's start with a simplified excel spreadsheet with the following format:</p>
+<table>
+<tr>
+  <th>Year</th>
+  <th colspan=3 style="text-align:center">2012</th>
+  <th colspan=3 style="text-align:center">2008</th>
+</tr>
+<tr>
+  <td><b>State</b></td>
+  <td>Total</td>
+  <td>Obama, Barak -  Democratic</td>
+  <td>Romney, Mitt - Republican </td>
+  <td>Total</td>
+  <td>Obama, Barak -  Democratic</td>
+  <td>McCain, John - Republican </td>
+</tr>
+<tr>
+  <td><b>Alabama</b></td>
+  <td>2074338</td>
+  <td>795696</td>
+  <td>1255925</td>
+  <td>2099819</td>
+  <td>813479</td>
+  <td>1266546</td>
+</tr>
+<tr>
+  <td><b>Alaska</b></td>
+  <td>300495</td>
+  <td>122640</td>
+  <td>164676</td>
+  <td>326197</td>
+  <td>123594</td>
+  <td>193841</td>
+</tr>
+</table>
+
+<p>Note that the sum of the "major" candidates don't sum to the totals. Presumably there are some write-ins that are not counted.</p>
+<p>We have also skipped the percentages that occurred at the beginning of the real spreadsheet. Our goal here is to be able to unpack the multiindex.</p>
+<p>Let's start by reading in the dataset. We don't try and name the headers.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Our dataframe now looks like</p>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>2012</th>
+<th>NaN</th>
+<th>NaN</th>
+<th>2008</th>
+<th>NaN</th>
+<th>NaN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>State</td>
+<td>Total</td>
+<td>Obama, Barak -  Democratic</td>
+<td>Romney, Mitt - Republican</td>
+<td>Total</td>
+<td>Obama, Barack - Democratic</td>
+<td>McCain, John - Republican</td>
+</tr>
+<tr>
+<td>Alabama</td>
+<td>2074338</td>
+<td>795696</td>
+<td>1255925</td>
+<td>2099819</td>
+<td>813479</td>
+<td>1266546</td>
+</tr>
+<tr>
+<td>Alaska</td>
+<td>300495</td>
+<td>122640</td>
+<td>164676</td>
+<td>326197</td>
+<td>123594</td>
+<td>193841</td>
+</tr>
+</tbody>
+</table>
+<p>The merged cells have been split, and the year only appears in the first one. The other cells have been replaced by NaNs.</p>
+<p>Now let's make a MultiIndex using the first two rows (year and candidate). Let's start by replacing the NAs using <code>ffill</code> (foward fill). This moves the last non-null value "forward" over null values:</p>
+<div class="highlight"><pre><span></span><span class="n">multi_index_values</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ffill</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+
+
+<p>Note that when we only kept the first couple of columsn, and dropped the first row. Now <code>multi_index_values</code> is</p>
+<table>
+<thead>
+<tr>
+<th>2012</th>
+<th>2012</th>
+<th>2012</th>
+<th>2008</th>
+<th>2008</th>
+<th>2008</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total</td>
+<td>Obama, Barak -  Democratic</td>
+<td>Romney, Mitt - Republican</td>
+<td>Total</td>
+<td>Obama, Barack - Democratic</td>
+<td>McCain, John - Republican</td>
+</tr>
+</tbody>
+</table>
+<p>Let's make a multi-index, and make a dataframe out of it. Recall the first two rows included the headers, so we are copying the index from row 2 down. We are making the state (i.e. column 0) the row index.</p>
+<div class="highlight"><pre><span></span><span class="n">multi_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">multi_index_values</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;CANDIDATES&#39;</span><span class="p">])</span>
+<span class="n">multi_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">index</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">multi_index</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now our dataframe in pandas is almost in the same layout as the original worksheet.</p>
+<table>
+<tr>
+  <th>Year</th>
+  <th colspan=3 style="text-align:center">2012</th>
+  <th colspan=3 style="text-align:center">2008</th>
+</tr>
+<tr>
+  <td><b>CANDIDATES</b></td>
+  <td>Total</td>
+  <td>Obama, Barak -  Democratic</td>
+  <td>Romney, Mitt - Republican </td>
+  <td>Total</td>
+  <td>Obama, Barak -  Democratic</td>
+  <td>McCain, John - Republican </td>
+</tr>
+<tr>
+  <td><b>Alabama</b></td>
+  <td>2074338</td>
+  <td>795696</td>
+  <td>1255925</td>
+  <td>2099819</td>
+  <td>813479</td>
+  <td>1266546</td>
+</tr>
+<tr>
+  <td><b>Alaska</b></td>
+  <td>300495</td>
+  <td>122640</td>
+  <td>164676</td>
+  <td>326197</td>
+  <td>123594</td>
+  <td>193841</td>
+</tr>
+</table>
+
+<h2>Unstacking</h2>
+<p>We have the problem that our columns are actually names of variables. At the top level of the column index, we have the years. At the lower level, we have the candidates. We can undo this with the <code>unstack</code> command:</p>
+<div class="highlight"><pre><span></span><span class="n">unstacked_df</span> <span class="o">=</span> <span class="n">multi_df</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Here <code>unstacked_df</code> has the form</p>
+<div class="highlight"><pre><span></span>2012  Obama, Barack - Democratic  Alabama     795696
+                                  Alaska     122640
+      Romney, Mitt - Republican   Alabama    1255925
+                                  Alaska     164676
+2008  Obama, Barack - Democratic  Alabama    813479
+                                  Alaska     123594
+      McCain, John - Republican   Alabama    1266546
+                                  Alaska     193841
+</pre></div>
+
+
+<p>Calling <code>unstacked_df.reset_index()</code> fills out the columns:</p>
+<div class="highlight"><pre><span></span>year      CANDIDATES               level_2      0
+2012  Obama, Barack - Democratic   Alabama   795696
+2012  Obama, Barack - Democratic   Alaska    122640
+2012  Romney, Mitt - Republican    Alabama  1255925
+2012  Romney, Mitt - Republican    Alaska    164676
+2008  Obama, Barack - Democratic   Alabama   813479
+2008  Obama, Barack - Democratic   Alaska    123594
+2008  McCain, John - Republican    Alabama  1266546
+2008  McCain, John - Republican    Alaska    193841
+</pre></div>
+
+
+<p>We can separate the candidate and party information with the following lines:</p>
+<div class="highlight"><pre><span></span><span class="n">unstacked_df</span><span class="p">[</span><span class="s1">&#39;candidate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unstacked_df</span><span class="o">.</span><span class="n">CANDIDATES</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">unstacked_df</span><span class="p">[</span><span class="s1">&#39;party&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unstacked_df</span><span class="o">.</span><span class="n">CANDIDATES</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">unstacked_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;CANDIDATES&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>The final product</h2>
+<p>Once we have this, a rename on the columns <code>level_2</code> and <code>0</code> give us</p>
+<div class="highlight"><pre><span></span>   year  state      votes    candidate      party
+0  2012  Alabama   795696  Obama, Barack  Democratic
+1  2012   Alaska   122640  Obama, Barack  Democratic
+2  2012  Alabama  1255925   Romney, Mitt  Republican
+3  2012   Alaska   164676   Romney, Mitt  Republican
+4  2008  Alabama   813479  Obama, Barack  Democratic
+5  2008   Alaska   123594  Obama, Barack  Democratic
+6  2008  Alabama  1266546   McCain, John  Republican
+7  2008   Alaska   193841   McCain, John  Republican
+</pre></div>
+
+
+<p>This is a simplified process. We didn't show the join to create the "short state code", or show how to skip the columns in the spreadsheet that contain the percentages.  A complete description of the process can be found in <a href="https://github.com/kiwidamien/presidential_election_data">this github repo</a>. If you are just interested in the results, you can find them in <a href="https://gist.github.com/kiwidamien/6b069a63fa204cd7d2b893510e2efe7c">this gist</a> instead.</p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Munging with MultiIndices: election data&amp;url=https://kiwidamien.github.io/munging-with-multiindices-election-data.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://kiwidamien.github.io/munging-with-multiindices-election-data.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://kiwidamien.github.io/munging-with-multiindices-election-data.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="https://kiwidamien.github.io/tag/data-munging.html">Data munging</a><a href="https://kiwidamien.github.io/tag/pandas.html">Pandas</a>                </aside>
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <a class="post-nav-next" href="https://kiwidamien.github.io/testpost.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-left"></i>
+                                <h2 class="post-nav-title">test post</h2>
+                            <p class="post-nav-excerpt">This is a test. Do unordered lists work? Like, really work? There seems to be an issue...</p>
+                        </section>
+                    </a>
+                    <a class="post-nav-prev" href="https://kiwidamien.github.io/using-folium-what-is-the-furthest-you-can-get-from-starbucks-in-seattle.html">
+                        <section class="post-nav-teaser">
+                            <i class="ic ic-arrow-right"></i>
+                                <h2 class="post-nav-title">Using Folium: What is the furthest you can get from Starbucks in Seattle?</h2>
+                            <p class="post-nav-excerpt">It seems that Starbucks is ubiquitous in Seattle. Where in Seattle is furthest from a...</p>
+                        </section>
+                    </a>
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="https://kiwidamien.github.io/theme/js/script.js"></script>
+  
+</body>
+</html>
