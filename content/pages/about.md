@@ -14,7 +14,7 @@ This blog is about using data to build models of the world, using those models t
 
 # Why do we need models? Why not just look at the raw data?
 
-One of the hardest concepts in dealing with data is realizing that not all patterns we find in data are meaningful. A humoress collection of examples can be found in [this collection of correlations](http://www.tylervigen.com/spurious-correlations) by Tyler Vigen. 
+One of the hardest concepts in dealing with data is realizing that not all patterns we find in data are meaningful. A humorous collection of examples can be found in [this collection of correlations](http://www.tylervigen.com/spurious-correlations) by Tyler Vigen.
 
 A *model* for the world gives us context, and allows us to make predictions based on our data. The model may be wrong, or incomplete, but it can be tested. We can replace it. It will help us interpret and use the data around us. The most succicent way I know of putting it is
 <div style="margin-left:20px;width:60%;">
@@ -41,4 +41,3 @@ We should not be come up with contrived ways to convince others that our models 
 This story is told from the point of view of a reductionalist. Such a person might believe that the stuff around us is made of atoms, which is made of subatomic particles, which are made of .... (?); but that eventually this chain of reasoning ends. Even if it ends in the physical world (and it is not clear that it does), models of realistic problems will be able to be refined and replaced by a &quot;better model&quot; that captures more nuance in the data. So in defense of the argument made by the audience member, it seems that it really is *models all the way down*.
 </li>
 </ul>
-
