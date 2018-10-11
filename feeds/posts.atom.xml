@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Stacked Turtles - Posts</title><link href="https://kiwidamien.github.io/" rel="alternate"></link><link href="https://kiwidamien.github.io/feeds/posts.atom.xml" rel="self"></link><id>https://kiwidamien.github.io/</id><updated>2018-09-27T11:00:00-07:00</updated><entry><title>Munging with MultiIndices: election data</title><link href="https://kiwidamien.github.io/munging-with-multiindices-election-data.html" rel="alternate"></link><published>2018-09-27T11:00:00-07:00</published><updated>2018-09-27T11:00:00-07:00</updated><author><name>Damien Martin</name></author><id>tag:kiwidamien.github.io,2018-09-27:/munging-with-multiindices-election-data.html</id><summary type="html">&lt;p&gt;We show how to take an Excel spreadsheet, with merged column headings, and process it for further analysis.&lt;/p&gt;</summary><content type="html">&lt;p&gt;There is lots of data available for the &lt;a href="https://data.opendatasoft.com/explore/dataset/usa-2016-presidential-election-by-county@public/"&gt;2016&lt;/a&gt; and &lt;a href="https://www.kaggle.com/joelwilson/2012-2016-presidential-elections"&gt;2012 presidential&lt;/a&gt; elections, broken down to the county level.&lt;/p&gt;
+&lt;p&gt;The other election years can typically be found in the form of PDFs, and have to be manually converted. Finding a comprehensive list of election results for multiple years is challenging. Stephen Wolf of the Daily Kos has created an &lt;a href="https://drive.google.com/folderview?id=0Bz_uFI8VY7xLekx0cWdVcGhJblk&amp;amp;usp=sharing"&gt;Excel spreadsheet&lt;/a&gt; from &lt;a href="http://uselectionatlas.org/"&gt;Dave Leip's Atlas&lt;/a&gt;, which gives the election results back as far as 1828.&lt;/p&gt;
+&lt;p&gt;The trouble is, the Excel sheet is difficult to import into Pandas.
+&lt;img alt="Screenshot of presidential election spreadsheet" src="images/presidential_spreadsheet_screenshot.png"&gt;&lt;/p&gt;
+&lt;p&gt;Note the data is &lt;em&gt;wide&lt;/em&gt;, with a multiple headers. The &lt;code&gt;Year&lt;/code&gt; spans multiple columns, which is then broken down by candidate. Also note that some years have two candidates, while other years have three or more.&lt;/p&gt;
+&lt;p&gt;The data shown in the screenshot are shown by percentages of the vote. If we scroll across to column &lt;strong&gt;HG&lt;/strong&gt;, the votes are reported again in raw numbers.&lt;/p&gt;
+&lt;p&gt;Our goal is to read the data into the following format:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;year,state,votes,candidate,party,short_state
+2016,Alabama,729547,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,AL
+2016,Alaska,116454,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,AK
+2016,Arizona,1161167,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,AZ
+2016,Arkansas,380494,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,AR
+2016,California,8753788,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,CA
+2016,Colorado,1338870,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,CO
+2016,Connecticut,897572,&amp;quot;Clinton, Hillary&amp;quot;,Democratic,CT
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In this post we will walk through the main steps, but a repository including the full code for processing this data set is available &lt;a href="https://github.com/kiwidamien/presidential_election_data"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Dealing with a MultiIndex&lt;/h2&gt;
+&lt;p&gt;Let's start with a simplified excel spreadsheet with the following format:&lt;/p&gt;
+&lt;table&gt;
+&lt;tr&gt;
+  &lt;th&gt;Year&lt;/th&gt;
+  &lt;th colspan=3 style="text-align:center"&gt;2012&lt;/th&gt;
+  &lt;th colspan=3 style="text-align:center"&gt;2008&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;State&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;Total&lt;/td&gt;
+  &lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+  &lt;td&gt;Romney, Mitt - Republican &lt;/td&gt;
+  &lt;td&gt;Total&lt;/td&gt;
+  &lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+  &lt;td&gt;McCain, John - Republican &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;Alabama&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;2074338&lt;/td&gt;
+  &lt;td&gt;795696&lt;/td&gt;
+  &lt;td&gt;1255925&lt;/td&gt;
+  &lt;td&gt;2099819&lt;/td&gt;
+  &lt;td&gt;813479&lt;/td&gt;
+  &lt;td&gt;1266546&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;Alaska&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;300495&lt;/td&gt;
+  &lt;td&gt;122640&lt;/td&gt;
+  &lt;td&gt;164676&lt;/td&gt;
+  &lt;td&gt;326197&lt;/td&gt;
+  &lt;td&gt;123594&lt;/td&gt;
+  &lt;td&gt;193841&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Note that the sum of the "major" candidates don't sum to the totals. Presumably there are some write-ins that are not counted.&lt;/p&gt;
+&lt;p&gt;We have also skipped the percentages that occurred at the beginning of the real spreadsheet. Our goal here is to be able to unpack the multiindex.&lt;/p&gt;
+&lt;p&gt;Let's start by reading in the dataset. We don't try and name the headers.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+
+&lt;span class="n"&gt;df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_excel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;header&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Our dataframe now looks like&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Year&lt;/th&gt;
+&lt;th&gt;2012&lt;/th&gt;
+&lt;th&gt;NaN&lt;/th&gt;
+&lt;th&gt;NaN&lt;/th&gt;
+&lt;th&gt;2008&lt;/th&gt;
+&lt;th&gt;NaN&lt;/th&gt;
+&lt;th&gt;NaN&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;State&lt;/td&gt;
+&lt;td&gt;Total&lt;/td&gt;
+&lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+&lt;td&gt;Romney, Mitt - Republican&lt;/td&gt;
+&lt;td&gt;Total&lt;/td&gt;
+&lt;td&gt;Obama, Barack - Democratic&lt;/td&gt;
+&lt;td&gt;McCain, John - Republican&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Alabama&lt;/td&gt;
+&lt;td&gt;2074338&lt;/td&gt;
+&lt;td&gt;795696&lt;/td&gt;
+&lt;td&gt;1255925&lt;/td&gt;
+&lt;td&gt;2099819&lt;/td&gt;
+&lt;td&gt;813479&lt;/td&gt;
+&lt;td&gt;1266546&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Alaska&lt;/td&gt;
+&lt;td&gt;300495&lt;/td&gt;
+&lt;td&gt;122640&lt;/td&gt;
+&lt;td&gt;164676&lt;/td&gt;
+&lt;td&gt;326197&lt;/td&gt;
+&lt;td&gt;123594&lt;/td&gt;
+&lt;td&gt;193841&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The merged cells have been split, and the year only appears in the first one. The other cells have been replaced by NaNs.&lt;/p&gt;
+&lt;p&gt;Now let's make a MultiIndex using the first two rows (year and candidate). Let's start by replacing the NAs using &lt;code&gt;ffill&lt;/code&gt; (foward fill). This moves the last non-null value "forward" over null values:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;multi_index_values&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ffill&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that when we only kept the first couple of columsn, and dropped the first row. Now &lt;code&gt;multi_index_values&lt;/code&gt; is&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;2012&lt;/th&gt;
+&lt;th&gt;2012&lt;/th&gt;
+&lt;th&gt;2012&lt;/th&gt;
+&lt;th&gt;2008&lt;/th&gt;
+&lt;th&gt;2008&lt;/th&gt;
+&lt;th&gt;2008&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Total&lt;/td&gt;
+&lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+&lt;td&gt;Romney, Mitt - Republican&lt;/td&gt;
+&lt;td&gt;Total&lt;/td&gt;
+&lt;td&gt;Obama, Barack - Democratic&lt;/td&gt;
+&lt;td&gt;McCain, John - Republican&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Let's make a multi-index, and make a dataframe out of it. Recall the first two rows included the headers, so we are copying the index from row 2 down. We are making the state (i.e. column 0) the row index.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;multi_index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MultiIndex&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_arrays&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;multi_index_values&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;year&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;CANDIDATES&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="n"&gt;multi_df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;multi_index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now our dataframe in pandas is almost in the same layout as the original worksheet.&lt;/p&gt;
+&lt;table&gt;
+&lt;tr&gt;
+  &lt;th&gt;Year&lt;/th&gt;
+  &lt;th colspan=3 style="text-align:center"&gt;2012&lt;/th&gt;
+  &lt;th colspan=3 style="text-align:center"&gt;2008&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;CANDIDATES&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;Total&lt;/td&gt;
+  &lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+  &lt;td&gt;Romney, Mitt - Republican &lt;/td&gt;
+  &lt;td&gt;Total&lt;/td&gt;
+  &lt;td&gt;Obama, Barak -  Democratic&lt;/td&gt;
+  &lt;td&gt;McCain, John - Republican &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;Alabama&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;2074338&lt;/td&gt;
+  &lt;td&gt;795696&lt;/td&gt;
+  &lt;td&gt;1255925&lt;/td&gt;
+  &lt;td&gt;2099819&lt;/td&gt;
+  &lt;td&gt;813479&lt;/td&gt;
+  &lt;td&gt;1266546&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;b&gt;Alaska&lt;/b&gt;&lt;/td&gt;
+  &lt;td&gt;300495&lt;/td&gt;
+  &lt;td&gt;122640&lt;/td&gt;
+  &lt;td&gt;164676&lt;/td&gt;
+  &lt;td&gt;326197&lt;/td&gt;
+  &lt;td&gt;123594&lt;/td&gt;
+  &lt;td&gt;193841&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;Unstacking&lt;/h2&gt;
+&lt;p&gt;We have the problem that our columns are actually names of variables. At the top level of the column index, we have the years. At the lower level, we have the candidates. We can undo this with the &lt;code&gt;unstack&lt;/code&gt; command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;unstacked_df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;multi_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unstack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here &lt;code&gt;unstacked_df&lt;/code&gt; has the form&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;2012  Obama, Barack - Democratic  Alabama     795696
+                                  Alaska     122640
+      Romney, Mitt - Republican   Alabama    1255925
+                                  Alaska     164676
+2008  Obama, Barack - Democratic  Alabama    813479
+                                  Alaska     123594
+      McCain, John - Republican   Alabama    1266546
+                                  Alaska     193841
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Calling &lt;code&gt;unstacked_df.reset_index()&lt;/code&gt; fills out the columns:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;year      CANDIDATES               level_2      0
+2012  Obama, Barack - Democratic   Alabama   795696
+2012  Obama, Barack - Democratic   Alaska    122640
+2012  Romney, Mitt - Republican    Alabama  1255925
+2012  Romney, Mitt - Republican    Alaska    164676
+2008  Obama, Barack - Democratic   Alabama   813479
+2008  Obama, Barack - Democratic   Alaska    123594
+2008  McCain, John - Republican    Alabama  1266546
+2008  McCain, John - Republican    Alaska    193841
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We can separate the candidate and party information with the following lines:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;unstacked_df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;candidate&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;unstacked_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CANDIDATES&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;unstacked_df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;party&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;unstacked_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CANDIDATES&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;-&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;unstacked_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;drop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CANDIDATES&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axis&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inplace&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;The final product&lt;/h2&gt;
+&lt;p&gt;Once we have this, a rename on the columns &lt;code&gt;level_2&lt;/code&gt; and &lt;code&gt;0&lt;/code&gt; give us&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;   year  state      votes    candidate      party
+0  2012  Alabama   795696  Obama, Barack  Democratic
+1  2012   Alaska   122640  Obama, Barack  Democratic
+2  2012  Alabama  1255925   Romney, Mitt  Republican
+3  2012   Alaska   164676   Romney, Mitt  Republican
+4  2008  Alabama   813479  Obama, Barack  Democratic
+5  2008   Alaska   123594  Obama, Barack  Democratic
+6  2008  Alabama  1266546   McCain, John  Republican
+7  2008   Alaska   193841   McCain, John  Republican
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is a simplified process. We didn't show the join to create the "short state code", or show how to skip the columns in the spreadsheet that contain the percentages.  A complete description of the process can be found in &lt;a href="https://github.com/kiwidamien/presidential_election_data"&gt;this github repo&lt;/a&gt;. If you are just interested in the results, you can find them in &lt;a href="https://gist.github.com/kiwidamien/6b069a63fa204cd7d2b893510e2efe7c"&gt;this gist&lt;/a&gt; instead.&lt;/p&gt;</content><category term="Data munging"></category><category term="Pandas"></category></entry></feed>
