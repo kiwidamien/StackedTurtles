@@ -291,6 +291,6 @@ Now we have our long form "tidy" dataset:
 
 Other articles on reshaping data you might be interested in:
 
-1. [What is tidy data anyway?](tidy.md) (upcoming)
+1. [What is tidy data anyway?](/what-is-tidy-data.html)
 2. [Tidying the results of presidential elections](/munging-with-multiindices-election-data.html)
 3. [Clusters for Supervised Learning: Olympic Spending](upcoming)
