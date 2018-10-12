@@ -1,0 +1,12 @@
+#jumbotron{
+  background-color: rgb(240,180,82);
+  background-image: url("bamboo-canes.svg");
+  background-repeat: repeat;
+  width: 1900;
+  height: 440;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  border: #999 1px solid;
+}
+
