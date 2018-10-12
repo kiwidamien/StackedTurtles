@@ -68,6 +68,14 @@ HEADER_COVERS_BY_CATEGORY = {
     'web': 'assets/images/web.png',
 }
 
+CATEGORY_IMAGES = {
+    'tools': 'assets/images/icon/tool_icon.png',
+    'pandas': 'assets/images/icon/panda_icon.png',
+    'github': 'assets/images/icon/github_icon.png',
+    'web': 'assets/images/icon/web_icon.png',
+    'default': 'assets/images/icon/tool_icon.png',
+}
+
 # These appear on the left pull out bar
 MENUITEMS = [('About this blog', SITEURL + '/about.html'),
              ('slashdot', 'http://slashdot.org'),
