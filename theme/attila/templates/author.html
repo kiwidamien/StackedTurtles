@@ -30,14 +30,11 @@
             <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
           </span>
         </nav>
-        {% if HEADER_COVER %}
-            <div class="blog-cover cover" style="background-image: url('{{ HEADER_COVER }}')">            
-        {% elif HEADER_COLOR %}
-            <div class="post-cover cover" style="background-color: {{ HEADER_COLOR }}">
-        {% else %}
-            <div class="post-cover cover" style="background-image: url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
-        {% endif %}
-      </div>
+
+        {% with this_page_header=AUTHORS_BIO[author.name.lower()].cover %}
+          {% include 'partials/banner.html' %}
+        {% endwith %}
+
     </header>
 
     {% if AUTHORS_BIO and author.name.lower() in AUTHORS_BIO %}
@@ -78,6 +75,6 @@
             </aside>
         </div>
     </section>
-    {% endif %} 
+    {% endif %}
 
 {% endblock header %}

@@ -1,0 +1,35 @@
+<svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="15 13 170 150">
+
+  <defs>
+        <pattern id="shell-pattern" patternUnits="userSpaceOnUse" x="0" y="0" width="30" height="20">
+          <path fill="none" stroke="#006600" stroke-width="2" d="M0,20 5,10 15,10 20,20 30,20 M0,0 5,10 15,10 20,0 30,0" />
+        </pattern>
+
+  </defs>
+
+      <g transform="translate(50,40)">
+        <!-- Legs -->
+      <ellipse cx="10" cy="30" rx="40" ry="10" transform = "rotate(-10)" fill="#7A0" stroke="#000"/>
+      <ellipse cx="0" cy="80" rx="40" ry="10" transform = "rotate(-15)" fill="#7A0" stroke="#000"/>
+      <ellipse cx="90" cy="10" rx="40" ry="10" transform = "rotate(10)" fill="#7A0" stroke="#000"/>
+      <ellipse cx="95" cy="55" rx="40" ry="10" transform = "rotate(15)" fill="#7A0" stroke="#000" />
+      <!-- head -->
+      <circle cx="50" cy="0" r="20" fill="#7AAA0D" stroke="#000"/>
+      <!-- shell -->
+      <circle cx="50" cy="50" r="50" fill="#5A880D" stroke="#000"/>
+      <circle cx = "50" cy="50" r = "50" fill="url(#shell-pattern)" stroke="#006600" stroke-width="7"/>
+    </g>
+
+    <g transform="scale(0.55)translate(130,115)">
+      <!-- Legs -->
+    <ellipse cx="10" cy="30" rx="40" ry="10" transform = "rotate(-10)" fill="#7A0" stroke="#000"/>
+    <ellipse cx="0" cy="80" rx="40" ry="10" transform = "rotate(-15)" fill="#7A0" stroke="#000"/>
+    <ellipse cx="90" cy="10" rx="40" ry="10" transform = "rotate(10)" fill="#7A0" stroke="#000"/>
+    <ellipse cx="95" cy="55" rx="40" ry="10" transform = "rotate(15)" fill="#7A0" stroke="#000" />
+    <!-- head -->
+    <circle cx="50" cy="0" r="20" fill="#7AAA0D" stroke="#000"/>
+    <!-- shell -->
+    <circle cx="50" cy="50" r="50" fill="#4A770D" stroke="#000"/>
+    <circle cx = "50" cy="50" r = "50" fill="url(#shell-pattern)" stroke="#006600" stroke-width="7"/>
+  </g>
+</svg>

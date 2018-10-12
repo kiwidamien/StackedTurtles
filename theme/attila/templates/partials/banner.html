@@ -1,0 +1,20 @@
+
+{% if this_page_header %}
+    <div class="post-cover cover" style="background-image: url('{{ this_page_header }}')">
+{% elif category and HEADER_COVERS_BY_CATEGORY and (category in HEADER_COVERS_BY_CATEGORY) %}
+    <div class="post-cover cover" style="background-image: url('{{ HEADER_COVERS_BY_CATEGORY[category] }}')">
+{% elif HEADER_COVER %}
+    <div class="post-cover cover" style="background-image: url('{{ HEADER_COVER }}')">
+{% elif HEADER_COLOR %}
+    <div class="post-cover cover" style="background-color: {{ HEADER_COLOR }}">
+{% else %}
+    <div class="post-cover cover" style="background-image: url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
+{% endif %}
+        <div class="logoimg">
+          <img src='{{ LOGO }}'/>
+        </div>
+
+        <div class="logoimg">
+          <img src='{{ SITEURL }}/assets/images/icon/panda_icon.png'/>
+        </div>
+</div>

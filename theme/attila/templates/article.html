@@ -132,20 +132,14 @@
         <!-- TODO : Modified check -->
         {% if article.modified %}
             <span class="post-meta"> | Updated on {{ article.locale_modified }}</span>
-        {% endif %}        
-        {% if article.header_cover %}
-            <div class="post-cover cover" style="background-image: url('{{ article.header_cover }}')">
-	{% elif article.category and HEADER_COVERS_BY_CATEGORY and (article.category in HEADER_COVERS_BY_CATEGORY) %}
-            <div class="post-cover cover" style="background-image: url('{{ HEADER_COVERS_BY_CATEGORY[article.category] }}')">
-        {% elif HEADER_COVER %}
-            <div class="post-cover cover" style="background-image: url('{{ HEADER_COVER }}')">            
-        {% elif HEADER_COLOR %}
-            <div class="post-cover cover" style="background-color: {{ HEADER_COLOR }}">
-        {% else %}
-            <div class="post-cover cover" style="background-image: url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
-        {% endif %}        
+        {% endif %}
+
+        {% with this_page_header=article.header_cover, category=article.category %}
+          {% include 'partials/banner.html' %}
+        {% endwith %}
+        
       </div>
-    </header>    
+    </header>
 {% endblock header %}
 
 {% block content %}
@@ -208,7 +202,7 @@
                     </div>
                     <div class="clear"></div>
                 </aside>
-                {% endif %} 
+                {% endif %}
                 {% endfor %}
 
                 </section>
@@ -224,14 +218,14 @@
                     {% endif %}
                     var disqus_url = '{{ SITEURL }}/{{ article.url }}';
                 </script>
-                <noscript>Please enable JavaScript to view the comments.</noscript>                  
+                <noscript>Please enable JavaScript to view the comments.</noscript>
                 <section class="post-comments">
                     {% if article.disqus_identifier %}
                         <a id="show-disqus" class="post-comments-activate" data-disqus-identifier="{{ article.disqus_identifier }}" >Show Comments</a>
                     {% else %}
                         <a id="show-disqus" class="post-comments-activate" data-disqus-identifier="/{{ article.url }}" >Show Comments</a>
                     {% endif %}
-                    <div id="disqus_thread"></div>                  
+                    <div id="disqus_thread"></div>
                 </section>
                 {% endif %}
 

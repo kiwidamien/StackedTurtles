@@ -1341,6 +1341,9 @@ img {
     top: 0;
     z-index: 5;
     background: no-repeat scroll center center/cover #000;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
     animation: 0.5s ease-in forwards fadein
 }
 
@@ -1353,6 +1356,21 @@ img {
     z-index: 8;
     content: '';
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 100%)
+}
+
+
+.post-cover .logoimg{
+  padding: 100px;
+  width: 12em;
+  height: 12em;
+}
+
+.post-cover .logoimg img{
+  background-color: rgb(240,180,82);
+  width: 100%;
+  max-width: 12em;
+  border-radius:50%;
+  border:#f7ce88 5px solid;
 }
 
 .post {
