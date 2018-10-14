@@ -1,7 +1,7 @@
 Title: Big commits in GitHub
 Tags: Github
 Date: 2018-09-10 13:00
-Category: Tools
+Category: Github 
 Summary: What do you do when you have committed a large file to GitHub?
 
 ## Undoing a large commit

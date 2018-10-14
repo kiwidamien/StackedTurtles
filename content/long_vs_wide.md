@@ -1,7 +1,7 @@
 Title: Long vs Wide Data
 Tags: Data munging, Pandas
 Date: 2018-09-19 11:00
-Category: Posts
+Category: Pandas 
 Summary: What does it mean for data to be in long form vs wide form, and when would you use each? In Pandas, how do you convert from one form to another?
 
 The way we store data is often different from the way it is used to create visualizations, or how it is fed into models. Often the data stored in a database is in [tidy format](http://vita.had.co.nz/papers/tidy-data.pdf) (as described in this paper by Hadley Wickham), and we have to transform it into a form appropriate for our analysis.

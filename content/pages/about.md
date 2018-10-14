@@ -10,13 +10,13 @@ This blog is about using data to build models of the world, using those models t
 
 # Who runs this blog, and why?
 
-<img style="float: right; width: 25%;" src="images/about_profile2.jpg"> My name is Damien Martin. I graduated from UC Davis in 2011 with a Ph.D. in physics, and since graduating I have been teaching physics, math, and computer science classes at undergraduate institutions. I have noticed that one of the most transferrable skills that students pick up from physics classes are not the physical laws of nature, but instead thinking critically about data.
+<img style="float: right; width: 25%;" src="images/about_profile2.jpg"> My name is Damien Martin. I graduated from UC Davis in 2011 with a Ph.D. in physics, and for 6 years after that taught physics, math, and computer science classes at undergraduate institutions. I noticed that one of the most transferrable skills that students pick up from physics classes are not the physical laws of nature, but instead thinking critically about data. I have made the transformation myself, and now work as a data scientist.
 
 # Why do we need models? Why not just look at the raw data?
 
 One of the hardest concepts in dealing with data is realizing that not all patterns we find in data are meaningful. A humorous collection of examples can be found in [this collection of correlations](http://www.tylervigen.com/spurious-correlations) by Tyler Vigen.
 
-A *model* for the world gives us context, and allows us to make predictions based on our data. The model may be wrong, or incomplete, but it can be tested. We can replace it. It will help us interpret and use the data around us. The most succicent way I know of putting it is
+A *model* for the world gives us context, and allows us to make predictions based on our data. The model may be wrong, or incomplete, but it can be tested. We can replace it. It will help us interpret and use the data around us. The most succinct way I know of putting it is
 <div style="margin-left:20px;width:60%;">
 <blockquote style="background:#DDDDDD;">
  Models are the lens through which we view data<br/>
@@ -38,6 +38,6 @@ A model that only manages to be self-consistent, without making other prediction
 We should not be come up with contrived ways to convince others that our models are &quot;right&quot;. It is far more useful to test our models against competing models, and adopt whichever one seems to have more predictive power.
 </li>
 <li>*But it's models all the way down*<br/>
-This story is told from the point of view of a reductionalist. Such a person might believe that the stuff around us is made of atoms, which is made of subatomic particles, which are made of .... (?); but that eventually this chain of reasoning ends. Even if it ends in the physical world (and it is not clear that it does), models of realistic problems will be able to be refined and replaced by a &quot;better model&quot; that captures more nuance in the data. So in defense of the argument made by the audience member, it seems that it really is *models all the way down*.
+This story is told from the point of view of a reductionist. Such a person might believe that the stuff around us is made of atoms, which is made of subatomic particles, which are made of .... (?); but that eventually this chain of reasoning ends. Even if it ends in the physical world (and it is not clear that it does), models of realistic problems will be able to be refined and replaced by a &quot;better model&quot; that captures more nuance in the data. So in defense of the argument made by the audience member, it seems that it really is *models all the way down*.
 </li>
 </ul>

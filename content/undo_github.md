@@ -1,7 +1,7 @@
 Title: Undo in Github (aka the elephants in the room)
 Tags: Github
 Date: 2018-09-12 23:00
-Category: Tools
+Category: Github 
 Summary: How to rollback in Github
 
 Git is a version control system, and is designed so you can "go back" to previous versions of your codebase. Initially the process can be a little intimidating; this guide is designed to help.

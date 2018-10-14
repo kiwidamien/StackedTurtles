@@ -1,6 +1,6 @@
 Title: Using Folium: What is the furthest you can get from Starbucks in Seattle?
 Date: 2017-04-08 20:30
-Category: Portfolio
+Category: Pandas 
 Tags: geocoding, visualization, folium
 
 It seems that Starbucks is ubiquitous in Seattle. Where in Seattle is furthest from a Starbucks store?

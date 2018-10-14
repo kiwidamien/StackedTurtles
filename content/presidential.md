@@ -1,7 +1,7 @@
 Title: Munging with MultiIndices: election data
 Tags: Data munging, Pandas
 Date: 2018-09-27 11:00
-Category: Posts
+Category: Pandas 
 Summary: We show how to take an Excel spreadsheet, with merged column headings, and process it for further analysis.
 
 There is lots of data available for the [2016](https://data.opendatasoft.com/explore/dataset/usa-2016-presidential-election-by-county@public/) and [2012 presidential](https://www.kaggle.com/joelwilson/2012-2016-presidential-elections) elections, broken down to the county level.

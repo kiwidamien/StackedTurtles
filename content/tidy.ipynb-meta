@@ -1,6 +1,6 @@
 Title: What is tidy data? 
 Date: 2018-09-28 22:00
-Category: Posts
+Category: Pandas 
 Tags: Data munging, Pandas
 Author: Damien Martin
 Summary: The principles of Hadley Wickham's tidy data, and how it relates to long and wide form data.

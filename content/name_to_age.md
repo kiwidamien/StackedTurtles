@@ -1,7 +1,7 @@
 Title: Name to Age
 Tags: Data Analysis, Naive Bayes
 Date: 2018-10-01 17:00
-Category: Posts
+Category: Pandas 
 Summary: How much does your name say about your age? We use the database of names from the social security administration, as well as age distribution data from the US Census, to find out! See what your own name's age distribution looks like [here](https://kiwidamien.github.io/names_app/).
 
 Names go in and out of fashion; by knowing someone's name you can get some idea of how old they are. For example, if you were meeting someone called Gertrude or Wilma, you would probably assume that they were reasonable old (the median age of a living Gertrude in 2017 is 80, while the median age of a living Wilma is 75). Other names have only recently come into fashion; for example Zoe is a relatively young name with a median age of 11.
