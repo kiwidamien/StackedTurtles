@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Damien Martin'
 SITENAME = u'Stacked Turtles'
-SITEURL = ''
+SITEURL = 'https://kiwidamien.github.io'
 
 PATH = 'content'
 
@@ -62,18 +62,29 @@ CSS_OVERRIDE = ['assets/css/mystyle.css']
 HEADER_COVER = 'assets/images/tools.png'
 
 HEADER_COVERS_BY_CATEGORY = {
-    'tools': 'assets/images/tools.png',
-    'portfolio': 'assets/images/github.png',
-    'posts': 'assets/images/pandas.png',
-    'web': 'assets/images/web.png',
+    'tools': 'assets/images/cover_background/tool_background.svg',
+    'portfolio': 'assets/images/cover_background/github_background.svg',
+    'posts': 'assets/images/cover_background/panda_background.svg',
+    'pandas': 'assets/images/cover_background/panda_background.svg',
+    'web': 'assets/images/cover_background/web_background.svg',
+    'github': 'assets/images/cover_background/github_background.svg',
 }
 
 CATEGORY_IMAGES = {
     'tools': 'assets/images/icon/tool_icon.png',
     'pandas': 'assets/images/icon/panda_icon.png',
+    'posts':  'assets/images/icon/panda_icon.png',
     'github': 'assets/images/icon/github_icon.png',
     'web': 'assets/images/icon/web_icon.png',
     'default': 'assets/images/icon/tool_icon.png',
+}
+
+CATEGORY_DESCRIPTION = {
+    'github': 'Posts on how to solve some of the trickier problems with git and Github.',
+    'pandas': 'Posts on general data munging and processing, with an emphasis on techniques in Pandas.',
+    'web': 'Posts about setting up webpages, scraping, using OAuth, or other issues in networking.',
+    'tools': 'Tips and tricks on how to use different tools, such as PostgreSQL, MongoDB, and AWS. Note git has its own category.',
+    'posts': 'Default category, when a post doesn\'t fit anywhere else',
 }
 
 # These appear on the left pull out bar

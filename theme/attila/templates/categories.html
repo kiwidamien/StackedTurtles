@@ -23,22 +23,36 @@
         </nav>
         <h1 class="post-title">{{ SITENAME }} - Categories</h1>
         {% if HEADER_COVER %}
-            <div class="blog-cover cover" style="background-image: url('{{ HEADER_COVER }}')">            
+            <div class="blog-cover cover" style="background-image: url('{{ HEADER_COVER }}')">
         {% elif HEADER_COLOR %}
             <div class="post-cover cover" style="background-color: {{ HEADER_COLOR }}">
         {% else %}
             <div class="post-cover cover" style="background-image: url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
-        {% endif %}        
+        {% endif %}
       </div>
-    </header>    
+    </header>
 {% endblock header %}
 
 {% block content %}
+  <div class='card-grid-container'>
   {% for category, articles in categories |sort %}
-    <article class="post">
-      <div class="inner">
-        <a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a> ({{ articles|count }})
+    <div class='card'>
+      <div class='header'>
+        {% if category.name.lower() in CATEGORY_IMAGES %}
+          <img src='{{ CATEGORY_IMAGES[category.name.lower()] }}' />
+        {% else %}
+          <img src='{{ CATEGORY_IMAGES.default }}' />
+        {% endif %}
+        <div class='heading-text'>
+          <a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a> ({{ articles|count }})
+        </div>
       </div>
-    </article>
+      {% if category.name.lower() in CATEGORY_DESCRIPTION %}
+        <div class='description'>
+          {{ CATEGORY_DESCRIPTION[category.name.lower()] }}
+        </div>
+      {% endif %}
+    </div>
   {% endfor %}
+  </div>
 {% endblock content %}
