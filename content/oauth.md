@@ -204,6 +204,7 @@ Notice a few things here:
 ## Summary
 
 Using two-legged OAuth requires three steps:
+
 1. Register an app, to get client id and secret
 2. Find out the URL to get tokens, and make a POST request to generate tokens. In the case of Spotify, this is https://accounts.spotify.com/api/token. Requires a base64 encoding of the `id:secret` string.
 3. Make all future requests with the header `{'Authorization': 'Bearer <the token>'}`.
