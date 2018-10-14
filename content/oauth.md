@@ -183,10 +183,10 @@ token = r.json()['access_token']
 
 ## Using the token
 
-Recall our goal was to query the endpoint `v1/tracks/11dFghVXANMlKmJXsNCbNl` to get information track 11dFghVXANMlKmJXsNCbNl. We already saw the cURL request that could do this:
+Recall our goal was to query the endpoint `v1/tracks/11dFghVXANMlKmJXsNCbNl` to get information track `11dFghVXANMlKmJXsNCbNl`. We already saw the cURL request that could do this:
 ```bash
  curl -X GET "https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl" -H "Authorization: Bearer {your access token}"
- ```
+```
 
 If we copied-and-pasted in the token we got above for the access token, the request would work. Let's see how we can get it to work in Python:
 
