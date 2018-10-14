@@ -82,6 +82,7 @@ Our goals are to be able to create the access token so we can make this request,
 ### Setting up an app
 
 The first thing we need to do is create an application on Spotify's website, so that Spotify can track and limit our API usage. To do this:
+
 1. Go to the Spotify developer page https://developer.spotify.com/
 2. Log in (or create an account if necessary)
 3. Click on 'dashboard' (or go to https://developer.spotify.com/dashboard/applications)
@@ -149,6 +150,7 @@ base64_encoded_id_secret = base64.b64encode('12345:8ACDC'.encode()).decode()
 ```
 
 Here are the steps:
+
 1. We start with the string we want to encode: `'12345:8ACDC'`
 2. We need to convert it to bytes, because Python3 won't allow base64 encoding on strings. The `encode()` method turns a string into bytes. Note this is usually pretty boring, as `'random string'.encode()` will return `b'random string'` in the Python interpreter, where the `b` at the front is telling us Python is now thinking of this object as bytes rather than a string.
 3. Then we do the base64 encoding. Here `base64.b64encode('12345:8ACDC'.encode())` returns a `b'MTIzNDU6OEFDREM='`.
@@ -197,6 +199,7 @@ result = r.json()
 ```
 
 Notice a few things here:
+
 * We didn't have to put the content type into the header
 * We pass the token directly; **DON'T** try and do any base64 encoding on it
 * The Authorization type has changed from `Basic` (using encoded client:secret) to `Bearer` (using the token directly)
