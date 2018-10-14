@@ -129,7 +129,8 @@ The request object returns a few more fields:
  'expires_in': 3600,
  'scope': '',
  'token_type': 'Bearer'}
- ```
+```
+
 The one we are interested in is the `access_token`. The `expires_in` tells us how many seconds this access token is valid for, which in this case translates to 1 hour. Any requests we want to make after that will require we get a new token and use that instead.
 
 Now we need to encode the id and secret so the above code will run!
