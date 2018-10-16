@@ -56,7 +56,7 @@ The easiest way of scraping a dynamic page is to actually execute the javascript
 4. Use `driver.page_source` to get the HTML as it appears after javascript has rendered it.
 5. Use a parser on the returned HTML
 
-The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops to get the product name and the price for the six items listed on the first page. These are randomly generated; at the time of writing the products were an Asus VivoBook ($\$$295.99), two Prestigio SmartBs ($\$$299 each), an Acer Aspire ES1 ($\$$306.99), and two Lenovo V110s ($\$$322 and $\$$356).
+The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops to get the product name and the price for the six items listed on the first page. These are randomly generated; at the time of writing the products were an Asus VivoBook (295.99), two Prestigio SmartBs (299 each), an Acer Aspire ES1 (306.99), and two Lenovo V110s (322 and 356).
 
 ![Example e-commerce page for scraping practice](/images/scraping/e-commerce-example2.png)
 
