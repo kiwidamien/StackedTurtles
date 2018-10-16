@@ -3,19 +3,21 @@ Subtitle: Article 1 -- an overview
 Tags: Scraping, Selenium, BeautifulSoup
 Date: 2018-10-15 19:00
 Category: Web
-Summary: Introduction to a series of articles on alternatives to Selenium for AJAX/Javascript enabled webpages. First article in the advanced web-scraping series.
+Summary: First article in the advanced web-scraping series. Clarifies the difference between static and dynamic pages. Outlines different approaches for getting data from pages generated with Javascript and AJAX.
 Series: Advanced Scraping
 series_index: 1
 
 # Static vs Dynamic
 
-The Python documentation, wikipedia, and most blogs (including this one) only include _static content_. That is, when a browser or the `requests` library asks for the URL, the information is already processed and ready to go. If that's the case, then a parser like BeautifulSoup is probably all you need. A short example of scraping a static page is demonstrated below. I have a more through overview of BeautifulSoup [here](#todo), and an example
+The Python documentation, wikipedia, and most blogs (including this one) use _static content_. When we request the URL, we get the final HTML returned to us. If that's the case, then a parser like BeautifulSoup is all you need. A short example of scraping a static page is demonstrated below. I have an overview of BeautifulSoup [here](#todo).
 
-A site with _dynamic content_ is one where requesting the URL brings up Javascript, which the browser is supposed to execute. This is common for sites that are supposed to update. For example, a weather webpage such as [weather.com](http://weather.com) would use Javascript to look up the latest weather. An Amazon webpage would use Javascript to load the latest reviews from its database. If you use a parser on a dynamically generated page, you will just get a skeleton of the page with the unexecuted javascript on it. Most of this post will be devoted to outlining different strategies for scraping dynamic pages.
+A site with _dynamic content_ is one where requesting the URL returns an incomplete HTML. The HTML includes Javascript for the browser to execute. Only once the Javascript finishes running is the HTML in its final state. This is common for sites that update frequently. For example, [weather.com](http://weather.com) would use Javascript to look up the latest weather. An Amazon webpage would use Javascript to load the latest reviews from its database. If you use a parser on a dynamically generated page, you get a skeleton of the page with the unexecuted javascript on it.
+
+This post will outline different strategies for scraping dynamic pages.
 
 ## An example of scraping a static page
 
-Even though most of this article is about dynamic pages, let's start with an example of scraping a static page. Here is a small piece of code demonstrating how to get the Introduction section of the Python style guide, [PEP8](https://www.python.org/dev/peps/pep-0008/):
+Let's start with an example of scraping a static page. This code demonstrates how to get the Introduction section of the Python style guide, [PEP8](https://www.python.org/dev/peps/pep-0008/):
 
 ```python
 import requests
@@ -50,8 +52,8 @@ Volia! If all you have is a static page, you are done!
 
 The easiest way of scraping a dynamic page is to actually execute the javascript, and allow it to alter the HTML to finish the page. We can pass the rendered (i.e. finalized) HTML to python, and use the same parsing techniques we used on static sites. The Python module [Selenium](https://www.seleniumhq.org/) allows us to control a browser directly from Python. The steps to Parse a dynamic page using Selenium are:
 
-1. Initialize a _driver_ (basically a Python object that controls a browser window)
-2. Direct the driver to the URL we are interested in.
+1. Initialize a _driver_ (a Python object that controls a browser window)
+2. Direct the driver to the URL we want to scrape.
 3. Wait for the driver to finish executing the javascript, and changing the HTML. The driver is typically a Chrome driver, so the page is treated the same way as if you were visiting it in Chrome.
 4. Use `driver.page_source` to get the HTML as it appears after javascript has rendered it.
 5. Use a parser on the returned HTML
@@ -112,7 +114,7 @@ The output in the notebook is an empty list, because javascript hasn't generated
 
 # Alternatives to Selenium
 
-Using Selenium is an (almost) sure-fire way of being able to generate any of the dynamic content that you need, because the pages are actually been visited by a browser (albeit one controlled by Python rather than you).  If you can see it while browsing, Selenium will be able to see it as well.
+Using Selenium is an (almost) sure-fire way of being able to generate any of the dynamic content that you need, because the pages are actually visited by a browser (albeit one controlled by Python rather than you).  If you can see it while browsing, Selenium will be able to see it as well.
 
 There are some drawbacks to using Selenium over pure requests:
 
@@ -140,7 +142,7 @@ The bad news for using the alternative methods is that there are so many differe
 
 ## Other techniques
 
-This is the first in a series of articles that will look at other techniques to get data from dynamic webpages. Because scraping tends to require a custom approach to each site we want to scrape, each technique will be presented as a case study on one particular example. The examples will be detailed enough to enable you to try the technique on other sites.
+This is the first in a series of articles that will look at other techniques to get data from dynamic webpages. Because scraping requires a custom approach to each site we scrape, each technique will be presented as a case study. The examples will be detailed enough to enable you to try the technique on other sites.
 
 | Technique | Description | Examples |
 | --- | --- | --- |
