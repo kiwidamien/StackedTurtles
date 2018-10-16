@@ -160,11 +160,21 @@
         <article class="post">
         <div class="inner">
             <section class="post-content">
+		{% if article.series %}
+		    <p>This post is part {{ article.series.index }} of the "{{ article.series.name }}" series:</p>
+    		    <ol class="parts">
+        	      {% for part_article in article.series.all %}
+            	        <li {% if part_article == article %}class="active"{% endif %}>
+                          <a href='{{ SITEURL }}/{{ part_article.url }}'>{{ part_article.title }}</a>
+                        </li>
+                      {% endfor %}
+                    </ol>
+                {% endif %}
                 {{article.content}}
             </section>
 
             <section class="post-info">
-                <div class="post-share">
+                <div class=a"post-share">
                     <a class="twitter" href="https://twitter.com/share?text={{ article.title }}&amp;url={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
                     </a>
