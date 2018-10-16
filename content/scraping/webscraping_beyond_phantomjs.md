@@ -1,9 +1,9 @@
 Title: Webscraping beyond BeautifulSoup and Selenium
 Subtitle: Article 1 -- an overview
 Tags: Scraping, Selenium, BeautifulSoup
-Date: 2018-10-15 17:00
+Date: 2018-10-15 19:00
 Category: Web
-Summary: Introduction to a series of articles on alternatives to Selenium for AJAX/Javascript enabled webpages.
+Summary: Introduction to a series of articles on alternatives to Selenium for AJAX/Javascript enabled webpages. First article in the advanced web-scraping series.
 Series: Advanced Scraping
 series_index: 1
 
@@ -15,7 +15,7 @@ A site with _dynamic content_ is one where requesting the URL brings up Javascri
 
 ## An example of scraping a static page
 
-Here is a small piece of code demonstrating how to get the Introduction section of the Python style guide, [PEP8](https://www.python.org/dev/peps/pep-0008/):
+Even though most of this article is about dynamic pages, let's start with an example of scraping a static page. Here is a small piece of code demonstrating how to get the Introduction section of the Python style guide, [PEP8](https://www.python.org/dev/peps/pep-0008/):
 
 ```python
 import requests
@@ -50,13 +50,13 @@ Volia! If all you have is a static page, you are done!
 
 The easiest way of scraping a dynamic page is to actually execute the javascript, and allow it to alter the HTML to finish the page. We can pass the rendered (i.e. finalized) HTML to python, and use the same parsing techniques we used on static sites. The Python module [Selenium](https://www.seleniumhq.org/) allows us to control a browser directly from Python. The steps to Parse a dynamic page using Selenium are:
 
-1. Initialize a _driver_ (basically a browser window that Python controls)
+1. Initialize a _driver_ (basically a Python object that controls a browser window)
 2. Direct the driver to the URL we are interested in.
 3. Wait for the driver to finish executing the javascript, and changing the HTML. The driver is typically a Chrome driver, so the page is treated the same way as if you were visiting it in Chrome.
 4. Use `driver.page_source` to get the HTML as it appears after javascript has rendered it.
 5. Use a parser on the returned HTML
 
-The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops to get the product name and the price for the six items listed on the first page. These are randomly generated; at the time of writing the products were a Dell Inspiron 14 ($1140.20), an Acer Aspire ES1 ($379.95), and a Galaxy Tab 3 ($107.99).
+The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops to get the product name and the price for the six items listed on the first page. These are randomly generated; at the time of writing the products were an Asus VivoBook (\$295.99), two Prestigio SmartBs (\$299 each), an Acer Aspire ES1 (\$306.99), and two Lenovo V110s (\$322 amd \$356).
 
 ![Example e-commerce page for scraping practice](/images/scraping/e-commerce-example2.png)
 
@@ -88,7 +88,7 @@ for caption in soup.find_all(class_='caption'):
     print(product_name, price)
 ```
 
-## Trying the dynamic site using requests
+## Trying scraping a dynamic site using requests
 
 What would happen if we tried to load this e-commerce site using requests? That is, what if we didn't know it was a dynamic site?
 
