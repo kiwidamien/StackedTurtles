@@ -1,10 +1,10 @@
 Title: Webscraping beyond BeautifulSoup and Selenium
 Subtitle: Article 1 -- an overview
-Tags: Webscraping
+Tags: Scraping, Selenium, BeautifulSoup
 Date: 2018-10-15 17:00
 Category: Web
 Summary: Introduction to a series of articles on alternatives to Selenium for AJAX/Javascript enabled webpages.
-Series: Advanced Webscraping
+Series: Advanced Scraping
 series_index: 1
 
 # Static vs Dynamic
@@ -56,9 +56,9 @@ The easiest way of scraping a dynamic page is to actually execute the javascript
 4. Use `driver.page_source` to get the HTML as it appears after javascript has rendered it.
 5. Use a parser on the returned HTML
 
-The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/allinone to get the product name and the price for the three items listed there. At the time this article was written, the products were a Dell Inspiron 14 ($1140.20), an Acer Aspire ES1 ($379.95), and a Galaxy Tab 3 ($107.99).
+The website https://webscraper.io has some fake pages to test scraping on. Let's use it on the page https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops to get the product name and the price for the six items listed on the first page. These are randomly generated; at the time of writing the products were a Dell Inspiron 14 ($1140.20), an Acer Aspire ES1 ($379.95), and a Galaxy Tab 3 ($107.99).
 
-![Example e-commerce page for webscraping practice](images/webscraping/e-commerce-example.png)
+![Example e-commerce page for scraping practice](/images/scraping/e-commerce-example2.png)
 
 Once the HTML has been by Selenium, each item has a div with class `caption` that contains the information we want. The product name is in a subdiv with class `title`, and the price is in a subdiv with the classes `pull-right` and `price`. Here is code for scraping the product names and prices:
 ```python
@@ -66,7 +66,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 
-url = 'https://www.webscraper.io/test-sites/e-commerce/allinone'
+url = 'https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops'
 
 # Change argument to the location you installed the chrome driver
 # (see selenium installation instructions, or get the driver for your
@@ -88,11 +88,74 @@ for caption in soup.find_all(class_='caption'):
     print(product_name, price)
 ```
 
+## Trying the dynamic site using requests
+
+What would happen if we tried to load this e-commerce site using requests? That is, what if we didn't know it was a dynamic site?
+
+The html we get out can be a little difficult to read directly. If you are using a terminal, then you can save the results from `r.html` to a file and then load it in a browser. If you are using a Jupyter notebook, you can actually use a neat trick to render the output in your browser:
+```python
+# We will try and render what requests returns from https://www.webscraper.io/test-sites/e-commerce/allinone
+# without running javascript first
+import requests
+from IPython.display import HTML
+
+url = 'https://www.webscraper.io/test-sites/e-commerce/ajax/computers/laptops'
+
+r = requests.get(url)
+
+HTML(r.text)
+```
+
+The output in the notebook is an empty list, because javascript hasn't generated the items yet.
+
+![Where have all the computers gone?](/images/scraping/where-are-the-computers.png)
+
 # Alternatives to Selenium
 
 Using Selenium is an (almost) sure-fire way of being able to generate any of the dynamic content that you need, because the pages are actually been visited by a browser (albeit one controlled by Python rather than you).  If you can see it while browsing, Selenium will be able to see it as well.
 
 There are some drawbacks to using Selenium over pure requests:
-* **It's slow.**
+
+- **It's slow.**
+
   We have to wait for pages to render, rather than just grabbing the data we want.
-* 
+
+- **We have to download images and assets, using bandwidth**
+
+  Related to the previous point, even if we are just parsing for text, our browser will download all ads and images on the site.
+
+- **Chrome takes a lot of memory**
+
+  When scraping, we might want to have parallel scrapers running (e.g. one for each category of items on an e-commerce site) to allow us to finish faster. If we use Selenium, we will have to have enough memory to have multiple copies running.
+
+- **We might not need to parse**
+
+  Often sites will make API calls to get the data in a nicely formatted JSON object, which is then processed by Javascript into HTML entities. When using a parser such as BeautifulSoup, we are reading in the HTML entities, and trying to reconstruct the original data. It would be a lot slicker (and less error prone) if we are able to get the JSON objects directly.
+
+- **Selenium (like parsing) is often tedious and error-prone**
+
+
+The bad news for using the alternative methods is that there are so many different ways of loading data that no single technique is guaranteed to work. The biggest advantage Selenium has is that it uses a browser, and with enough care, should be indistinguishable from you browsing the web yourself.
+
+
+## Other techniques
+
+This is the first in a series of articles that will look at other techniques to get data from dynamic webpages. Because scraping tends to require a custom approach to each site we want to scrape, each technique will be presented as a case study on one particular example. The examples will be detailed enough to enable you to try the technique on other sites.
+
+| Technique | Description | Examples |
+| --- | --- | --- |
+| Scheme or Opengraph MetaData | OpenGraph is a standard for allowing sites like Facebook to easily find what your page is 'about'. We can scrape the relevant data directly from these tags | ??? Need example ??? |
+| JSON for Linking Data | This is a standard for putting JSON inside Javascript tags | Yelp |
+| XHR | Use the same API requests that the browser does to get the data | Sephora lipsticks, Apple jobs |
+
+
+
+## Selenium summary
+
+The short list of pros and cons for using Selenium to scrape dynamic sites.
+
+| Pros | Cons |
+| --- | --- |
+| * Will work | * Slow |
+| | * Bandwidth and memory intensive |
+| | * Requires error-prone parsing |
