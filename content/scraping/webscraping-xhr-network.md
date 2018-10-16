@@ -24,7 +24,7 @@ One of my students at Metis did a project where she clustered [Sephora lipsticks
 
 Here is an example of a [typical lipstick page](https://www.sephora.com/product/stunna-lip-paint-P39787544?icid2=products%20grid:p39787544:product). If you visit that page, you may note that there is a link "Show 6 more reviews" at the bottom of the page that allows us to (slowly) make our way through the review. Here is a screen shot including a review:
 
-<img alt='Some Sephora review with link to more review' src='images/scraping/sephora/sephora_review.png' width=60%' />
+<img alt='Some Sephora review with link to more review' src='images/scraping/sephora/sephora_review.png' style="width:80%; margin: 0 auto;"/>
 
 Investigating the "link", we see that it is actually a button (operated by Javascript). We want to find a way of getting the reviews without having to start Selenium.
 
@@ -46,7 +46,7 @@ We are interested in whether we can find the reviews as something the page downl
 
 We see `reviews.json` contains the review text we are looking for. We can search for the `review.json` request using the _other_ search box in the Network tab
 
-<img alt='Finding reviews.json' src='images/scraping/sephora/find_reviews.png' width='60%'/>
+<img alt='Finding reviews.json' src='images/scraping/sephora/find_reviews.png' style="width:80%; margin: 0 auto;"/>
 
 Looking at the header (at the top, not shown) we see the URL used to get `review.json` is
 
