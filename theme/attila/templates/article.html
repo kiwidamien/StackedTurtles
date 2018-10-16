@@ -137,7 +137,7 @@
         {% with this_page_header=article.header_cover, category=article.category %}
           {% include 'partials/banner.html' %}
         {% endwith %}
-        
+
       </div>
     </header>
 {% endblock header %}
@@ -151,6 +151,8 @@
             </li>
         {% endfor %}
     </ol>
+
+    <hr/>
 {% endif %}
 
 {% block content %}
