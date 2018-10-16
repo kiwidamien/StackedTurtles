@@ -48,7 +48,7 @@ We see that the review is in `reviews.json?........`. We can search for the `rev
 
 ![Finding reviews.json](images/scraping/sephora/find_reviews.png)
 
-Looking at the header (at the top, not shown) we see the URL used to get `review.json` was
+Looking at the header (at the top, not shown) we see the URL used to get `review.json` is
 
 ```bash
 https://api.bazaarvoice.com/data/reviews.json?Filter=ProductId%3AP39787544&Sort=Helpfulness%3Adesc&Limit=30&Offset=0&Include=Products%2CComments&Stats=Reviews&passkey=rwbw526r2e7spptqd2qzbkp7&apiversion=5.4
@@ -115,3 +115,7 @@ while True:
 # Show how many reviews we scraped
 print(len(reviews))
 ```
+
+This script downloaded all the reviews (including star ratings, user names, skin color of reviewer, review text, ...) in about 1 minute and 48 seconds. The JSON objects I received back would be ready for me to store directly into MongoDB for later processing.
+
+## Scraping Jobs on Apple's website
