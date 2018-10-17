@@ -6,7 +6,7 @@ Summary: How to use the google maps API to find somewhere to live
 
 # Determining where to live
 
-When  moving to the Bay 
+When   moving to the Bay 
 
 Need to mention inspiration from
 https://www.dataquest.io/blog/apartment-finding-slackbot/
