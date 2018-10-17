@@ -53,9 +53,11 @@ GET /v1/tracks/{id}
 This endpoint will tell us a lot of information about where the track labeled by `id` is played, the duration, and the artists. An [example from the documentation](https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/) is gives the curl request, and the output for the track `11dFghVXANMlKmJXsNCbNl`:
 ```bash
  curl -X GET "https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl" -H "Authorization: Bearer {your access token}"
- ```
- The (truncated) output is
- ```python
+```
+
+The (truncated) output is
+
+```python
  {
   "album": {
     "album_type": "single",
@@ -121,7 +123,7 @@ r = requests.post('https://accounts.spotify.com/api/token', headers=headers, par
 token = r.json()['access_token']
 ```
 
-The header object is telling us how the request is encoded (using `application/x-www-form-urlencoded` is standard for OAuth requests), and passing in the client id and secret. This part is transferrable to other applications. Spotify also requires we tell it what sort of token we want in the `params`, and generally won't be the same in different applications (you will need to check the documentation for the service you are using to see what, if anything, it requires).
+The header object is telling us how the request is encoded (using `application/x-www-form-urlencoded` is standard for OAuth requests), and passing in the client id and secret. This part is transferrable to other applications. Spotify also requires we tell it what sort of token we want using the custom `grant_type` in the `params`.  This generally won't be the same in different applications (you will need to check the documentation for the service you are using to see what, if anything, it requires).
 
 The request object returns a few more fields:
 ```python
@@ -142,7 +144,7 @@ To keep this example concrete, let's say:
 * my `client_id` is `12345`
 * my `client_secret` is `8ACDC`
 
-To get my token, I need the `Authorization` field of the header to be the _base64 encoded string_ `client_id:client_secret`, i.e. `12345:8ACDC`.
+To get my token, I need the `Authorization` field of the header to be the string `12345:8ACDC` after _base64 encoding_.
 
 Python3 makes this a little cumbersome, because it treats base64 as `bytes`, which are distinct from strings. Let's show the answer, and then talk about what is happening at each step:
 ```python
@@ -194,7 +196,7 @@ If we copied-and-pasted in the token we got above for the access token, the requ
 # we have token from before
 header = {'Authorization': 'Bearer ' + token }
 
-r = requests.get('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl', headers=headers)
+r = requests.get('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl', headers=header)
 
 result = r.json()
 ```
@@ -203,7 +205,7 @@ Notice a few things here:
 
 * We didn't have to put the content type into the header
 * We pass the token directly; **DON'T** try and do any base64 encoding on it
-* The Authorization type has changed from `Basic` (using encoded client:secret) to `Bearer` (using the token directly)
+* The Authorization type has changed from `Basic` (using the base64 encoded `'client:secret'`) to `Bearer` (using the token directly)
 
 ## Summary
 
