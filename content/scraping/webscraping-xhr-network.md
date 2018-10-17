@@ -13,10 +13,12 @@ In the first article in this series, we looked at the two standard ways of scrap
 
 On many websites, the Javascript executed by the browser makes requests from another server to get the information and process into HTML. In this installment, we investigate how to discover these network calls using Chrome's Network Panel in the Developer Tools.
 
-We will look at two examples:
+We will look at three examples:
 
 * Getting customer reviews of lipsticks from Sephora
+* A mock site
 * Getting a list of job openings at Apple
+
 
 ## Sephora lipstick reviews
 
@@ -118,4 +120,168 @@ print(len(reviews))
 
 This script downloaded all the reviews (including star ratings, user names, skin color of reviewer, review text, ...) in about 1 minute and 48 seconds. The JSON objects I received back would be ready for me to store directly into MongoDB for later processing.
 
+## A mock site
+
+One problem with writing tutorials using company websites is that websites change. Frequently. The site https://scapethissite.com/ is setup to help you hone your scraping skills. We will look at the AJAX loading site https://scrapethissite.com/pages/ajax-javascript/#2015. Our goal is to grab the table of Oscar winning movies.
+
+<img src='images/scraping/oscars.png' style='width:60%; margin: 0 auto;'/>
+
+Here are our steps:
+1. Open the network panel
+2. Search for `'Spotlight'` (the name of the best picture, unlikely to appear other places in the site).
+3. Find that the request is in `scrapethissite.com/pages/ajax-javascript/?ajax=true&year=2015`
+4. Search for the script named `?ajax=true&year=2015`. This is tricky to find! Look at the response, and see that we have the JSON object we want.
+
+Now we are ready to put together our script:
+```python
+import requests
+import pprint
+
+url = 'https://scrapethissite.com/pages/ajax-javascript/'
+params = {'ajax': 'true', 'year': 2015}  # Note - use string 'true', not Python's True
+
+r = requests.get(url, params=params)
+
+pprint.pprint(r.json())
+```
+
+This returns
+```python
+[{'awards': 2, 'best_picture': True,'nominations': 6, 'title': 'Spotlight  ','year': 2015},
+ {'awards': 6, 'nominations': 10, 'title': 'Mad Max: Fury Road ', 'year': 2015},
+ {'awards': 3, 'nominations': 12, 'title': 'The Revenant   ', 'year': 2015},
+ {'awards': 1, 'nominations': 6, 'title': 'Bridge of Spies', 'year': 2015},
+ {'awards': 1, 'nominations': 5, 'title': 'The Big Short  ', 'year': 2015},
+ {'awards': 1, 'nominations': 4, 'title': 'The Danish Girl', 'year': 2015},
+ {'awards': 1, 'nominations': 4, 'title': 'Room   ', 'year': 2015},
+ {'awards': 1, 'nominations': 2, 'title': 'Ex Machina ', 'year': 2015},
+ {'awards': 1, 'nominations': 2, 'title': 'The Hateful Eight  ', 'year': 2015},
+ {'awards': 1, 'nominations': 2, 'title': 'Inside Out ', 'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'Amy', 'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'Bear Story ', 'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'A Girl in the River: The Price of Forgiveness  ',
+  'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'Son of Saul', 'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'Spectre', 'year': 2015},
+ {'awards': 1, 'nominations': 1, 'title': 'Stutterer  ', 'year': 2015}]
+```
+
 ## Scraping Jobs on Apple's website
+
+As our final example, let's get a listing of open jobs Apple is posting. Apple hosts their open positions at https://jobs.apple.com/us/search.
+
+Our steps should be familiar:
+1. Open the Network panel, and go to https://jobs.apple.com/us/search
+2. Search for a job title (I searched for `US-Creative`, which was a posting at the time)
+3. Find the request is in `jobs.apple.com/us/search/search-result`
+4. Search for `search-result` in the list of network requests.
+
+
+Here is a screenshot from the network panel.
+
+<img src='images/scraping/apple/apple_network_response.png' style='width:60%; margins: 0 auto;' />
+
+Notice a few differences:
+
+* This is a POST request, not a GET request.
+* There is a `Form Data` section (this is what we are posting)
+* There are lots of Request Headers (15, collapsed in diagram)
+* When looking at the `Preview` of the response, we get XML, not JSON.
+
+Here are the changes we have to make:
+
+* There is no query string (i.e. no `?......` at the end of the URL). We don't need `params` in this case.
+* We might need to encode a dictionary for the `header`. We will try without it to see if it works (it will in this case).
+* The form data gets passed in as `data`, not `params`.
+* We will need to access the XML from `r.text`, as there is no `r.json()` returned.
+
+
+Let's see this in action:
+```python
+import requests
+import json
+
+url = 'https://jobs.apple.com/us/search/search-result'
+searchRequestField = {
+  'jobType': '0', 'sortBy': 'req_open_dt', 'sortOrder': '1',
+  'filters': {
+    'locations': {'location': [{'type': '0', 'code': 'USA'}]}
+    },
+  'pageNumber': '0'
+}
+
+# Note that field 'searchRequestJson' has to be a JSON string
+# Requests will NOT convert the python dictionary for you =(
+form_data = {
+  'searchRequestJson': json.dumps(searchRequestField),
+  'clientOffset': -480
+}
+
+r = requests.post(url, data=form_data)
+
+print(r.text)
+```
+
+I have added some formatting to make the structure a little cleaner, but we see the final output is
+```
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <html><body><result>
+    <count>3057</count>
+    <requisition>
+      <jobfunction>Retail</jobfunction>
+      <jobid>USABS</jobid>
+      <jobtypecategory>Retail</jobtypecategory>
+      <location>Various</location>
+      <retailpostingdate>Oct. 16, 2018</retailpostingdate>
+      <retailpostingtitle>US-Business Expert</retailpostingtitle>
+    </requisition>
+    <requisition>
+      <jobfunction>Retail</jobfunction>
+      <jobid>USACR</jobid>
+      <jobtypecategory>Retail</jobtypecategory>
+      <location>Various</location>
+      <retailpostingdate>Oct. 16, 2018</retailpostingdate>
+      <retailpostingtitle>US-Creative</retailpostingtitle>
+    </requisition>.
+    ....
+  </result></body></html>
+```
+
+If we wanted to get the job title, posting date, and location from the result, we could parse through BeautifulSoup (note this is a lot more structured than HTML!)
+```python
+# assume we have r.text from earlier
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(r.text)
+
+def grabField(j, field, default):
+  if j.find(field):
+    return j.find(field).text
+  return default
+
+# grab all requisition tags
+for job in soup.findAll('requisition'):
+  info = grabField(job, 'retailpostingtitle', 'no title') + ', ' + grabField(job, 'retailpostingdate', 'no date') + ', '
+  info = info + grabField(job, 'location', 'no location')
+  print(info)
+```
+
+Of course, instead of printing this information, we could also choose to make store it in a database or dataframe for future analysis.
+
+# Summary
+
+We looked at three examples of making the network requests manually. The basic steps are:
+
+1. Use the network panel to search for the data.
+2. Find which request the data came from. When you think you have identified it, check the `Preview` to see if the response to the request is useful.
+3. Look at the `Header` tab to help figure out how to structure the request. Pay careful attention to whether the request is a GET or POST request.
+4. Make the request using the request library, and then process the resulting JSON or text.
+
+Some other things to watch out for:
+
+* Use `params=.....` in the request method when passing queries as part of the URL
+* Use `data=.....` in the request method when passing in form data
+* Use `headers=.....` to pass in header information (but sometimes you don't need to include it)
+* If some of your methods look like they include dictionaries, it is safer to do pass a JSON string instead. To convert a dictionary `dict` to a JSON string, use `json.dumps(dict)`. The Apple job scraping example should get you started.
+
+Good luck scraping!
