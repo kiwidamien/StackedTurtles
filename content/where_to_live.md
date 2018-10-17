@@ -4,7 +4,7 @@ Date: 2017-01-12
 Status: draft
 Summary: How to use the google maps API to find somewhere to live
 
-# Determining where to live
+#  Determining where to live
 
 When   moving to the Bay 
 
