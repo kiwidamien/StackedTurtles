@@ -122,11 +122,12 @@ This script downloaded all the reviews (including star ratings, user names, skin
 
 ## A mock site
 
-One problem with writing tutorials using company websites is that websites change. Frequently. The site https://scapethissite.com/ is setup to help you hone your scraping skills. We will look at the AJAX loading site https://scrapethissite.com/pages/ajax-javascript/#2015. Our goal is to grab the table of Oscar winning movies.
+One problem with writing tutorials using company websites is that websites change. Frequently. The site [https://scapethissite.com/](https://scapethissite.com/) is setup to help you hone your scraping skills. We will look at the AJAX loading site [https://scrapethissite.com/pages/ajax-javascript/#2015](https://scrapethissite.com/pages/ajax-javascript/#2015). Our goal is to grab the table of Oscar winning movies.
 
 <img src='images/scraping/oscars.png' style='width:60%; margin: 0 auto;'/>
 
 Here are our steps:
+
 1. Open the network panel
 2. Search for `'Spotlight'` (the name of the best picture, unlikely to appear other places in the site).
 3. Find that the request is in `scrapethissite.com/pages/ajax-javascript/?ajax=true&year=2015`
@@ -171,6 +172,7 @@ This returns
 As our final example, let's get a listing of open jobs Apple is posting. Apple hosts their open positions at https://jobs.apple.com/us/search.
 
 Our steps should be familiar:
+
 1. Open the Network panel, and go to https://jobs.apple.com/us/search
 2. Search for a job title (I searched for `US-Creative`, which was a posting at the time)
 3. Find the request is in `jobs.apple.com/us/search/search-result`
@@ -179,7 +181,7 @@ Our steps should be familiar:
 
 Here is a screenshot from the network panel.
 
-<img src='images/scraping/apple/apple_network_response.png' style='width:60%; margins: 0 auto;' />
+<img src='images/scraping/apple/apple_network_response.png' style='width:60%; margin: 0 auto;' />
 
 Notice a few differences:
 
