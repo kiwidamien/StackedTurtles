@@ -102,7 +102,7 @@ AUTHORS_BIO = {
     "linkedin": "kiwidamien",
     "github": "kiwidamien",
     "location": "USA",
-    "bio": "I am data scientist with an interest in what drives the world. Background in Physics, Math, and Computer Science. Interested in Algorithms, Games, Books, Music, and Martial Arts. That is, when I am not off taking pictures somewhere! "
+    "bio": "I am a data scientist with an interest in what drives the world. Background in Physics, Math, and Computer Science. Interested in Algorithms, Games, Books, Music, and Martial Arts. That is, when I am not off taking pictures somewhere! "
   }
 }
 
