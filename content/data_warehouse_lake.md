@@ -9,15 +9,12 @@ Summary: What is the difference between a production database and a data warehou
 In this article, we look at the difference between three different storage types:
 
 * **Production database** (aka "Prod")
-
   Fast, responsive database used by your application to display information to end users. Typically the perview/responsibility of software engineering. Exists in pretty much all applications.
 
 * **Data warehouse**
-
   Stores more information than prod in a structured way. Used by analysts, data scientists, and machine learning engineers. Data in a data warehouse typically has an end goal in mind (e.g. we need this data to track metric X). Generally the responsibility of the data science and product teams. Exists in pretty much all applciations.
 
 * **Data lake**
-
   Place that raw / unstructured data is placed. If there are changes in definitions or proxies, this allows reprocessing of data into the data warehouse. It also allows exploration of data that isn't currently being used for additional relevant signals. Generally of interest to the data science team, or new ideas from the product team. 
 
 ## Production database
@@ -65,6 +62,7 @@ Data Lake is still a little bit of a fuzzy term, so it is difficult to give hard
 
 ### Other resources
 
+* [Five differences between data lakes and data warehouses](https://www.blue-granite.com/blog/bid/402596/top-five-differences-between-data-lakes-and-data-warehouses)
 * [International Institute Of Analytics: The Data Lake Debate](https://iianalytics.com/analytics-resources/the-data-lake-debate) featuring Tamara Dull (for the pro-data lake side) and Anne Buff (for the cons)
 * [Database design from OpenCampus](https://opentextbc.ca/dbdesign01/chapter/chapter-13-database-development-process/)
 * [Amazon's data lake page](https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/)
