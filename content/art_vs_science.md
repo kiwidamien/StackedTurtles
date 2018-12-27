@@ -10,7 +10,7 @@ Occasionally, when listening to a data scientist describing the features they ar
 
 > Data science is more art than science.
 
-Of course, I also encounter [articles](https://www.quora.com/Do-you-think-data-science-is-an-art-or-a-science) [with](https://www.elsevier.com/connect/why-data-science-is-an-art-and-how-to-support-the-people-who-do-it) [these](https://www.datasciencecentral.com/profiles/blogs/why-is-data-science-different-than-software-development-it-starts) [quotes](https://www.quora.com/Why-is-Deep-Learning-rather-like-an-art-than-science). I don't fundamentally disagree with the _message_ the speaker is trying to convey, namely that when doing data science we sometimes try things because they "feel right", and that we cannot give someone a cookbook that will enable them to be successful data scientists.
+Of course, I also encounter [articles](https://www.quora.com/Do-you-think-data-science-is-an-art-or-a-science) [with](https://www.elsevier.com/connect/why-data-science-is-an-art-and-how-to-support-the-people-who-do-it) [this](https://www.datasciencecentral.com/profiles/blogs/why-is-data-science-different-than-software-development-it-starts) [quotes](https://www.quora.com/Why-is-Deep-Learning-rather-like-an-art-than-science). I don't fundamentally disagree with the _message_ the speaker is trying to convey, namely that when doing data science we sometimes try things because they "feel right", and that we cannot give someone a cookbook that will enable them to be successful data scientists.
 
 ## So what's the problem?
 
