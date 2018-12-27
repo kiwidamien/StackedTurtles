@@ -42,7 +42,7 @@ We see that there is a lot more variation in cancer rates for the counties with 
 
 We are going to assume that each county $i$ is described by a kidney cancer rate, $p_i$. The $p_i$ are randomly distributed according to the histogram of kidney cancer rates we plotted earlier. That is, if we had a probability distribution that matched the shape of this histogram, we could tell how likely it was that a particular cancer rate $p_i$ was observed.
 
-It is convenient if we can model this process using a $\beta$-distribution. The $\beta$ distribution is described by two parameters, `s0` and `f0`, which we can think of as "banked" successes and failures. If we observe `s_i` actual sick people in a county, and `f_i` heathy people in the county, then the naive calculation for the rate people are getting sick is
+It is convenient if we can model this process using a $\beta$-distribution. The $\beta$ distribution is described by two parameters, `s0` and `f0`, which we can think of as "banked" successes and failures. If we observe `s_i` actual sick people in a county, and `f_i` healthy people in the county, then the naive calculation for the rate people are getting sick is
 $$ p_i = \frac{\text{num actually sick}}{\text{total actual people}} = \frac{s_i}{s_i + f_i} $$
 
 The empirical Bayes method would adjust this estimate to
@@ -54,14 +54,14 @@ One way of thinking about this result is that we are pretending that we have `s0
 
 Since we are modeling a binomial process (in each county, an individual either does or does not get sick), it is convenient if we can model this distribution with a $\beta$-distribution. One way of doing this is called the "method of moments", where we find `s0` and `f0` to make the mean and variance of the beta distribution match the mean and variance of our data. The formula are
 
-\begin{align}
+$$
 s_0 = \mu\left(\frac{\mu(1-\mu)}{s^2} - 1)\\
 f_0 = (1-\mu)\left(\frac{\mu(1-\mu)}{s^2} - 1) = \frac{(1-\mu)}{\mu}s_0
-\end{align}
+$$
 
 If we apply the method of moments to this data, we find `s0` and `f0` as negative numbers! i.e. there is no choice of (valid) parameters that make a beta distribution where the mean and variance match.
 
-Instead of trying to match mean and variance, we can use the built-in `fit` method for finding the paramters:
+Instead of trying to match mean and variance, we can use the built-in `fit` method for finding the parameters:
 ```python
 from scipy.stats import beta
 s0, f0, *_ = beta.fit(incidence['Rate_per_100k']/1e5, floc=0., fscale=1.)
@@ -95,7 +95,7 @@ Our dataframe has the following columns:
 * `'average_annual_count'`: the number of people in the county that we found the disease.
 * `'population'`: the population of the people in the country.
 
-To get our empirical bayes estimate needs us to add `s0` to the number of detected cases, and `s0 + f0` to the population. We have
+To get our empirical Bayes estimate needs us to add `s0` to the number of detected cases, and `s0 + f0` to the population. We have
 ```python
 incidence['shrinkage'] = 1e5*(incidence['average_annual_count'] + s0)/(incidence['population'] + s0 + f0)
 ```
