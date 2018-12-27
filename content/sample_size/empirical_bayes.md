@@ -55,8 +55,8 @@ One way of thinking about this result is that we are pretending that we have `s0
 Since we are modeling a binomial process (in each county, an individual either does or does not get sick), it is convenient if we can model this distribution with a $\beta$-distribution. One way of doing this is called the "method of moments", where we find `s0` and `f0` to make the mean and variance of the beta distribution match the mean and variance of our data. The formula are
 
 $$
-s_0 = \mu\left(\frac{\mu(1-\mu)}{s^2} - 1)\\
-f_0 = (1-\mu)\left(\frac{\mu(1-\mu)}{s^2} - 1) = \frac{(1-\mu)}{\mu}s_0
+s_0 = \mu\left(\frac{\mu(1-\mu)}{s^2} - 1\right)\\
+f_0 = (1-\mu)\left(\frac{\mu(1-\mu)}{s^2} - 1\right) = \frac{(1-\mu)}{\mu}s_0
 $$
 
 If we apply the method of moments to this data, we find `s0` and `f0` as negative numbers! i.e. there is no choice of (valid) parameters that make a beta distribution where the mean and variance match.
