@@ -92,12 +92,12 @@ By comparison, the average from the data is 16.1 per 100k.
 
 ### Step 2: Use prior to "shrink" estimates to population values
 
-Our dataframe has the following columns:
+Our dataframe `incidence` has the following columns:
 
 * `'average_annual_count'`: the number of people in the county that we found the disease.
 * `'population'`: the population of the people in the country.
 
-To get our empirical Bayes estimate needs us to add `s0` to the number of detected cases, and `s0 + f0` to the population. We have
+To get our empirical Bayes estimate needs us to add `s0` to the number of detected cases, and `s0 + f0` to the population. Recalling that we are reporting rates per 1e5 people, the calculation for the corrected column is simple:
 ```python
 incidence['shrinkage'] = 1e5*(incidence['average_annual_count'] + s0)/(incidence['population'] + s0 + f0)
 ```

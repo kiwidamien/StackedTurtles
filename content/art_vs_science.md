@@ -2,7 +2,7 @@ Title: Pet Peeve - Art vs Science
 Tags: pet peeve, wisdom, quotes
 Date: 2018-12-26 22:00
 Category: Data Science
-Summary: Hearing the expression _"Data science is more art than science"_ makes my skin crawl. Data science is a type of science, and while all sciences require strict methodology, we shouldn't underestimate the amount of creativity required in all scientific disciplines.
+Summary: The expression _"Data science is more art than science"_ makes my skin crawl. Data science, like all sciences, requires both strict methodology and a lot of creativity.
 
 # Pet Peeve - Art vs Science
 
