@@ -59,13 +59,15 @@ s_0 = \mu\left(\frac{\mu(1-\mu)}{s^2} - 1\right)\\
 f_0 = (1-\mu)\left(\frac{\mu(1-\mu)}{s^2} - 1\right) = \frac{(1-\mu)}{\mu}s_0
 $$
 
-If we apply the method of moments to this data, we find `s0` and `f0` as negative numbers! i.e. there is no choice of (valid) parameters that make a beta distribution where the mean and variance match.
+If we apply the method of moments to this data, we find `s0` and `f0` as negative numbers! This means we cannot have a beta distribution that simultaneously has the same mean and variance as the data.
 
 Instead of trying to match mean and variance, we can use the built-in `fit` method for finding the parameters:
 ```python
 from scipy.stats import beta
-s0, f0, *_ = beta.fit(incidence['Rate_per_100k']/1e5, floc=0., fscale=1.)
+s0, f0, *extra_params = beta.fit(incidence['Rate_per_100k']/1e5, floc=0., fscale=1.)
 ```
+The values for these parameters are $s_0=19.4$ and $f_0=106389$. That is, for every county we imagine there are an additional 19 sick people, and an additional 106389 healthy people.
+
 
 We can visualize how well this plot did with the following code, using `beta.pdf` with our parameters to plot our fitted beta distribution.
 ```python
