@@ -1,6 +1,6 @@
 Title: Shrinkage and Empirical Bayes to improve inference
 Tags: data, statistics, Bayes, shrinkage
-Date: 2017-12-26 15:00
+Date: 2018-12-26 15:00
 Category: Data Science
 Summary: The highest and lowest rated books, films, and music are those that have very few ratings. This is because for small samples, it is easier for small fluctuations to dominate. Shrinkage is the technique for moving the average for a particular item toward the global average. For small samples, the global average dominates, while for large samples the data dominates.
 
