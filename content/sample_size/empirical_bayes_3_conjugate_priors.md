@@ -21,7 +21,7 @@ where
 * $\bar{x}_i$ is the observed average rating of item $i$,
 * $\sigma_i^2$ is the observed variance of the ratings for item $i$,
 * $n_i$ is the number of reviews of item $i$,
-* $\epsilon_i^2 = \sigma_i^2/n_i$ is the standard error in $\bar{x}_i.
+* $\epsilon_i^2 = \sigma_i^2/n_i$ is the standard error in $\bar{x}_i$.
 
 ### Bayes's theorem and conjugate prior
 
@@ -39,10 +39,10 @@ The _prior_, $P(\theta_i)$, is up for grabs. One of the criticisms of approachin
 #### What is a conjugate prior?
 
 A useful way of motivating the idea of a conjugate prior is to think of data collection as a continuous process. When we first collect our data, we make up some prior $P_0(\theta_i)$, and use Bayes's theorem to get
-$$P(\theta_i | \text{data set 1}) = \frac{P(\text{data set 1}|\theta_i)P(\theta_i)}{P(\text{data set 1})}$$
+$$P(\theta_i | \text{data set 1}) = \frac{P(\text{data set 1}|\theta_i)P_0(\theta_i)}{P(\text{data set 1})}$$
 
 The a posteriori distribution, $P(\theta_i | \text{data set 1})$,  represents our confidence in the values of $\theta_i$ _after_ looking at the data. If we have a new data set, it makes sense for $P(\theta_i | \text{data set 1})$ to act as the _new_ prior, since we have more information than we did when looking at the first data set:
-$$P(\theta_i | \text{data set 2}) = \frac{P(\text{data set 2}|\theta_i)P(\text{data set 1}|\theta_i)}{P(\text{data set 1})}$$
+$$P(\theta_i | \text{data set 2}) = \frac{P(\text{data set 2}|\theta_i)P_1(\theta_i)}{P(\text{data set 1})}, \quad\quad\quad P_1(\theta_i) = P(\theta_i|\text{data set 1})$$
 i.e. we can view collecting data as the process of updating our prior to whatever the a posterior distribution was from the last round of data collection.
 
 The type of distribution we get for the a posterior distribution depends on two things:
@@ -64,7 +64,7 @@ We can use the fact that products of exponentials simply sum their arguments:
 $$P(\theta_i | \bar{x}_i) \propto \exp\left(-\frac{1}{2}\left[\frac{(\bar{x}_i - \theta_i)^2}{\epsilon_i^2} + \frac{(\theta_i-\mu)^2}{\tau^2}\right]\right)$$
 Finally we can complete the square (and absorb the constant term into the proportionality) to get
 $$P(\theta_i | \bar{x}_i) \propto \exp\left(-\frac{1}{2}\left(\frac{1}{\tau^2} + \frac{1}{\epsilon_i^2}\right)\left(\theta_i - \left[\frac{\tau^2 \bar{x}_i + \epsilon_i^2\mu}{\tau^2 + \epsilon_i^2}\right]\right)\right)$$
-We can create new variables, $\hat{\theta}_i$ and $S^2$, to tidy up this formula to
+We can create new variables, $\hat{\theta}_i$ and $S_i^2$, to tidy up this formula to
 $$P(\theta_i | \bar{x}_i) \propto \exp\left(-\frac{(\theta_i - \hat{\theta_i})^2}{2S_i^2}\right)$$
 where
 $$\hat{\theta_i} = \frac{\tau^2 \bar{x}_i + \epsilon_i^2\mu}{\tau^2 + \epsilon_i^2} = \left(\frac{\tau^2}{\tau^2 + \epsilon_i^2}\right)\bar{x}_i + \left(\frac{\epsilon_i^2}{\tau^2 + \epsilon_i^2}\right)\mu$$
