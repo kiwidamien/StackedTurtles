@@ -28,6 +28,7 @@ David Robinson has already given an [excellent treatment](http://varianceexplain
 By using these two examples, we can show how to apply the empirical Bayes's technique of "shrinking" (or regressing) our observed values toward the mean when estimating a proportion (kidney cancer rates) as well as a continuous variable (board game ratings).
 
 **NOTES**
+
 1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](/derivations-and-conjugate-priors.html).
 2. Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
 
