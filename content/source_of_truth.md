@@ -1,6 +1,6 @@
 Title: Pet Peeve - Single Source of Truth
 Tags: pet peeve, wisdom, quotes
-Date: 2018-12-26 22:00
+Date: 2018-12-26 23:00
 Category: Data Science
 Summary: In software engineering, it is important to have a _single source of truth_. In data science, it is a little more complicated.
 

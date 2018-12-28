@@ -26,6 +26,8 @@ David Robinson has already given an [excellent treatment](http://varianceexplain
 
 By using these two examples, we can show how to apply the empirical Bayes's technique of "shrinking" (or regressing) our observed values toward the mean when estimating a proportion (kidney cancer rates) as well as a continuous variable (board game ratings).
 
+Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
+
 ## Case study 1: Shrinking proportions with kidney cancer data
 
 Let's start by getting an overall view of the kidney cancer rates. Our first attempt might be to simply make a histogram of the kidney cancer rate.
@@ -58,8 +60,6 @@ $$
 s_0 = \mu\left(\frac{\mu(1-\mu)}{s^2} - 1\right)\\
 f_0 = (1-\mu)\left(\frac{\mu(1-\mu)}{s^2} - 1\right) = \frac{(1-\mu)}{\mu}s_0
 $$
-
-If we apply the method of moments to this data, we find `s0` and `f0` as negative numbers! This means we cannot have a beta distribution that simultaneously has the same mean and variance as the data.
 
 Instead of trying to match mean and variance, we can use the built-in `fit` method for finding the parameters:
 ```python
@@ -114,3 +114,38 @@ Now that we have our best estimate based on the sample size, we can plot a histo
 
 
 ## Summary
+
+We can do better than looking at an overall average rate or rating, especially when dealing with small sample sizes. We know that it is easier to move an average when there are only a small number of measurements; if we know what the overall distribution of measurements should look like we can correct the small samples. By allowing results to "shrink" (or "regress") to the mean, you make the results for your "best-of" and "worst-of" lists much more stable.
+
+The techniques in this article are most useful for analytics tasks, where you are being asked to generate reports or make insights based on what has already happened. If you are building a machine learning model on average rates, such as trying to predict the factors that influence the cancer rate of a county, you have a couple of different approaches:
+* Use the techniques in this article, and fit to the "shrunk" estimates
+* Use the actual measured averages, but introduce a weighting factor so that measurements averaged over fewer observations carry less weight.
+
+This is an important point that can hang up many beginning data scientists, as discussed in Cameron Pilon on his PyData talk ["Mistakes I've Made"](https://www.youtube.com/watch?v=VWtsTIbFXxA&t=91).
+
+This article showed two different techniques for empirical Bayes, one for correcting _rates_ and the other for correcting _regression (of averages)_.
+
+#### Correcting rates
+
+1. Model the distribution of rates in your data using the beta-distribution. Call these parameters $s_0$ and $f_0$.
+2. For each sample (e.g. county) with $s$ "successes" and $f$ "failures", shrink the rate using the following technique:
+$$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
+
+#### Correcting averages
+
+1. Model the distribution of averages in your data using the normal distribution. Use the mean $\mu$ and variance $\tau^2$ of this distribution.
+2. For each sample (e.g. board game) with an average of $N_i$ reviews and variance in measurements, $\sigma_i^2$, the central limit theorm tells us that our measurement of the mean will have a variance $\sigma_i^2/N_i$.
+3. For each sample, define
+  $$B_i = \frac{\tau^2}{\tau^2 + (\sigma^2_i/N_i)}$$
+  Note that when $B_i\approx 1$, we have $\sigma^2_i/N_i \ll \tau^2$, meaning that we are much more certain about this measurement than the overall variation in the population, so we expect our measurement to dominate. When $B_i \approx 0$, we have $\sigma^2_i/N_i \gg \tau^2$, so we expect fluctuations from this single sample to be much bigger than the population standard deviation (so shrinkage will dominate).
+4. The "shrunk" estimate for sample $i$ is
+  $$\text{rating} = B_i \bar{x}_i + (1 - B_i) \mu$$
+
+  where $\bar{x}_i$ is the (raw) measured rating over the $N_i$ measurements.
+
+  
+### Other resources
+
+This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](#todo). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/).
+
+Finally, the data cleaning and notebooks for this project are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
