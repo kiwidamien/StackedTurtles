@@ -22,7 +22,7 @@ This general technique of moving the observed data toward the mean is also calle
 David Robinson has already given an [excellent treatment](http://varianceexplained.org/r/empirical_bayes_baseball/) of empirical Bayes in the context of baseball statistics on his blog, [variance explained](http://varianceexplained.org/). We will look at the two other examples above in this blog post:
 
 * We will look at the kidney cancer rates per county. This example has been discussed in "Thinking Fast and Slow" by Daniel Kahneman. The data set is available [here](http://statecancerprofiles.cancer.gov/map/map.withimage.php?99&001&072&00&0&01&0&1&6&0#results)
-* We will look at the ratings of boardgames given at boardgamegeek. This problem was inspired by the 538 article [""](). In this case, the ratings were not shrunk, so games with fewer reviews typically showed more variance. The data set for this problem is available [here](https://github.com/rasmusgreve/BoardGameGeek/blob/master/DataMining/data2014-04-03_03-35-14.csv).
+* We will look at the ratings of boardgames given at boardgamegeek. This problem was inspired by the 538 article ["Worst board game ever invented"](https://fivethirtyeight.com/features/the-worst-board-games-ever-invented/). In this case, the ratings were not shrunk, so games with fewer reviews typically showed more variance. The data set for this problem is available [here](https://github.com/rasmusgreve/BoardGameGeek/blob/master/DataMining/data2014-04-03_03-35-14.csv).
 
 By using these two examples, we can show how to apply the empirical Bayes's technique of "shrinking" (or regressing) our observed values toward the mean when estimating a proportion (kidney cancer rates) as well as a continuous variable (board game ratings).
 
