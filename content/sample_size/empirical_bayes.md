@@ -10,11 +10,11 @@ series_index: 1
 
 There is a common problem when ranking items: if we just average the observations, fluctuations tend to make the very best (and very worst) items be those with very few observations. Consider the following three examples:
 
-* We are trying to measure the batters with the best hit rate. A rookie that has hit 2 balls out of 2 at-bats would have a hit rate of 1.0, handily beating Barry Bond's career hit rate of 0.306. To get hit rates over 0.300 is rare in major league baseball, so we are confident that the rookie's actual hit rate isn't 1.000.
+* We are trying to measure the batters with the best hit rate. A rookie that has hit 2 balls out of 2 at-bats would have a hit rate of 1.0, handily beating Barry Bond's career hit rate of 0.306. To get hit rates over 0.300 is rare in major league baseball, so we are confident that the rookie's hit rate isn't 1.000.
 * When looking at kidney cancer incidence rates per county. It is a relatively rare disease, with the bottom rate being 6.6 per 100k in Garfield County (4 out of 60000), and a highest rate of 41.1 per 100k in Cass County (7 out of 17000). Having just one fewer person diagnosed with kidney cancer in Cass County would drop the rate to 35.2 per 100k. There are 63 counties that where the 95% confidence interval in the rate exceeds 41.1 per 100k.
 * We are trying to measure the rating of a book. A book with two 5 star ratings probably isn't better than a book with ten thousand ratings that average to 4.85.
 
-In each of these cases, just measuring the average over all items isn't useful. We want to know what the hit rate is of an individual player, the counties that have abnormally high kidney cancer rates, or the our best estimate of the actual book. One way of approaching this would be to have a cutoff and refuse to make any inference before we had "enough" data.
+In each of these cases, just measuring the average over all items isn't useful. We want to know what the hit rate is of an individual player, the counties that have abnormally high kidney cancer rates, or the our best estimate of the rating of a particular book. One way of approaching this would be to have a cutoff and refuse to make any inference before we had "enough" data.
 
 Empirical Bayes approaches this problem differently. We use the entire population (that is, all players, all counties, or all books) to estimate what a "typical" result looks like. If we had no batting data, for example, we can still say based on all major league players that a given player is likely to have a hit rate between 0.2 and 0.3. We use this as the _prior_. This is the _empirical_ part.  As we collect more and more data, we use Bayes's rule to update our prior. When we have only a little bit of data on a player, county, or book, the prior is important for keeping our estimates grounded. As we get more data, the initial prior becomes less and less important, which matches our intuition that the large fluctuations needed to significantly bias large datasets are rare.
 
@@ -146,7 +146,7 @@ We also have parameters on a per game basis. Since the dataframe `games` has one
 
 |Parameter | Meaning | Column name |
 | --- | --- | --- |
-| $\theta_i$ | The actual (unknown) rating of the game $i$ | (not available) |
+| $\theta_i$ | The underlying (unknown) rating of the game $i$ | (not available) |
 | $\bar{x}_i$ | The average measured rating of game $i$ (i.e. the naive average rating per game) | `'average_rating'` |
 | $\sigma_i^2$ | The variance in the ratings of game $i$ | `'rating_stddev'` |
 | $n_i$ | The number of reviews for game $i$ | `'users_rated'` |
