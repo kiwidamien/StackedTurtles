@@ -28,7 +28,7 @@ David Robinson has already given an [excellent treatment](http://varianceexplain
 By using these two examples, we can show how to apply the empirical Bayes's technique of "shrinking" (or regressing) our observed values toward the mean when estimating a proportion (kidney cancer rates) as well as a continuous variable (board game ratings).
 
 **NOTES**
-1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](#todo).
+1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](/derivations-and-conjugate-priors.html).
 2. Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
 
 ## Case study 1: Shrinking proportions with kidney cancer data
@@ -128,7 +128,7 @@ After the previous discussion, might be wondering how confident we are in the ex
 
 Once again we see the "triangle shape" indicating that the tails of the distribution are dominated by the data we are least confident in. Since we are modeling sample means (i.e. the average rating given to a board game by the users), the central limit theorem tells us that the sample means will be normally distributed around the true mean.
 
-We also note that there is some bias in the results: instead of the distribution just narrowing down as the game becomes more popular, there is a fairly distinct upward rise in average ratings as the game becomes more popular. We will address this in a more [detailed article](#todo) on empirical Bayes with regression; in this article we will just take a naive approach.
+We also note that there is some bias in the results: instead of the distribution just narrowing down as the game becomes more popular, there is a fairly distinct upward rise in average ratings as the game becomes more popular. We will address this in a more [detailed article](/empirical-bayes-with-regression.html) on empirical Bayes with regression; in this article we will just take a naive approach.
 
 Our distribution above suggests we won't go too far wrong by taking the distribution _actual_ game scores to be normally distributed. Yes, the logic here isn't completely airtight -- we are using the distribution of _sample_ means to infer the distribution of _actual_ means -- but this is the "empirical" part of empirical Bayes!
 
@@ -147,7 +147,7 @@ We also have parameters on a per game basis. Since the dataframe `games` has one
 | --- | --- | --- |
 | $\theta_i$ | The actual (unknown) rating of the game $i$ | (not available) |
 | $\bar{x}_i$ | The average measured rating of game $i$ (i.e. the naive average rating per game) | `'average_rating'` |
-| $\sigma_i^2| The variance in the ratings of game $i$ | `'rating_stddev'` |
+| $\sigma_i^2$ | The variance in the ratings of game $i$ | `'rating_stddev'` |
 | $n_i$ | The number of reviews for game $i$ | `'users_rated'` |
 | $\epsilon_i^2$ | The standard error in the rating of game $i$, which is $\sigma_i^2/n_i$ | (calculated) |
 
@@ -173,7 +173,7 @@ The less lazy way of doing it would be to take a weighted average and a pooled v
 This uses the central limit theorem (CLT) to estimate the error we have in the estimate of the mean on a per game basis. The CLT tells us that the sample mean (i.e. our measurement ) will be drawn from a normal distribution around the true (unobserved) mean $\theta_i$ and variance $\epsilon_i^2 = \sigma_i^2 / n_i$. In code:
 
 ```python
-# These are our epsilon_i
+# These are our epsilon_i^2
 games['std_var'] = games['rating_stddev']**2/games['users_rated']
 ```
 
@@ -186,7 +186,7 @@ If we have a lot of ratings for a game, and the variance in the ratings for that
 
 On the other hand, if we have relatively little information on the game, $\epsilon_i^2 \gg \tau^2$, so $B_i \approx 0$. This is where we would expect the global average to be important.
 
-We will see in step 4 that this intuition holds. In our [derivation article](#TODO) we will show where this formula comes from, but at the moment it is enough to gain an intuition of what $B_i$ close to its two extremes means.
+We will see in step 4 that this intuition holds. In our [derivation article](/derivations-and-conjugate-priors.html) we will show where this formula comes from, but at the moment it is enough to gain an intuition of what $B_i$ close to its two extremes means.
 
 To calculate this factor in code is simple:
 ```python
@@ -242,6 +242,6 @@ $$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
 
 ### Other resources
 
-This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](#todo). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/). A project on when using empirical Bayes it is useful (and when it isn't) in epidemiological studies is available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2872278/).
+This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](/derivations-and-conjugate-priors.html). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/). A project on when using empirical Bayes it is useful (and when it isn't) in epidemiological studies is available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2872278/).
 
 Finally, the data cleaning and notebooks for this project are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
