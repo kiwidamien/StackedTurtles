@@ -3,7 +3,8 @@ Tags: data, statistics, Bayes, shrinkage
 Date: 2018-12-26 15:00
 Category: Data Science
 Summary: The highest and lowest rated books, films, and music are those that have very few ratings. This is because for small samples, it is easier for small fluctuations to dominate. Shrinkage is the technique for moving the average for a particular item toward the global average. For small samples, the global average dominates, while for large samples the data dominates.
-
+Series: Empirical Bayes
+series_index: 1
 
 # Shrinkage and Empirical Bayes to improve inference
 
@@ -26,7 +27,9 @@ David Robinson has already given an [excellent treatment](http://varianceexplain
 
 By using these two examples, we can show how to apply the empirical Bayes's technique of "shrinking" (or regressing) our observed values toward the mean when estimating a proportion (kidney cancer rates) as well as a continuous variable (board game ratings).
 
-Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
+**NOTES**
+1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](#todo).
+2. Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
 
 ## Case study 1: Shrinking proportions with kidney cancer data
 
@@ -112,6 +115,99 @@ Now that we have our best estimate based on the sample size, we can plot a histo
 
 ## Case study 2: Shrinking continuous data with board game ratings
 
+This time, we will look at correcting the average of a continuous variable, instead of a rate. The website [BoardGameGeek](http://boardgamegeek.com) collects user and critic ratings of many different board games. If we look at the average rating of each game with more than 30 ratings, we get the following histogram
+
+<img src='images/boardgames/raw_dist.png' alt='Histogram of raw user ratings (from Boardgamegeek.com)' style="width:80%; margin: 0 auto;"/>
+
+(Games with very few ratings tend to concentrate around integer and half-integer ratings, which puts visual "spikes" in the histogram.)
+
+
+After the previous discussion, might be wondering how confident we are in the extreme ends of the distribution. We would expect that the games with few reviews would have an easier time getting a very high or very low review score. Let's check this intuition by plotting review score against the number of reviews.
+
+<img src='images/boardgames/rating_vs_popularity_raw.png' alt='Review ratings vs number of reviews' style="width:80%; margin: 0 auto;"/>
+
+Once again we see the "triangle shape" indicating that the tails of the distribution are dominated by the data we are least confident in. Since we are modeling sample means (i.e. the average rating given to a board game by the users), the central limit theorem tells us that the sample means will be normally distributed around the true mean.
+
+We also note that there is some bias in the results: instead of the distribution just narrowing down as the game becomes more popular, there is a fairly distinct upward rise in average ratings as the game becomes more popular. We will address this in a more [detailed article](#todo) on empirical Bayes with regression; in this article we will just take a naive approach.
+
+Our distribution above suggests we won't go too far wrong by taking the distribution _actual_ game scores to be normally distributed. Yes, the logic here isn't completely airtight -- we are using the distribution of _sample_ means to infer the distribution of _actual_ means -- but this is the "empirical" part of empirical Bayes!
+
+### Some notation
+
+Before breaking down the methodology, we should introduce some notation. First we have some global parameters, which describe the distribution of game ratings:
+
+| Parameter | Meaning |
+| --- | --- |
+| $\mu$ | The average score of all board games (i.e. the average in the histogram above) |
+| $\tau^2$ | The variance in ratings of all board games (i.e. the variance in the histogram above) |
+
+We also have parameters on a per game basis. Since the dataframe `games` has one row per game, with summary statistics, and not the individual reviews, we include the column name used in the [code](https://github.com/kiwidamien/StackedTurtles/blob/master/projects/empirical_bayes/empirical_board_game.ipynb)
+
+|Parameter | Meaning | Column name |
+| --- | --- | --- |
+| $\theta_i$ | The actual (unknown) rating of the game $i$ | (not available) |
+| $\bar{x}_i$ | The average measured rating of game $i$ (i.e. the naive average rating per game) | `'average_rating'` |
+| $\sigma_i^2| The variance in the ratings of game $i$ | `'rating_stddev'` |
+| $n_i$ | The number of reviews for game $i$ | `'users_rated'` |
+| $\epsilon_i^2$ | The standard error in the rating of game $i$, which is $\sigma_i^2/n_i$ | (calculated) |
+
+### Step 1: Calculate the population parameters
+
+We can estimate the population mean and variance directly from the series `'average_rating'`. In this example, I did it the lazy way:
+
+```python
+MIN_REVIEWS = 30
+subset_mask = (games['average_rating'] > MIN_REVIEW)
+rating_masked = games.loc[subset_mask, 'average_rating']
+
+# This is our population mean
+mu = rating_masked.mean()
+# This is our population variance
+tau2 = rating_masked.var()
+```
+
+The less lazy way of doing it would be to take a weighted average and a pooled variance, so that games with more reviews influenced the population mean more. The above method is a nice to get a quick-and-dirty estimate.
+
+### Step 2: Get the standard error
+
+This uses the central limit theorem (CLT) to estimate the error we have in the estimate of the mean on a per game basis. The CLT tells us that the sample mean (i.e. our measurement ) will be drawn from a normal distribution around the true (unobserved) mean $\theta_i$ and variance $\epsilon_i^2 = \sigma_i^2 / n_i$. In code:
+
+```python
+# These are our epsilon_i
+games['std_var'] = games['rating_stddev']**2/games['users_rated']
+```
+
+### Step 3: Calculate the interpolation factor
+
+For each game, we have to weigh how much of the rating comes from the observed rating for that game, and how much comes from the overall population. The following factor, $B_i$, does this for us:
+$$B_i = \frac{\tau^2}{\tau^2 + \epsilon_i^2}$$
+
+If we have a lot of ratings for a game, and the variance in the ratings for that game are low, we have $\epslion_i^2 \ll \tau^2$, so $B_i \approx 1$. When $B_i$ is close to 1, we expect most of the contribution to come from the ratings on the game.
+
+On the other hand, if we have relatively little information on the game, $\epsilon_i^2 \gg \tau^2$, so $B_i \approx 0$. This is where we would expect the global average to be important.
+
+We will see in step 4 that this intuition holds. In our [derivation article](#TODO) we will show where this formula comes from, but at the moment it is enough to gain an intuition of what $B_i$ close to its two extremes means.
+
+To calculate this factor in code is simple:
+```python
+games['interpolation'] = tau2 / (tau2 + games['std_var'])
+```
+
+### Step 4: Regress/Shrink the measured value
+
+We can use the interpolation factor in the previous step with the following formula:
+$$\text{shrunk rating} = B_i \bar{x}_i + (1 - B_i) \mu$$
+
+In code, this is
+```python
+games['shrunk_rating'] = games['interpolation']*games['average_rating'] + (1-games['interpolation'])*mu
+```
+
+That's it -- we are done!
+
+Here is the plot of the ratings vs population size, showing the distributions both before and after applying shrinkage.
+
+<img src='images/boardgames/rating_vs_popularity_shrunk.png' alt='Review ratings vs number of reviews' style="width:80%; margin: 0 auto;"/>
 
 ## Summary
 
@@ -134,7 +230,7 @@ $$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
 #### Correcting averages
 
 1. Model the distribution of averages in your data using the normal distribution. Use the mean $\mu$ and variance $\tau^2$ of this distribution.
-2. For each sample (e.g. board game) with an average of $N_i$ reviews and variance in measurements, $\sigma_i^2$, the central limit theorm tells us that our measurement of the mean will have a variance $\sigma_i^2/N_i$.
+2. For each sample (e.g. board game) with an average of $N_i$ reviews and variance in measurements, $\sigma_i^2$, the central limit theorem tells us that our measurement of the mean will have a variance $\sigma_i^2/N_i$.
 3. For each sample, define
   $$B_i = \frac{\tau^2}{\tau^2 + (\sigma^2_i/N_i)}$$
   Note that when $B_i\approx 1$, we have $\sigma^2_i/N_i \ll \tau^2$, meaning that we are much more certain about this measurement than the overall variation in the population, so we expect our measurement to dominate. When $B_i \approx 0$, we have $\sigma^2_i/N_i \gg \tau^2$, so we expect fluctuations from this single sample to be much bigger than the population standard deviation (so shrinkage will dominate).
