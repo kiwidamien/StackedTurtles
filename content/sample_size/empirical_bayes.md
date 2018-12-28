@@ -183,7 +183,7 @@ games['std_var'] = games['rating_stddev']**2/games['users_rated']
 For each game, we have to weigh how much of the rating comes from the observed rating for that game, and how much comes from the overall population. The following factor, $B_i$, does this for us:
 $$B_i = \frac{\tau^2}{\tau^2 + \epsilon_i^2}$$
 
-If we have a lot of ratings for a game, and the variance in the ratings for that game are low, we have $\epslion_i^2 \ll \tau^2$, so $B_i \approx 1$. When $B_i$ is close to 1, we expect most of the contribution to come from the ratings on the game.
+If we have a lot of ratings for a game, and the variance in the ratings for that game are low, we have $\epsilon_i^2 \ll \tau^2$, so $B_i \approx 1$. When $B_i$ is close to 1, we expect most of the contribution to come from the ratings on the game.
 
 On the other hand, if we have relatively little information on the game, $\epsilon_i^2 \gg \tau^2$, so $B_i \approx 0$. This is where we would expect the global average to be important.
 
