@@ -143,9 +143,9 @@ $$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
 
   where $\bar{x}_i$ is the (raw) measured rating over the $N_i$ measurements.
 
-  
+
 ### Other resources
 
-This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](#todo). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/).
+This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](#todo). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/). A project on when using empirical Bayes it is useful (and when it isn't) in epidemiological studies is available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2872278/).
 
 Finally, the data cleaning and notebooks for this project are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
