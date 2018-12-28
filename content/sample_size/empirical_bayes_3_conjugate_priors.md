@@ -46,6 +46,7 @@ $$P(\theta_i | \text{data set 2}) = \frac{P(\text{data set 2}|\theta_i)P_1(\thet
 i.e. we can view collecting data as the process of updating our prior to whatever the a posterior distribution was from the last round of data collection.
 
 The type of distribution we get for the a posterior distribution depends on two things:
+
 * The likelihood function, $P(\text{data} | \theta_i)$
 * The prior $P(\theta_i)$
 
@@ -82,7 +83,22 @@ as advertised.
 
 ### Other uses
 
-We have done more than just find the "best" estimate for $\theta_i$. We have a distribution for $\theta_i$ as well! It is a Gaussian distribution with mean $\hat{\theta}_i$, and variance $S_i^2$. This means we
+We have done more than just find the "best" estimate for $\theta_i$. We have a distribution for $\theta_i$ as well! It is a Gaussian distribution with mean $\hat{\theta}_i$, and variance $S_i^2$.
+With this, we could construct a 95% "credible interval", using the same techniques we would use to construct a confidence interval (the name change is to emphasize the difference in interpretation between the Bayesian and Frequentist approaches, the technique is the same). This gives us more than just the simple "point estimate".
+
 ## Can we use the prior just because of convenience?
 
+You might object that choosing a Gaussian prior just because it has a nice mathematical property (in this case, making the updated prior belong to the same distribution as the original prior) as being less than data-driven. The idea of choosing models with mathematically convenient  but unrealistic assumptions is a critique that Leo Breiman, professor of statistics at Berkeley, made about the culture of statisticians back in 2001 in his paper ["Statistical Modeling: The Two Cultures"](https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726).
+
+If we are doing empirical Bayes, we use the distribution of $\\bar{x}_i$ (in our case, the ratings of boardgames) to infer the parameters of the prior distribution, $\mu$ and $\tau^2$. When we are doing this, we should also check that the distribution looks somewhat normal! The motivation behind the empirical Bayes philosophy is that since priors are somewhat arbitrary, we should use the pooled data to determine them.
+
+What would happen if the global distribution deviated significantly from normal? For example, the distribution of ratings could be bimodal, or skewed. In that case, we could move to either a mixture model, or just resort to numerical integration when calculating the a posteriori distribution. The conjugate prior trick is just a convenience to make updating the priors easier, but if another prior works better we can still use empirical Bayes -- we will just require a lot more computation instead of the simple lines of code that can perform the regression to the mean for us.
+
 ## Summary
+
+* Empirical Bayes uses the global distribution of parameters to adjust raw averages.
+* It is convenient to assume the prior distribution for ratings is a Gaussian with mean $\mu$ and variance $\tau^2$. You should get $\mu$ and $\tau^2$ by matching the mean and variance of the average ratings. This assumption can be checked by plotting the average ratings and checking they follow a normal distribution.
+* Under the conditions of the central limit theorem, we can "shrink" or "regress" the raw average $\bar{x}_i$ for item $i$ to
+$$\hat{theta}_i = B_i \bar{x}_i + (1-B_i)\mu, \quad\quad\quad B_i = \frac{\tau^2}{\tau^2 + \epsilon_i^2}, \quad\quad \epsilon_i^2 = \frac{\sigma_i^2}{n_i}$$
+* The standard error $S_i$ in this estimate $\hat{\theta}_i$ can be found from
+$$\frac{1}{S_i^2} = \frac{1}{\tau^2} + \frac{1}{\epsilon_i^2} = \frac{1}{\tau^2} + \frac{n_i}{\sigma_i^2}
