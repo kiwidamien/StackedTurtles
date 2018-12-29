@@ -109,6 +109,6 @@ $$E(\pi_i) = \frac{s_i + s_0}{(s_i + s_0) + (f_i + f_0)}$$
 This can be interpreted as having $s_0$ fake "successes" and $f_0$ fake "failures" that get added to every groups totals to represent the prior knowledge of the population.
 * You can also "shrink" or "regress" the raw proportions ${p}_i = s_i/(s_i + f_i)$ for group $i$ to the most likely valuefor $\pi_i$:
 $$\hat{p}_i = \frac{s_i + (s_0 - 1)}{(s_i + s_0-1) + (f_i + f_0-1)}$$
-This can be interpreted as having $(s_0 - 1)$ fake "successes" and $(f_0 - 1) fake "failures" to represent the population. Usually I use the expected value formula, because it is a nuisance to keep track of all the "off by one" terms.
+This can be interpreted as having $(s_0 - 1)$ fake "successes" and $(f_0 - 1)$ fake "failures" to represent the population. Usually I use the expected value formula, because it is a nuisance to keep track of all the "off by one" terms.
 * The standard error $S_i$ in the estimates for $\pi_i$ are given by  $\hat{\theta}_i$ can be found from the formula for the variance in the beta distribution:
 $$S_i^2 = \frac{E(\pi_i)(1-E(\pi_i))}{s_0 + s_i + f_0 + f_i + 1}$$
