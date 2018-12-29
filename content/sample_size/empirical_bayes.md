@@ -238,7 +238,7 @@ $$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
   Note that when $B_i\approx 1$, we have $\sigma^2_i/N_i \ll \tau^2$, meaning that we are much more certain about this measurement than the overall variation in the population, so we expect our measurement to dominate. When $B_i \approx 0$, we have $\sigma^2_i/N_i \gg \tau^2$, so we expect fluctuations from this single sample to be much bigger than the population standard deviation (so shrinkage will dominate).
 4. The "shrunk" estimate for sample $i$ is
   $$\text{rating} = B_i \bar{x}_i + (1 - B_i) \mu$$
-
+  
   where $\bar{x}_i$ is the (raw) measured rating over the $N_i$ measurements.
 
 
