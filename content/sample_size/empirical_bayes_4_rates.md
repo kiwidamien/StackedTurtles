@@ -42,7 +42,7 @@ $$P(\pi_i) = \frac{(s_0 + f_0 - 1)!}{(s_0 - 1)!\,(f_0 - 1)!}\pi_i^{s_0-1}(1-\pi_
 For our purposes, we don't care too much about the factor out the front, as it simply normalizes the probability distribution. For our purposes, it is enough to know
 $$P(\pi_i) \propto \pi_i^{s_0-1}(1-\pi_i)^{f_0 - 1}$$
 
-The $\beta$ distribution should look reasonably familiar. It looks like binomial distribution with probability $\pi_i$, "successes" $s_0 -1$ and failure $f_0-1$, but there are some important differences:
+The $\beta$ distribution should look reasonably familiar. It looks like binomial distribution with probability $\pi_i$, $(s_0 - 1) "successes" and $(f_0-1)$ "failures", but there are some important differences:
 
 | Binomial | Beta |
 | --- | --- |
@@ -64,7 +64,7 @@ The expected value for the a posteriori distribution is
 $$E(\pi_i|s_i) = \frac{\tilde{s}}{\tilde{s} + \tilde{f}} = \frac{s_i + s_0}{(s_i + s_0) + (f_i + f_0)}$$
 This has a really nice intuitive way of thinking about it: we pretend there are $s_0$ "successes" and $f_0$ "failures" that we consider part of the population and add to experimental results. As the number of trials become large, the imaginary part of the population ($s_0 + f_0$) becomes irrelevant, but for small populations where we don't trust the statistics, the imaginary population helps keep the value close to what we expect from our knowledge of the overall population.
 
-Technically, this is not the _maximum_ of the a posteriori distribution. We could find that by maximimizing $\ln P(\pi_i | s_i)$. The result is
+Technically, this is not the _maximum_ of the a posteriori distribution. We could find that by maximizing $\ln P(\pi_i | s_i)$. The result is
 $$\hat{p_i} = \frac{\tilde{s} - 1}{\tilde{s} + \tilde{f} - 2} = \frac{s_i + s_0 - 1}{(s_i + s_0) + (f_i + f_0) - 2}$$
 I generally prefer to use the expected value instead, because the interpretation is a little simpler. Note that as in the rating case, we also have the variance of this distribution, so we can assign credible intervals as well as having the "point" estimates.
 
