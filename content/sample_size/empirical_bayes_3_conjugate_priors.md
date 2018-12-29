@@ -94,7 +94,7 @@ If we are doing empirical Bayes, we use the distribution of $\bar{x}_i$ (in our 
 
 What would happen if the global distribution deviated significantly from normal? For example, the distribution of ratings could be bimodal, or skewed. In that case, we could move to either a mixture model, or just resort to numerical integration when calculating the a posteriori distribution. The conjugate prior trick is just a convenience to make updating the priors easier, but if another prior works better we can still use empirical Bayes -- we will just require a lot more computation instead of the simple lines of code that can perform the regression to the mean for us.
 
-## Summary.
+## Summary
 
 * Empirical Bayes uses the global distribution of parameters to adjust raw averages.
 * It is convenient to assume the prior distribution for ratings is a Gaussian with mean $\mu$ and variance $\tau^2$. You should get $\mu$ and $\tau^2$ by matching the mean and variance of the average ratings. This assumption can be checked by plotting the average ratings and checking they follow a normal distribution.
