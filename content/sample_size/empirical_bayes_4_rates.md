@@ -56,7 +56,7 @@ $$E(\pi_i) = \frac{s_0}{s_0 + f_0}, \quad\quad\quad \text{Var}(\pi_i) = \frac{s_
 #### Back to Bayes theorem
 
 Let's use the beta distribution for a prior on $P(p_i)$ and see where that gets us. Using the number of failures $f_i = N_i - s_i$, we have
-$$P(\pi_i | s_i) \propto P(s_i | \pi_i )P(\pi_i) \propto \left(\pi_i^{s_i}(1-\pi_i)^{f_i}\right)\left(\pi_i^{s_0 - 1}(1-\pi_i)^{f_0 - 1}) = \pi_i^{s_i + s_0 - 1}(1-\pi_i)^{f_i + f_0 - 1}$$
+$$P(\pi_i | s_i) \propto P(s_i | \pi_i )P(\pi_i) \propto \left(\pi_i^{s_i}(1-\pi_i)^{f_i}\right)\left(\pi_i^{s_0 - 1}(1-\pi_i)^{f_0 - 1}\right) = \pi_i^{s_i + s_0 - 1}(1-\pi_i)^{f_i + f_0 - 1}$$
 
 Note this is the PDF for a beta distribution with parameters $\tilde{s} = (s_i + s_0)$ and $\tilde{f} = (f_i + f_0)$. That is, the a posteriori distribution $P(\pi_i | s_i)$ is just a beta distribution with different parameters!
 
