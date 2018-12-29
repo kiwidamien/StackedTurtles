@@ -11,7 +11,7 @@ series_index: 1
 There is a common problem when ranking items: if we just average the observations, fluctuations tend to make the very best (and very worst) items be those with very few observations. Consider the following three examples:
 
 * We are trying to measure the batters with the best hit rate. A rookie that has hit 2 balls out of 2 at-bats would have a hit rate of 1.0, handily beating Barry Bond's career hit rate of 0.306. To get hit rates over 0.300 is rare in major league baseball, so we are confident that the rookie's hit rate isn't 1.000.
-* When looking at kidney cancer incidence rates per county. It is a relatively rare disease, with the bottom rate being 6.6 per 100k in Garfield County (4 out of 60000), and a highest rate of 41.1 per 100k in Cass County (7 out of 17000). Having just one fewer person diagnosed with kidney cancer in Cass County would drop the rate to 35.2 per 100k. There are 63 counties that where the 95% confidence interval in the rate exceeds 41.1 per 100k.
+* When looking at kidney cancer incidence rates per county. It is a relatively rare disease, with the lowest rate being 6.6 per 100k in Garfield County (4 out of 60000), and a highest rate of 41.1 per 100k in Cass County (7 out of 17000). Having just one fewer person diagnosed with kidney cancer in Cass County would drop the rate to 35.2 per 100k. There are 63 counties that where the 95% confidence interval in the rate exceeds 41.1 per 100k.
 * We are trying to measure the rating of a book. A book with two 5 star ratings probably isn't better than a book with ten thousand ratings that average to 4.85.
 
 In each of these cases, just measuring the average over all items isn't useful. We want to know what the hit rate is of an individual player, the counties that have abnormally high kidney cancer rates, or the our best estimate of the rating of a particular book. One way of approaching this would be to have a cutoff and refuse to make any inference before we had "enough" data.
@@ -215,6 +215,7 @@ Here is the plot of the ratings vs population size, showing the distributions bo
 We can do better than looking at an overall average rate or rating, especially when dealing with small sample sizes. We know that it is easier to move an average when there are only a small number of measurements; if we know what the overall distribution of measurements should look like we can correct the small samples. By allowing results to "shrink" (or "regress") to the mean, you make the results for your "best-of" and "worst-of" lists much more stable.
 
 The techniques in this article are most useful for analytics tasks, where you are being asked to generate reports or make insights based on what has already happened. If you are building a machine learning model on average rates, such as trying to predict the factors that influence the cancer rate of a county, you have a couple of different approaches:
+
 * Use the techniques in this article, and fit to the "shrunk" estimates
 * Use the actual measured averages, but introduce a weighting factor so that measurements averaged over fewer observations carry less weight.
 
