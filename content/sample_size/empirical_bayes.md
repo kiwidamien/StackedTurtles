@@ -29,7 +29,7 @@ By using these two examples, we can show how to apply the empirical Bayes's tech
 
 **NOTES**
 
-1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](/derivations-and-conjugate-priors.html).
+1. This notebook is mostly written to expose the reader to the idea of shrinkage, and be able to apply it quickly. For that reason, code is included but the derivations are not. The derivations of the formula are available in a [more detailed article](/empirical_bayes_3_conjugate_priors.html).
 2. Data and the notebooks are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
 
 ## Case study 1: Shrinking proportions with kidney cancer data
@@ -187,7 +187,7 @@ If we have a lot of ratings for a game, and the variance in the ratings for that
 
 On the other hand, if we have relatively little information on the game, $\epsilon_i^2 \gg \tau^2$, so $B_i \approx 0$. This is where we would expect the global average to be important.
 
-We will see in step 4 that this intuition holds. In our [derivation article](/derivations-and-conjugate-priors.html) we will show where this formula comes from, but at the moment it is enough to gain an intuition of what $B_i$ close to its two extremes means.
+We will see in step 4 that this intuition holds. In our [derivation article](/empirical_bayes_3_conjugate_priors.html) we will show where this formula comes from, but at the moment it is enough to gain an intuition of what $B_i$ close to its two extremes means.
 
 To calculate this factor in code is simple:
 ```python
@@ -243,6 +243,6 @@ $$\text{rate} = \frac{s + s_0}{(s + f) + (s_0 + f_0)}$$
 
 ### Other resources
 
-This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](/derivations-and-conjugate-priors.html). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/). A project on when using empirical Bayes it is useful (and when it isn't) in epidemiological studies is available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2872278/).
+This article hasn't focused on the mathematical derivations, if you are interested a follow up article is [here](/dempirical_bayes_3_conjugate_prior.html). Another nice resource on empirical Bayes is David Robinson's blog, [Variance Explained](http://varianceexplained.org/r/empirical_bayes_baseball/). A project on when using empirical Bayes it is useful (and when it isn't) in epidemiological studies is available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2872278/).
 
 Finally, the data cleaning and notebooks for this project are available [here](https://github.com/kiwidamien/StackedTurtles/tree/master/projects/empirical_bayes).
