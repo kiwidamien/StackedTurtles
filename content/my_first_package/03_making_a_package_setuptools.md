@@ -1,5 +1,4 @@
-Title: Making a Python Package 3
-Subtitle: An example using Roman Numerals III - making an installable package 
+Title: Making a Python Package III - making an installable package 
 Tags: python, engineering, package, best-practices
 Date: 2019-01-02 21:30
 Category: Tools
@@ -117,6 +116,7 @@ $ pip uninstall roman
 On our third article, we have achieved the main goal of having our package accessible from anywhere, and being able to distribute it. 
 
 In this article, we covered
+
 1. Writing `setup.py` to allow installation on your own system.
 2. Installing locally using `pip setup.py install`
 3. If you push the package up to github, anyone can install with `pip install git+https://github.com/<github username>/<repo name>`

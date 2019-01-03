@@ -1,7 +1,7 @@
 Title: Making a Python Package
 Subtitle: An example using Roman Numerals I - making a module 
 Tags: python, engineering, package, best-practices
-Date: 2019-01-01 20:00
+Date: 2019-01-01 17:00
 Category: Tools
 Summary: This is the first in a series of blog posts where we go through the process of taking a collection of functions and turning them into a deployable Python package. In this post, we create a Roman Numerals function, and make it into a Python module.
 Series: Making a Python Package
@@ -21,6 +21,7 @@ $ git checkout tags/v0.1
 You have written some Python code that you want to be used in other projects. Maybe it is a way of recursively grabbing information off SoundCloud, or scraping people's date of birth from their Wikipedia page, or calculating the change in scores when permuting a single feature to estimate its importance. Maybe you have written an ETL (extract-tranform-load) pipeline, and we want to be sure that everyone is using the same definition and process.
 
 To keep the example simple, we will try and convert some code that we have written that converts Roman numerals to integers (and vice-versa) into a package that we can
+
 * use anywhere on our system by typing `import roman`
 * allow our colleagues to install
 * allow anyone to install
@@ -30,6 +31,7 @@ by turning our function into a _package_.
 If this is your first Python package, it may be the first time you are sharing code with the world at large. We will also go through some of the "best practices" you should follow, _particularly_ when sharing your code with a wider audience.
 
 By the end of this article, you will have
+
 * Seen the functions we want to package
 * Made a Python module (i.e. something you can import from the current directory only)
 
@@ -177,6 +179,7 @@ The downside to all of this work is that we can still only import our python mod
 ## Summary and next steps
 
 So far we have made a local package, which is only importable from the current directory. To do this:
+
 * We placed all the Python modules (`*.py` files) into the subdirectory `roman`
 * Added `__init__.py` to the subdirectory `roman` (to make it a package)
 * In `__init__.py`, imported the files we want access to

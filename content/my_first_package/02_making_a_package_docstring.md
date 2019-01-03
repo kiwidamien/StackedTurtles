@@ -1,6 +1,5 @@
-Title: Making a Python Package 2
-Subtitle: An example using Roman Numerals II - writing docstrings 
-Tags: python, engineering, package, best-practices
+Title: Making a Python Package II - writing docstrings
+Tags: python, engineering, package, best-practices, docstrings
 Date: 2019-01-01 20:00
 Category: Tools
 Summary: This is the second in a series of blog posts where we go through the process of taking a collection of functions and turn them into a deployable Python package. In this post, we add docstrings for our users to be able to understand what our package does.
@@ -53,6 +52,7 @@ FILE
 ```
 
 A few things to note here:
+
 * The end user probably doesn't care about _how_ we solved this problem. The variable `ROMAN_SYMBOLS` isn't that interesting to them!
 * The functions here are probably simple enough that the one line description is enough. For user facing functions, it is nice to tell us what the *inputs* are, the *returned* values, and possible *exceptions* that might get raised.
 
@@ -128,6 +128,7 @@ DATA
 ```
 
 We aren't going to pay a lot of attention to the details of `temperature.py`, but it is worth looking at how we tidied up the docstrings:
+
 1. We changed the 6 `convert_X_to_Y(temp)` functions to `_convert_X_to_Y(temp)` to hide them from the user. We want the user to use `convert` or `convert_all`
 2. We also changed `CONVERSIONS` to `_CONVERSIONS`, as we don't want the user to access the dictionary of conversion functions directly.
 3. The functions raise errors if we give a unit that it doesn't know. So we included exceptions in the docstring.
@@ -201,6 +202,7 @@ These docstrings are also available to you if you use Shift+Tab in your Jupyter 
 This article showed how to write a docstrings. Technically, this has nothing to do with writing packages. You can (and should!) write thoughtful docstrings even when not writing pacakges. Similarly, your package will compile without any docstring. But you should remember all the times you typed `help(matplotlib.plot)` only to get `plot(x,y,*kw,**args)` and how sad it made you; don't do this to someone else. And if you _do_ decide to publish a package without a good docstring, make sure you remove your address from every corner of the internet first!
 
 We saw
+
 1. What the parts of a "good" docstring are.
 2. That we can hide irrelevant detail by starting functions and variables with a leading underscore.
 3. We can use `pydocstyle <filename>` to check for deviations of our docstring from the standard.
