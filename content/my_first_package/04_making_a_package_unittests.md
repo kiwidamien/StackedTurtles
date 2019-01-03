@@ -1,5 +1,4 @@
-Title: Making a Python Package 4
-Subtitle: An example using Roman Numerals IV - writing unit tests
+Title: Making a Python Package IV - writing unit tests 
 Tags: python, engineering, package, best-practices, unittest, pytest
 Date: 2019-01-02 22:30
 Category: Tools
@@ -17,9 +16,9 @@ $ git checkout tags/v0.4
 
 ### To install
 
-To follow the steps in this tutorial, you will need to install `tox` and `pytest`
+To follow the steps in this tutorial, you will need to install `pytest`
 ```bash
-pip install tox pytest
+pip install pytest
 ```
 
 # Making a Python Package IV: writing unit tests 
@@ -31,10 +30,12 @@ One important thing that we will come back to, however, is that we have to resis
 ## Creating the directory structure
 
 There are a few different places to put our tests, but I like having them outside my package directory. Our testing module, `pytest`, expects that
+
 * files containing tests start with the word `test`
 * functions containing tests start with the word `test`
 
 Go ahead and create the following files:
+
 * `tests/test_roman.py`: to test the implementation of `roman/roman.py`
 * `tests/test_temperature.py`: to test the implementation of `roman/temperature.py`
 * `tests/__init__.py`: we leave this blank, but it is required to turn `tests` into a package (otherwise `pytest` doesn't process the files in the test directory).
@@ -72,14 +73,15 @@ $ pytest
 ```
 and you should see output similar to the following
 ```bash
-======================================================== test session starts =========================================================
+============================================== test session starts ===============================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: <file location of package>/roman_package, inifile:
-collected 1 item                                                                                                                                                                                 
+collected 1 item
 
-tests/test_roman.py .                                                                                                          [100%]
 
-====================================================== 1 passed in 0.02 seconds ======================================================
+tests/test_roman.py .                                                                                      [100%]
+
+============================================ 1 passed in 0.02 seconds ============================================
 ```
 This tells us that our test passed!
 
@@ -91,15 +93,16 @@ def test_V_gets_converted_to_6():   # this is wrong and should fail
 
 Now the output is
 ```bash
-======================================================== test session starts =========================================================
+============================================== test session starts ===============================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: <location of file on drive>/roman_package, inifile:
-collected 1 item                                                                                                                                                                                 
+collected 1 item
+                                                                                                                                                                       
 
-tests/test_roman.py F                                                                                                          [100%]
+tests/test_roman.py F                                                                                      [100%]
 
-============================================================== FAILURES ==============================================================
-_____________________________________________________ test_V_gets_converted_to_6 _____________________________________________________
+==================================================== FAILURES ====================================================
+___________________________________________ test_V_gets_converted_to_6 ___________________________________________
 
     def test_V_gets_converted_to_6():   # this is wrong and should fail
 >       assert roman_string_to_int('V') == 6
@@ -107,9 +110,10 @@ E       AssertionError: assert 5 == 6
 E        +  where 5 = roman_string_to_int('V')
 
 tests/test_roman.py:5: AssertionError
-====================================================== 1 failed in 0.04 seconds ======================================================
+============================================ 1 failed in 0.04 seconds ============================================
 ```
 Note what the failure is telling us in some detail:
+
 * The name of the function that failed (`test_V_gets_converted_to_6`)
 * The code of the failing function
 * That `roman_string_to_int('V')` actually evaluated to 5
@@ -131,15 +135,16 @@ def test_char_not_in_MDCLXVI_raises_ValueError():
 Let's check it when running pytest (note that we have changed our other test back to `test_V_gets_converted_to_5`):
 ```bash
 $ pytest
-======================================================== test session starts =========================================================
+============================================== test session starts ===============================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: /Users/damien/metis/roman_package, inifile:
-collected 2 items                                                                                                                                                                                
+collected 2 items
+                                                                                                                                                                      
 
-tests/test_roman.py .F                                                                                                         [100%]
+tests/test_roman.py .F                                                                                      [100%]
 
-============================================================== FAILURES ==============================================================
-_____________________________________________ test_char_not_in_MDCLXVI_raises_ValueError _____________________________________________
+==================================================== FAILURES ====================================================
+___________________________________ test_char_not_in_MDCLXVI_raises_ValueError ___________________________________
 
     def test_char_not_in_MDCLXVI_raises_ValueError():
         with pytest.raises(ValueError, message="Q should raise value error, not in MDCLXVI"):
@@ -147,7 +152,7 @@ _____________________________________________ test_char_not_in_MDCLXVI_raises_Va
 E           Failed: Q should raise value error, not in MDCLXVI
 
 tests/test_roman.py:9: Failed
-================================================= 1 failed, 1 passed in 0.05 seconds =================================================
+======================================= 1 failed, 1 passed in 0.05 seconds =======================================
 ```
 We see the first test passed and the second one failed (hence `.F` after `tests/test_roman.py`).
 
@@ -158,12 +163,14 @@ These are the two most common tests that we will use.
 Notice when we wrote the test for `roman_string_to_int('Q')`, we **didn't** look at what the code currently did (return 0) and declare that correct. We decided what the code should do (raise an error) and then wrote a test to see if our implementation did what we expected. In this case, it does not! This tells us we should probably go back and change `roman/roman.py` to raise an error when an illegal string is passed in.
 
 It won't always be clear what the "right" behavior should be. For example, what should `roman_string_to_int('')` be? Here are two possibilities:
+
 * The empty string contains nothing, so it should represent 0, or
 * The Roman's had no concept or representation of 0, so `''` should raise a ValueError.
 
 I could defend either of these positions, and when writing the function I didn't take a particular stand one way or the other. If this package is mostly used to label copyright dates, the case of zero coming up doesn't seem particularly likely, so we just have to make a decision. I won't tell you what decision I made, but I will tell you the name of the test I wrote: `test_empty_string_gives_zero`. Even though there isn't a "right" answer, someone reading my test code should be able to determine what I decided.
 
 Let's look at another example. What should `roman_string_to_int('iii')` be? There are at least two reasonable answers here:
+
 * Roman numerals should be considered case insensitive, so 'iii' should resolve to 3 (like it does in the Preface of books)
 * Roman numerals were always used by the Romans in upper case, so 'i' (and other lower case letters) should be considered illegal.
 
@@ -418,12 +425,27 @@ def int_to_roman_string(number):
 ```
 
 It is a lot longer, but notice that
+
 * the docstrings have been updated
 * there are meaningful error messages
 * we have a new user level function `is_valid_roman_numeral`
 
 Looking at this code, it is clear that we could use `_ROMAN_MID_POWERS` and `ROMAN_POWERS_TEN` to generate `_ROMAN_SYMBOLS`, or even do away with the table altogether. With the tests in place, we are free to try and rearrange this code. When we are done, we just rerun the tests and check our changes didn't break anything.
 
-## Tooling: `tox`
+## Summary and next steps
+
+* We made a module `tests/` at the top level by creating `tests/__init__.py`
+* We made several `tests/test_*.py` files, each of which contain different tests
+* We saw how to write equality tests with `assert thing_to_test() == expected_answer`
+* We saw how to write assertion tests with
+```python
+    with pytest.raises(ErrorType, message='this is the message'):
+        function_that_should_raise_error()
+```
+* We emphasized you should write tests with _expected_ behavior in mind, not current behavior
+* Writing tests allows us to rearrange/refactor our code with confidence, because we can check on particular examples that it did the same thing before and after the changes.
+
+Next, we will introduce the `tox` package as a way of simplifying the testing process.
+* We introduced `pytest`, which ran all files `test_` that it could find
 
 
