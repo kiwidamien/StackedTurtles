@@ -113,3 +113,5 @@ LOGO = SITEURL + '/assets/images/icon/turtle.svg'
 SHOW_CREDITS = False
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+GOOGLE_ANALYTICS = "UA-131671634-1"
