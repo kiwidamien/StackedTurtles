@@ -1,11 +1,11 @@
-Title: Making a Python Package
+Title: Making a Python Package 4
 Subtitle: An example using Roman Numerals IV - writing unit tests
 Tags: python, engineering, package, best-practices, unittest, pytest
 Date: 2019-01-02 22:30
 Category: Tools
 Summary: This is the fourth in a series of blog posts where we go through the process of taking a collection of functions and turn them into a deployable Python package. In this post, we use `pytest` to write unit tests for the roman numeral package. 
 Series: Making a Python Package
-series_index: 1
+series_index: 4
 
 Note: To get the material for this blog post, visit the [v0.4 tag of Romans!](https://github.com/kiwidamien/Roman/tree/v0.4) Github project. To get it locally, and assuming you cloned the previous version, run
 ```bash

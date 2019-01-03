@@ -1,11 +1,11 @@
-Title: Making a Python Package
+Title: Making a Python Package 2
 Subtitle: An example using Roman Numerals II - writing docstrings 
 Tags: python, engineering, package, best-practices
 Date: 2019-01-01 20:00
 Category: Tools
 Summary: This is the second in a series of blog posts where we go through the process of taking a collection of functions and turn them into a deployable Python package. In this post, we add docstrings for our users to be able to understand what our package does.
 Series: Making a Python Package
-series_index: 1
+series_index: 2
 
 Note: To get the material for this blog post, visit the [v0.2 tag of Romans!](https://github.com/kiwidamien/Roman/tree/v0.2) Github project. To get it locally, and assuming you cloned the previous version, run
 ```bash
