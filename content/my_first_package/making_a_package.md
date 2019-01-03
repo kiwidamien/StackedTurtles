@@ -185,4 +185,4 @@ So far we have made a local package, which is only importable from the current d
 * In `__init__.py`, imported the files we want access to
 * In `__init__.py`, added some metadata (namely the `__author__` and `__version__`)
 
-In the next article in this series, we look at writing good docstrings on our functions. 
+In the next article in this series, we look at writing good docstrings for our functions. 
