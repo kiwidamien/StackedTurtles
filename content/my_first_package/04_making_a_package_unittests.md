@@ -73,15 +73,15 @@ $ pytest
 ```
 and you should see output similar to the following
 ```bash
-============================================== test session starts ===============================================
+========================================== test session starts ===========================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: <file location of package>/roman_package, inifile:
 collected 1 item
 
 
-tests/test_roman.py .                                                                                      [100%]
+tests/test_roman.py .                                                                              [100%]
 
-============================================ 1 passed in 0.02 seconds ============================================
+======================================== 1 passed in 0.02 seconds ========================================
 ```
 This tells us that our test passed!
 
@@ -93,16 +93,16 @@ def test_V_gets_converted_to_6():   # this is wrong and should fail
 
 Now the output is
 ```bash
-============================================== test session starts ===============================================
+========================================== test session starts ===========================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: <location of file on drive>/roman_package, inifile:
 collected 1 item
                                                                                                                                                                        
 
-tests/test_roman.py F                                                                                      [100%]
+tests/test_roman.py F                                                                              [100%]
 
-==================================================== FAILURES ====================================================
-___________________________________________ test_V_gets_converted_to_6 ___________________________________________
+================================================ FAILURES ================================================
+_______________________________________ test_V_gets_converted_to_6 _______________________________________
 
     def test_V_gets_converted_to_6():   # this is wrong and should fail
 >       assert roman_string_to_int('V') == 6
@@ -110,7 +110,7 @@ E       AssertionError: assert 5 == 6
 E        +  where 5 = roman_string_to_int('V')
 
 tests/test_roman.py:5: AssertionError
-============================================ 1 failed in 0.04 seconds ============================================
+======================================== 1 failed in 0.04 seconds ========================================
 ```
 Note what the failure is telling us in some detail:
 
@@ -135,16 +135,16 @@ def test_char_not_in_MDCLXVI_raises_ValueError():
 Let's check it when running pytest (note that we have changed our other test back to `test_V_gets_converted_to_5`):
 ```bash
 $ pytest
-============================================== test session starts ===============================================
+========================================== test session starts ===========================================
 platform darwin -- Python 3.6.5, pytest-3.3.2, py-1.5.2, pluggy-0.6.0
 rootdir: /Users/damien/metis/roman_package, inifile:
 collected 2 items
                                                                                                                                                                       
 
-tests/test_roman.py .F                                                                                      [100%]
+tests/test_roman.py .F                                                                              [100%]
 
-==================================================== FAILURES ====================================================
-___________________________________ test_char_not_in_MDCLXVI_raises_ValueError ___________________________________
+================================================ FAILURES ================================================
+_______________________________ test_char_not_in_MDCLXVI_raises_ValueError _______________________________
 
     def test_char_not_in_MDCLXVI_raises_ValueError():
         with pytest.raises(ValueError, message="Q should raise value error, not in MDCLXVI"):
@@ -152,7 +152,7 @@ ___________________________________ test_char_not_in_MDCLXVI_raises_ValueError _
 E           Failed: Q should raise value error, not in MDCLXVI
 
 tests/test_roman.py:9: Failed
-======================================= 1 failed, 1 passed in 0.05 seconds =======================================
+=================================== 1 failed, 1 passed in 0.05 seconds ===================================
 ```
 We see the first test passed and the second one failed (hence `.F` after `tests/test_roman.py`).
 
@@ -183,14 +183,14 @@ Let me list all of my tests in `tests/test_roman.py`. I claim you should be able
 |Test function name | Result (Pass/Fail) |
 | --- | --- | 
 | `test_empty_string_gives_zero()` | Pass |
-| `test_char_not_in_MDCLXVI_raises_ValueError()` | Fail |
-| `test_error_on_lower_case()` | Fail |
+| `test_char_not_in_MDCLXVI_raises_ValueError()` | **Fail** |
+| `test_error_on_lower_case()` | **Fail** |
 | `test_III_is_converted_to_3()` |  Pass |
 | `test_IV_is_romaned_to_four()` | Pass |
-| `test_LLL_throws_ValueError()` | Fail |
+| `test_LLL_throws_ValueError()` | **Fail** |
 | `test_CCC_gives_300()` | Pass |
 | `test_CI_allows_and_gives_101()` | Pass |
-| `test_IC_throws_ValueError()` | Fail |
+| `test_IC_throws_ValueError()` | **Fail** |
 | `test_5_gives_V()` | Pass |
 | `test_10_gives_X()` | Pass |
 | `test_50_gives_L()` | Pass |
@@ -446,6 +446,3 @@ Looking at this code, it is clear that we could use `_ROMAN_MID_POWERS` and `ROM
 * Writing tests allows us to rearrange/refactor our code with confidence, because we can check on particular examples that it did the same thing before and after the changes.
 
 Next, we will introduce the `tox` package as a way of simplifying the testing process.
-* We introduced `pytest`, which ran all files `test_` that it could find
-
-
