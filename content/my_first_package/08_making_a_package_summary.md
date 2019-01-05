@@ -45,9 +45,9 @@ You should have the following directory layout:
 
 **Notes:**
 
-1. The `test/__init__.py` can be blank (and probably should be)
-2. The `roman/__init__.py` should probably import other modules in the directory.
-3. The `roman/data/` directory is optional -- not all projects will need external data
+1. The `test/__init__.py` can be blank (and probably should be).
+2. The `roman/__init__.py` should probably import other modules in the directory. There is a lot of information about how `__init__.py` works in the [first article](making-a-python-package.html) of this series.
+3. The `roman/data/` directory is optional -- not all projects will need external data.
 
 ## Writing unit tests
 
@@ -105,7 +105,6 @@ setuptools.setup(
     include_package_data=True,
     package_data={'': ['data/*.csv']},
 )
-
 ```
 
 **Note:**
@@ -150,6 +149,10 @@ You are done! To install this package, run the command
 pip install --extra-index-url https://testpypi.python.org/simple roman
 ```
 
+**Note:**
+
+1. This will fail if you try it, because I have already used the name `roman`. Find a name that is unique on TestPyPI for your package.
+
 ### Deploy via pip to PyPI
 
 This is very similar to deploying on TestPyPI. You will need to create an account on PyPI to deploy your package (you cannot just use the TestPyPI account). You should also make sure that you have run `tox` and ensured you have no linter errors or failing unit tests.
@@ -169,3 +172,7 @@ $ pip install roman
 ```
 
 Congratulations! You have now installed a package on the Python Package Index, and made it available to the world.
+
+**Note**
+
+1. This will work for at most one user. The name of your package has to be unique on PyPI.
