@@ -48,6 +48,7 @@ You should have the following directory layout:
 1. The `test/__init__.py` can be blank (and probably should be).
 2. The `roman/__init__.py` should probably import other modules in the directory. There is a lot of information about how `__init__.py` works in the [first article](making-a-python-package.html) of this series.
 3. The `roman/data/` directory is optional -- not all projects will need external data.
+4. If your project _does_ use external data sets, you should use `pkg_resources` to access them. A short introduction on how to do this is given in the [sixth article](/making-a-python-package-vi-including-data-files.html) of this series.
 
 ## Writing unit tests
 
