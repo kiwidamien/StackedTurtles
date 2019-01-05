@@ -151,7 +151,7 @@ Go back to the `roman_package` directory, and start the Python interpreter. Now 
 >>> help(roman) 
 ```
 You should see a help screen, with the author and version number set the way they were set in `roman/__init__.py`
-
+ 
 ## A package with multiple files
 
 In order to demonstrate how multiple files work, the version of this project on Github also has `roman/temperature.py`. The temperature module contains functions that convert the temperature between Kelvin, Fahrenheit, and Celsius. While it doesn't really have anything to do with Roman numerals, it is a relatively easy example, and helps us understand how to deal with multiple modules in a package.
