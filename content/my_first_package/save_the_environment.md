@@ -8,6 +8,9 @@ Summary: Environments allow you to distribute software to other users, where you
 
 If you have been developing in Python, you may have tried to distribute your program to friends and colleagues. It can be mildly annoying when they try to run your program and it fails because they don't have `obscurePackage42` installed. If you are nearby, then it is easy for you to call `pip install` a few times and get them started with your program. If you are trying to distribute a program to end users (or even some non-technical executives) then you really want something that is going to work "out of the box".
 
+Using an environment has the additional benefit of having us deal with one specific _known_ version of Python. The problem of "which Python am I using?" is one familiar to many of us.
+
+![Too many Pythons (xkcd/1987)[images/environments/python_environment_2x.png]
 
 ## The old way (and its drawbacks)
 
@@ -33,6 +36,14 @@ Environments were designed to address both of these issues.
 An _environment_ is a way of starting with a new Python installation, that doesn't look at your already installed packages. In this way, it simulates having a fresh install of Python. If two applications require different versions of Python, you can simply create different environments for them. If you start from a fresh environment and install as you go, you are able to generate a list of all packages installed in the environment so that others can easily duplicate it.
 
 There are many different environments and dependency managers in the Python ecosystem. The most common ones in use are `virtualenv` and `conda` (but there are others such as `poetry`, `pyenv/pipenv`, `hatch` and probably many more I haven't heard of). This article is about using `conda` to manage environments, although all of these tools share the same broad goals. Some of the differences between these tools are touched on in the **Alternatives** section.
+
+There are two steps to using an environment (with a third step needed if you want to use Jupyter notebooks)
+
+1. Creating the environment, either from scratch (a new project) or from a yaml file (duplicating an environment)
+2. Activating the environment for use.
+3. Register the environment with Jupyter.
+
+To leave an environment, we have to _deactivate_ it. The quickstart below will walk through the typical workflow.
 
 ### Using an environment (quickstart)
 
@@ -72,7 +83,7 @@ Now you want to make an `environment.yaml` file that will allow others to recrea
 Once we are done with the environment, we can deactivate and delete the environment:
 ```bash
 # Leave the environment
-(test_env) $ deactivate
+(test_env) $ source deactivate
 
 # Now we are no longer in test_env, we can delete it
 $ conda env remove --name test_env
@@ -104,16 +115,39 @@ Here is a brief summary of useful commands for environemnts. Anaconda has also p
 | Create a new environment from a yaml file | `conda env create --file environment.yaml` |
 | Activate the environment `ENV_NAME` (OSX, Linux) | `source activate ENV_NAME` |
 | Activate the environment `ENV_NAME` (Windows) | `activate ENV_NAME` |
-| Deactivate the current environment (\*) | `deactivate ENV_NAME` |
+| Deactivate the current environment (\*) | `source deactivate` |
 | Delete the environment `ENV_NAME` | `conda env remove --name ENV_NAME` |
 | List all installed environments | conda env list |
 | Create a YAML file for active environment(\*) | `conda env export > environment.yaml` |
 
 The commands with (\*) require you to have the environment active before using them. The naming is a little odd for creating environments: if creating them yourself the command is `conda create .....`, but if creating them from a yaml file we use `conda env create ......`. This is not a typo!
  
+## Tip for maximizing portability
+
+Some packages are system dependent (e.g. the Python Image Library `Pillow` is used by OSX and Linux, but not Windows). Once you create your `environment.yaml` file, it is often a good idea to eliminate packages you don't use directly. For example, if you tell conda to install `pandas` but not `numpy` it will figure out it needs `numpy` for `pandas` to work. You should aim to eliminate all the packages in `environment.yaml` except the ones you actually import, so that conda can figure out which other packages are needed for the user's system (which may be running a different operating system to yours).
+
 ## Summary
 
-Using environments helps reproduce the setup of our current machine.
+Creating environments allow us to make sure users we distribute our code to have the right packages (and the right versions of those packages installed) to run our code, without interfering with other programs. We _activate_ and environment to start using it, and _deactivate_ to leave again. 
+
+If making a new environment that you want others to use, the workflow is
+```python
+$ conda create --name ENV_NAME python=3.X <packages to install>
+$ source activate ENV_NAME
+(ENV_NAME)$ ...... do stuff (e.g. write code, conda install more packages)
+(ENV_NAME)$ conda env export > environment.yaml
+(ENV_NAME)$ source deactivate
+# back to regular shell
+$
+```
+
+If you are using an environment someone else has created:
+```python
+$ conda env create --file environment.yaml
+$ source activate ENV_NAME
+(ENV_NAME)$ ..... do stuff (e.g. run program that uses this environment)
+$ source deactivate
+```
 
 ### Alternatives
 
