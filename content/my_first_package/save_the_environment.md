@@ -36,7 +36,7 @@ Environments were designed to address both of these issues.
 
 An _environment_ is a way of starting with a new Python installation, that doesn't look at your already installed packages. In this way, it simulates having a fresh install of Python. If two applications require different versions of Python, you can simply create different environments for them. If you start from a fresh environment and install as you go, you are able to generate a list of all packages installed in the environment so that others can easily duplicate it.
 
-There are many different environments and dependency managers in the Python ecosystem. The most common ones in use are `virtualenv` and `conda` (but there are others such as `poetry`, `pyenv/pipenv`, `hatch` and probably many more I haven't heard of). This article is about using `conda` to manage environments, although all of these tools share the same broad goals. Some of the differences between these tools are touched on in the **Alternatives** section.
+There are many different environments and dependency managers in the Python ecosystem. The most common ones in use are `virtualenv` and `conda` (but there are others such as `poetry`, `pyenv/pipenv`, `hatch` and many more I haven't heard of). This article is about using `conda` to manage environments, although all of these tools share the same broad goals. Some of the differences between these tools are touched on in the **Alternatives** section.
 
 There are two steps to using an environment (with a third step needed if you want to use Jupyter notebooks)
 
