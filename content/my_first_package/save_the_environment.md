@@ -10,7 +10,7 @@ If you have been developing in Python, you may have tried to distribute your pro
 
 Using an environment has the additional benefit of having us deal with one specific _known_ version of Python. The problem of "which Python am I using?" is one familiar to many of us.
 
-![Too many Pythons (xkcd/1987)[images/environments/python_environment_2x.png]
+![Too many Pythons (xkcd/1987)](images/environments/python_environment_2x.png)
 
 ## The old way (and its drawbacks)
 
@@ -26,6 +26,7 @@ pandas==0.23.4
 A single command, `pip install -r requirements.txt` and everything would be written to the main Python repository. 
 
 While simple to use, there are a couple of different problems with this approach:
+
 * __Version conflicts:__ What if one application required version `0.23.4` of Pandas, but a different application required `0.19.0` (because it used a now deprecated feature)? We would have to reinstall from `requirements.txt` when switching between these applications.
 * __Tracking dependencies:__ It can be difficult to keep track of which packages your application is actually using. You don't want to include all installed packages on your machine, as only a few are relevant to your application.
 
@@ -117,7 +118,7 @@ Here is a brief summary of useful commands for environemnts. Anaconda has also p
 | Activate the environment `ENV_NAME` (Windows) | `activate ENV_NAME` |
 | Deactivate the current environment (\*) | `source deactivate` |
 | Delete the environment `ENV_NAME` | `conda env remove --name ENV_NAME` |
-| List all installed environments | conda env list |
+| List all installed environments | `conda env list` |
 | Create a YAML file for active environment(\*) | `conda env export > environment.yaml` |
 
 The commands with (\*) require you to have the environment active before using them. The naming is a little odd for creating environments: if creating them yourself the command is `conda create .....`, but if creating them from a yaml file we use `conda env create ......`. This is not a typo!
@@ -152,10 +153,11 @@ $ source deactivate
 ### Alternatives
 
 * The original virtualenv. As the Jake VanderPlas article ["Conda: Myths and Misconceptions"](https://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/) points out, these are mostly interchangle if you are only installing python packages into your environment. In slightly more detail
-  * `virtualenv/pip` installs python packages into _any_ environment, while
-  * `conda` installs _any_ packages into _conda_ environments.
+    * `virtualenv/pip` installs python packages into _any_ environment, while
+    * `conda` installs _any_ packages into _conda_ environments.
   
   If you are solely installing Python packages, there is not much difference between the two.
+
 * [`pyenv/pipenv`](https://pipenv.readthedocs.io/en/latest/) by Kenneth Reitz. The main goal of this project was to automate/simplify environment creation, but is not as mature as either `virtualenv` or `conda` solutions.
 * [`poetry`](https://poetry.eustace.io/) by Sébastien Eustace, which aims to be a packaging and deployment tool.
 
