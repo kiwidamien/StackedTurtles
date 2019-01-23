@@ -1,6 +1,6 @@
 Title: Save the environment with conda (and how to let others run your programs)
 Tags: python, engineering, package, best-practices, environment, conda
-Date: 2019-01-15 10:30
+Date: 2019-01-22 19:30
 Category: Tools
 Summary: Environments allow you to distribute software to other users, where you don't know what packages they have installed. This is a better solution than using `reuirements.txt`, as the packages you install won't interfere with the users system. 
 
