@@ -4,6 +4,17 @@ Date: 2019-02-01 10:20
 Category: Github 
 Summary: Instead of learning how to undo accidentally commiting a large file, what if we could prevent the commit in the first place? This article shows how to use git hooks to check commits automatically for validity _before_ actually doing the commit. 
 
+Have you ever accidentally made a large commit to github (i.e. a file that is larger than 100 MB)? If so, you might have experienced the problem discussed in an earlier aricle [big commits in github](/big-commits-in-github.html). Github doesn't accept large files, which is reasonable. The problem is simple attempts to undo the commit don't seem to resolve the issue, which is counter-intuitive. The reason is git is designed to be able to undo commits, so even removing the file and making a new commit, git still tries to push up the large deleted file to Github (in case you want to undo the delete later).
+
+The previous article showed how to fix the problem. In this article, we will show how to use git hooks to prevent the problem in the first place.
+
+### (Article still under construction)
+
+* Gist on [python hook](https://gist.github.com/kiwidamien/597ebbaeaf2388932ac9a3aaff7d1287)
+* Gist on [shell hook](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64)
+
+Included previous article below (want to keep instructions on generating big files)
+
 ## Undoing a large commit
 
 Accidentally committing a large file (i.e. greater than git's limit of 100MB) is a frustrating experience. For example, let's say you made some changes to `big_file.bin`, a 200MB file, and to your README in the following way:
