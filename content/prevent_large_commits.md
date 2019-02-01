@@ -4,102 +4,144 @@ Date: 2019-02-01 10:20
 Category: Github 
 Summary: Instead of learning how to undo accidentally commiting a large file, what if we could prevent the commit in the first place? This article shows how to use git hooks to check commits automatically for validity _before_ actually doing the commit. 
 
-Have you ever accidentally made a large commit to github (i.e. a file that is larger than 100 MB)? If so, you might have experienced the problem discussed in an earlier aricle [big commits in github](/big-commits-in-github.html). Github doesn't accept large files, which is reasonable. The problem is simple attempts to undo the commit don't seem to resolve the issue, which is counter-intuitive. The reason is git is designed to be able to undo commits, so even removing the file and making a new commit, git still tries to push up the large deleted file to Github (in case you want to undo the delete later).
+Have you ever accidentally made a large commit to github (i.e. a file that is larger than 100 MB)? If so, you might have experienced the problem discussed in an [earlier aricle](/big-commits-in-github.html). Github doesn't accept large files, which is reasonable, and rejects pushes that contain commits with larg files. When you delete the file, re-commit, and push again it will still fail, complaining about the large file you deleted.
+
+The problem is that git is a version control system, so it "remembers" the commit with the large file, even though you deleted it. By keeping this large file, you are able to go back to your previous commit where you deleted it. 
 
 The previous article showed how to fix the problem. In this article, we will show how to use git hooks to prevent the problem in the first place.
 
-### (Article still under construction)
+## Introducing git hooks
 
-* Gist on [python hook](https://gist.github.com/kiwidamien/597ebbaeaf2388932ac9a3aaff7d1287)
-* Gist on [shell hook](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64)
+In programming, a **hook** is a program or function we can use to extend or change the behavior of other program without touching that programs code. The more modern name is a plugin. When you run `git commit -m "commit message"` here are the steps git takes
 
-Included previous article below (want to keep instructions on generating big files)
+1. See if `.git/hooks/pre-commit` exists. If it does, run it. If it returns with an error (i.e. a non-zero value), stop the commit.
+2. Create a default message.
+3. See if `.git/hooks/prepare-commit-msg` exists. If it does, run it. If it returns with an error (i.e. a non-zero value), stop the commit.
+4. Do the commit (including launching an editor if there is no `-m` flag)
+5. See if `.git/hooks/post-commit` exists. If it does, run it
 
-## Undoing a large commit
+**Note:** When git checks `.git/hooks/*`, it checks at the top level of your repo, even if you are in another folder when you run your `git` commands.
 
-Accidentally committing a large file (i.e. greater than git's limit of 100MB) is a frustrating experience. For example, let's say you made some changes to `big_file.bin`, a 200MB file, and to your README in the following way:
+If you never create the `pre-commit`, `prepare-commit-msg` or `post-commit` files, git will operate normally. However, by adding these files, you can change the behavior of git without ever looking at its course code! We want to stop a commit from happening if a file is too large, so we will write a `pre-commit` hook.
+
+### Setup
+
+Let's make a new repo. We won't connect it to github, because we don't need to push the file. We are just going to look at making commits. 
+
+In the terminal, run the following
 ```bash
-$ dd if=/dev/zero of=big_file.bin count=200 bs=1048576  # make 200 MB file
-$ git add big_file.bin                              # we will regret this!
-$ git commit -m "committed huge binary file"
-[master 9cee256] committed huge binary file
-$ git add README.md
-$ git commit -m "... and made a small change to the README"
-[master 0f1a832] ... and made small change to the README
+$ mkdir git_hook_example
+$ cd git_gook_example
+git_hook_example$ git init
+Initialized empty Git repository in /Users/damien/git_hook_example/.git/
+git_hook_example$ ls -la
+.    ..   .git
 ```
-Everything is fine, until we try to push to our repo:
-```bash
-$ git push
-....
-remote: error: File big_file.bin is 106.00 MB; this exceeds GitHub's file size limit of 100.00 MB
-To YOUR_REPO_NAME
-! [remote rejected] master -> master (pre-receive hook declined)
-error: failed to push some refs to YOUR_REPO_NAME
-```
+Note the hidden `.git/` directory. This is where we are going to place our hook.
 
-## Failed attempt to fix
-
-Here is an attempt to fix that fails:
+Let's also create a couple of files, just to simulate a real repo:
 ```bash
-$ git rm big_file.bin
-$ git commit -m "removed big file"
-[master 1eb14a7] removed big_file
-$ git push
-.... (still see message about failing to remove)
+git_hook_example$ echo '# hook example' > readme.me # creates a readme file
+git_hook_example$ echo 'some text' > junk.txt
+git_hook_example$ dd if=/dev/zero of=big_file.bin count=200 bs=1048576  # make 200 MB file
 ```
 
-The problem is that git is trying to keep track of the history of all your commits. Git wants to push both the file *and* the fact it was deleted, so other developers can rewind the deletion. To do this, git still needs to push the large file to the remote, which it cannot do for large files.
+We now have a repo directory with two small files (`readme.md` and `junk.txt`) as well as a 200 MB file.
 
-We will look at two ways of fixing this problem:
-* Rewinding master locally, and pushing a new version of master. The downside is `big_file.bin` will still take up memory on your local repo.
-* Removing all mention of `big_file.bin` from your repo by rewriting your git history. The downside to this approach is that you can break git, and it cannot be done if you have untracked files.
+### Our first precommit hook
 
-Let's look at these two approaches. If all else fails, the third option is to make a new clone of the repo, and copy over just the files you want -- but this should be a last resort.
-
-### Actual fix #1: keep history local
-
-Our log of commits now looks like this on our local machine:
+We will use the gitpython package to write our first hook. Install it with
 ```bash
-1eb14a7 (HEAD -> master) removed big_file
-0f1a832 ... and made small change to the README
-9cee256 committed huge binary file
-a3a75bf commit before all this happened
-....... (previous commits)
+$ pip install gitpython
 ```
 
-We want to get rid of the file originally committed in commit `9cee256`. To do this:
-1. First, reset back to that commit:
-```bash
-$ git reset 9cee256~1 # go back one more than the troublesome commit
-```
-This is a _soft_ reset, so your files will stay the same on your local machine.
-2. (Optional) If you haven't done so already, you can delete `big_file.bin`.
-3. Then add the README back to the repo, and commit it
-```bash
-$ git add README.md
-$ git commit -m "adding the README again"
-```
-4. Finally push the new commit back up.
-```bash
-$ git push origin master
+In your favorite text editor, write the following file and save it to `.git/hooks/pre-commit`
+```python
+#!/usr/bin/env python3
+
+# This is a pre-commit hook that ensures attempts to commit files that
+# are larger than 100 MB to your _local_ repo fail, with a helpful error
+# message. This is the python version.
+
+from git import Repo
+from gitdb.exc import BadName
+import os
+import sys
+
+
+repo = Repo('.')
+limit = 10**8
+
+try:
+    filenames = (diff_obj.a_path for diff_obj in repo.index.diff('HEAD'))
+except BadName:
+    # new repo, no 'HEAD' or master until first commit completed
+    filenames = (filename for filename, _ in repo.index.entries.keys())
+
+for filename in filenames:
+    filesize = os.stat(filename).st_size
+    if filesize > limit:
+        print(f"""
+              {filename} ({filesize // 10**6} MB) is larger than the {limit // 10**6} MB limit
+              Commit aborted""")
+        sys.exit(1)
 ```
 
-In this approach, the local git history still has the "bad" commits in it
-![what the local branches look like](images/github_local.png)
-They are off the main "master" track, but they will still remain on your disk. The commit you pushed up doesn't have the commits in the red box in its history, so the remote repo will look like this:
-![what the remote branch looks like](images/github_remote.png)
+This file is also available as a [gist](https://gist.github.com/kiwidamien/597ebbaeaf2388932ac9a3aaff7d1287). 
 
-### Actual Fix 2: rewrite history with `filter-branch`
+Briefly, this file uses the `git` package to initialize the repo that you are currently in. It looks at the repos index and compares what you are trying to commit to what is already saved. Only going through the files you are trying to update (i.e. iterating through `repo.index.diff('HEAD')`), if any of there are larger than 100 MB (technically 10<sup>6</sup> bytes, which isn't _quite_ the same thing) then stop the commit with a non-zero exit. The script prints out an error message telling you which file is problematic, and stops the commit before it happens!
 
-This one will only work if you don't have unstaged work in your repo. It also means rewriting the history, so there is the potential to mess things up!
+Note that if the script exits normally, the default return value is `0`, which is interpreted as a success.
 
-With those warnings in mind, you can run
+### Other uses
+
+Notice that git didn't pass any information to this hook, it just ran the script with the right name sitting in the right place. We got the information about which files had changed by calling git within our script (i.e. we let the `gitpython` package do that for us). You can use a hook like to check other things as well, such as 
+
+* __Automatic linting:__ Run pylint on your code pre-commit, and only allow the commit if there are no linting errors.
+* __Automatic testing:__ Run your unittests on your code pre-commit. Only allow the commit if there are no failing test cases.
+* __Spell checking:__ If running a blog off github (such as this one), run a spell-checker and only allow the commit if there are no spelling errors (I should really implement this one!)
+
+The other hooks are useful too. This blog is associated with two github repos: the one that publishes the processed files, and the one that stores the original content. I work in the original content repo, and a post-commit hook ensures everytime I commit, the files are processed and published to my actual blog.
+
+You can also write your hooks in any language you like. The same hook written as a bash script is available in [this gist](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64). This is harder to read, but is more portable to systems that don't use Python 3 (or don't have gitpython installed).
+
+### Testing
+
+Let's test the hook! In your terminal, try adding your files and commiting them:
 ```bash
-git filter-branch -f --tree-filter 'rm  big_file.bin' 9cee256..HEAD
-```
-This will remove `big_file.bin` from every commit from `9cee256` to `1eb14a7` (the current HEAD).
+# make our hook "executable"
+git_hook_example $ chmod a+x .git/hooks/pre-commit
 
-You should then be able to push to your repository with
-```bash
-git push
+# now do the add/commit workflow
+git_hook_example $ git add .
+git_hook_example $ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+	new file:   big_file.bin
+	new file:   junk.txt
+	new file:   readme.me
+
+git_hook_example $ git commit -m 'will this allow a big commit?'
+
+              big_file.bin (209 MB) is larger than the 100 MB limit
+              Commit aborted
 ```
+
+Fantastic! Let's remove the `big_file.bin` and check the commit goes through:
+```bash
+git_hook_example $ git rm big_file.bin
+git_hook_example $ git commit -m 'It should work now'
+[master (root-commit) 841a985] It should work now
+ 3 files changed, 62 insertions(+)
+```
+
+Success!! You have made a git pre-commit hooks.
+
+## Other hooks
+
+## Summary, and doing this in other repos
