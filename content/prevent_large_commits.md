@@ -146,15 +146,15 @@ Success!! You have made a git pre-commit hook.
 
 How can you make this the default for new repos on your system? There are a couple of steps:
 
-1. Create the directory `~/.githooks/` in your home directory (this is not a reserved name, you can put this directory where you would like)
-  ```bash
-  $ mkdir ~/.githooks/`
-  ```
-2. Copy the `pre-commit` hook to `~/.githooks`
+1. Create the directory `~/.git_hooks/` in your home directory (this is not a reserved name, you can put this directory where you would like)
+```bash
+$ mkdir ~/.git_hooks/
+```
+2. Copy the `pre-commit` hook to `~/.git_hooks`
 3. Run `git config` to tell git this is where you hooks live (so it looks here instead of `.git/hooks` in your current repo)
-   ```bash
-   $ git config --global core.hooksPath=~/.githooks/
-   ```
+```bash
+$ git config --global core.hooksPath ~/.git_hooks/
+```
 
 Warning: this will set your hooks to _always_ use this hook, including existing repos. If you want to set it on a per-repo basis instead, follow the steps in the summary instead.
 
