@@ -140,8 +140,37 @@ git_hook_example $ git commit -m 'It should work now'
  3 files changed, 62 insertions(+)
 ```
 
-Success!! You have made a git pre-commit hooks.
+Success!! You have made a git pre-commit hook.
 
-## Other hooks
+## Making this the default
+
+How can you make this the default for new repos on your system? There are a couple of steps:
+
+1. Create the directory `~/.githooks/` in your home directory (this is not a reserved name, you can put this directory where you would like)
+  ```bash
+  $ mkdir ~/.githooks/`
+  ```
+2. Copy the `pre-commit` hook to `~/.githooks`
+3. Run `git config` to tell git this is where you hooks live (so it looks here instead of `.git/hooks` in your current repo)
+   ```bash
+   $ git config --global core.hooksPath=~/.githooks/
+   ```
+
+Warning: this will set your hooks to _always_ use this hook, including existing repos. If you want to set it on a per-repo basis instead, follow the steps in the summary instead.
+
+## Bypassing
+
+If for some reason you don't want to run the pre-commit hook on _this_ particular commit, you can skip it by running `git commit --no-verify -m "some message"`.
 
 ## Summary, and doing this in other repos
+
+You can make this work in pre-existing repos as well. The steps are
+
+1. Copy [this gist](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64) to `./git/hooks/pre-commit`. This is the shell version, but you can also use the Python version from above
+2. Make it executable using `chmod a+x ./git/hooks/pre-commit`.
+
+That's it -- you now cannot accidentally commit large files to your repository!
+
+#### Acknowledgements:
+
+I'd like to thank [Spencer Tollefson](https://www.spencertollefson.com/blog/) for suggestions and inspiration on this post.
