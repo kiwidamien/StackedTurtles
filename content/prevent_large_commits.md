@@ -1,6 +1,6 @@
 Title: Prevent big commits 
 Tags: Github
-Date: 2019-02-01 10:20
+Date: 2019-02-01 18:20
 Category: Github 
 Summary: Instead of learning how to undo accidentally commiting a large file, what if we could prevent the commit in the first place? This article shows how to use git hooks to check commits automatically for validity _before_ actually doing the commit. 
 
