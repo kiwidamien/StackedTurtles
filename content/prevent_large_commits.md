@@ -4,7 +4,7 @@ Date: 2019-02-01 18:20
 Category: Github 
 Summary: Instead of learning how to undo accidentally commiting a large file, what if we could prevent the commit in the first place? This article shows how to use git hooks to check commits automatically for validity _before_ actually doing the commit. 
 
-Have you ever accidentally made a large commit to github (i.e. a file that is larger than 100 MB)? If so, you might have experienced the problem discussed in an [earlier aricle](/big-commits-in-github.html). Github doesn't accept large files, which is reasonable, and rejects pushes that contain commits with larg files. When you delete the file, re-commit, and push again it will still fail, complaining about the large file you deleted.
+Have you ever accidentally made a large commit to github (i.e. a file that is larger than 100 MB)? If so, you might have experienced the problem discussed in an [earlier aricle](/big-commits-in-github.html). Github doesn't accept large files, which is reasonable, and rejects pushes that contain commits with large files. When you delete the file, re-commit, and push again it will still fail, complaining about the large file you deleted.
 
 The problem is that git is a version control system, so it "remembers" the commit with the large file, even though you deleted it. By keeping this large file, you are able to go back to your previous commit where you deleted it. 
 
@@ -12,7 +12,7 @@ The previous article showed how to fix the problem. In this article, we will sho
 
 ## Introducing git hooks
 
-In programming, a **hook** is a program or function we can use to extend or change the behavior of other program without touching that programs code. The more modern name is a plugin. Git is written to support hooks at several places, such as during chekouts, merges, pushes and commits. In fact, there are four separate hooks that are run when you commit.
+In programming, a **hook** is a program or function we can use to extend or change the behavior of other program without touching that program's code. The more modern name is a plugin. Git is written to support hooks at several places, such as during chekouts, merges, pushes and commits. In fact, there are four separate hooks that are run when you commit.
 
 Specifically, when you run `git commit -m "commit message"` here are the steps git takes
 
@@ -151,14 +151,14 @@ Success!! You have made a git pre-commit hook.
 
 ## Making this the default
 
-How can you make this the default for new repos on your system? There are a couple of steps:
+How can you make this the default for new repos on your system? Here are the steps:
 
-1. Create the directory `~/.git_hooks/` in your home directory (this is not a reserved name, you can put this directory where you would like)
+* Create the directory `~/.git_hooks/` in your home directory (this is not a reserved name, you can put this directory where you would like)
 ```bash
 $ mkdir ~/.git_hooks/
 ```
-2. Copy the `pre-commit` hook to `~/.git_hooks`
-3. Run `git config` to tell git this is where you hooks live (so it looks here instead of `.git/hooks` in your current repo)
+* Copy the `pre-commit` hook to `~/.git_hooks`
+* Run `git config` to tell git this is where you hooks live (so it looks here instead of `.git/hooks` in your current repo)
 ```bash
 $ git config --global core.hooksPath ~/.git_hooks/
 ```
