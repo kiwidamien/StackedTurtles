@@ -12,17 +12,21 @@ The previous article showed how to fix the problem. In this article, we will sho
 
 ## Introducing git hooks
 
-In programming, a **hook** is a program or function we can use to extend or change the behavior of other program without touching that programs code. The more modern name is a plugin. When you run `git commit -m "commit message"` here are the steps git takes
+In programming, a **hook** is a program or function we can use to extend or change the behavior of other program without touching that programs code. The more modern name is a plugin. Git is written to support hooks at several places, such as during chekouts, merges, pushes and commits. In fact, there are four separate hooks that are run when you commit.
+
+Specifically, when you run `git commit -m "commit message"` here are the steps git takes
 
 1. See if `.git/hooks/pre-commit` exists. If it does, run it. If it returns with an error (i.e. a non-zero value), stop the commit.
 2. Create a default message.
-3. See if `.git/hooks/prepare-commit-msg` exists. If it does, run it. If it returns with an error (i.e. a non-zero value), stop the commit.
-4. Do the commit (including launching an editor if there is no `-m` flag)
-5. See if `.git/hooks/post-commit` exists. If it does, run it
+3. See if `.git/hooks/prepare-commit-msg` exists. If it does, run it. If it returns with an error (i.e. a non-zero value), stop the commit. This is used to overwrite the default commit message when an editor opens (which you see if you don't include the `-m` option to `git commit`).
+4. If there is no commit message supplied with `-m`, launch an editor with the default message. 
+5. See if `.git/hooks/commit-msg` exists. If it does, run it (passing the commit message). If it returns with an error, stop the commit. This can be used to enforce formatting on the commit message. 
+6. Do the commit.
+7. See if `.git/hooks/post-commit` exists. If it does, run it.
 
 **Note:** When git checks `.git/hooks/*`, it checks at the top level of your repo, even if you are in another folder when you run your `git` commands.
 
-If you never create the `pre-commit`, `prepare-commit-msg` or `post-commit` files, git will operate normally. However, by adding these files, you can change the behavior of git without ever looking at its course code! We want to stop a commit from happening if a file is too large, so we will write a `pre-commit` hook.
+If you never create the `pre-commit`, `prepare-commit-msg`, `commit-msg` or `post-commit` files, git will operate normally. However, by adding these files, you can change the behavior of git without ever looking at its source code! We want to stop a commit from happening if a file is too large, so we will write a `pre-commit` hook.
 
 ### Setup
 
@@ -31,11 +35,14 @@ Let's make a new repo. We won't connect it to github, because we don't need to p
 In the terminal, run the following
 ```bash
 $ mkdir git_hook_example
+
 $ cd git_gook_example
+
 git_hook_example$ git init
 Initialized empty Git repository in /Users/damien/git_hook_example/.git/
+
 git_hook_example$ ls -la
-.    ..   .git
+.git
 ```
 Note the hidden `.git/` directory. This is where we are going to place our hook.
 
@@ -89,7 +96,7 @@ for filename in filenames:
 
 This file is also available as a [gist](https://gist.github.com/kiwidamien/597ebbaeaf2388932ac9a3aaff7d1287). 
 
-Briefly, this file uses the `git` package to initialize the repo that you are currently in. It looks at the repos index and compares what you are trying to commit to what is already saved. Only going through the files you are trying to update (i.e. iterating through `repo.index.diff('HEAD')`), if any of there are larger than 100 MB (technically 10<sup>6</sup> bytes, which isn't _quite_ the same thing) then stop the commit with a non-zero exit. The script prints out an error message telling you which file is problematic, and stops the commit before it happens!
+Briefly, this file uses the `git` package to and creates the object `repo` that represents the repository you are currently in. It looks at the repo's index, and gets a list of the filenames that you are changing in this commit. It goes through these files, and if any of there are larger than 100 MB (technically 10<sup>6</sup> bytes, which isn't _quite_ the same thing) then the script prints an error message and exits with value 1. Any exit with a non-zero value is interpreted as an error, which stops the commit from happening. 
 
 Note that if the script exits normally, the default return value is `0`, which is interpreted as a success.
 
@@ -98,12 +105,12 @@ Note that if the script exits normally, the default return value is `0`, which i
 Notice that git didn't pass any information to this hook, it just ran the script with the right name sitting in the right place. We got the information about which files had changed by calling git within our script (i.e. we let the `gitpython` package do that for us). You can use a hook like to check other things as well, such as 
 
 * __Automatic linting:__ Run pylint on your code pre-commit, and only allow the commit if there are no linting errors.
-* __Automatic testing:__ Run your unittests on your code pre-commit. Only allow the commit if there are no failing test cases.
+* __Automatic testing:__ Run your unit tests on your code pre-commit. Only allow the commit if there are no failing test cases.
 * __Spell checking:__ If running a blog off github (such as this one), run a spell-checker and only allow the commit if there are no spelling errors (I should really implement this one!)
 
 The other hooks are useful too. This blog is associated with two github repos: the one that publishes the processed files, and the one that stores the original content. I work in the original content repo, and a post-commit hook ensures everytime I commit, the files are processed and published to my actual blog.
 
-You can also write your hooks in any language you like. The same hook written as a bash script is available in [this gist](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64). This is harder to read, but is more portable to systems that don't use Python 3 (or don't have gitpython installed).
+You can also write your hooks in any language you like. The same hook written as a bash script is available in [this gist](https://gist.github.com/kiwidamien/a6a909ee196be8795b30431079074d64). This is harder to read, but is portable to systems that don't use Python 3 (or don't have gitpython installed).
 
 ### Testing
 
@@ -156,7 +163,9 @@ $ mkdir ~/.git_hooks/
 $ git config --global core.hooksPath ~/.git_hooks/
 ```
 
-Warning: this will set your hooks to _always_ use this hook, including existing repos. If you want to set it on a per-repo basis instead, follow the steps in the summary instead.
+**Warning:**
+
+This will set your hooks to _always_ use this hook, including existing repos. If you want to set it on a per-repo basis instead, follow the steps in the summary instead.
 
 ## Bypassing
 
