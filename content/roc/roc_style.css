@@ -1,0 +1,96 @@
+
+.background {
+  fill: #e7e7e7;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.line text {
+  font: bold 14px sans-serif;
+}
+
+.axis text {
+  font: 16px sans-serif;
+}
+
+.axis-title text{
+  font: 20px sans-serif;
+  color: red;
+}
+
+.line path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.2px;
+  stroke-linejoin: round;
+}
+
+.line:hover text {
+  fill: red;
+}
+
+.line:hover path {
+  stroke: red;
+}
+
+.curve{
+  stroke: red;
+}
+
+.dividing-line{
+  stroke: black;
+  stroke-dasharray: 4;
+  stroke-width: 4;
+}
+
+#plot_area {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 85%;
+    vertical-align: top;
+    overflow: hidden;
+    grid-column-start: 1;
+    grid-row-start: 2;
+}
+
+#people {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 15% ;
+  vertical-align: top;
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+
+.svg-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.label_area{
+  background-color: #FEFEFE;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  grid-column-start: 2;
+  grid-row-start: 1;
+}
+
+.label_area .title {
+  font-size: 32pt;
+}
+
+.label_area .subtitle {
+  font-size: 12pt;
+}
