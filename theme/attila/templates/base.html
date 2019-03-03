@@ -70,9 +70,9 @@
   {% endif %}
 
   {% if article %}
-    {% if article.styles %}
+    {% if article.stylesheets %}
       <!-- CSS requested from styles tag -->
-      {% for style in article.styles %} 
+      {% for style in article.stylesheets %} 
         {{ style }}
       {% endfor %}
     {% endif %}
@@ -154,9 +154,9 @@
 </body>
 
   {% if article %}
-    {% if article.scripts %}
+    {% if article.javascripts %}
       <!-- Adding JS from scripts tag -->
-      {% for script in article.scripts %}
+      {% for script in article.javascripts %}
         {{ script }}
       {% endfor %}
     {% endif %}
