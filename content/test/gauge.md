@@ -2,7 +2,7 @@ Title: Gauge test
 Date: 2013-11-24
 Category: Tools/Javascript
 Tags: test
-JavaScripts: http://d3js.org/d3.v3.min.js, gauge.js, gauge_config.js
+JavaScripts: https://d3js.org/d3.v3.min.js, gauge.js, gauge_config.js
 
 <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
 <svg id="fillgauge2" width="19%" height="200" onclick="gauge2.update(NewValue());"></svg>
