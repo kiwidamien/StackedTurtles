@@ -69,6 +69,15 @@
     {% endfor %}
   {% endif %}
 
+  {% if article %}
+    {% if article.styles %}
+      <!-- CSS requested from styles tag -->
+      {% for style in article.styles %} 
+        {{ style }}
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+
   <!-- Custom fonts -->
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
@@ -143,4 +152,13 @@
   {% include 'partials/analytics.js' %}
   {% include 'partials/disqus.js' %}
 </body>
+
+  {% if article %}
+    {% if article.scripts %}
+      <!-- Adding JS from scripts tag -->
+      {% for script in article.scripts %}
+        {{ script }}
+      {% endfor %}
+    {% endif %}
+  {% endif %}
 </html>

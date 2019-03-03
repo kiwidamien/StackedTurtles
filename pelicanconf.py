@@ -35,7 +35,8 @@ LOAD_CONTENT_CACHE = False
 
 PLUGIN_PATHS = ['/Users/damien/pelican-plugins']
 PLUGINS = ['assets', 'gravatar', 'neighbors', 'subcategory', 'series', 'readtime', 'ipynb.markup',
-           'pelican_fontawesome', 'pelican_alias', 'render_math']
+           'pelican_fontawesome', 'pelican_alias', 'render_math',
+           'pelican_dynamic']
 
 #THEME = '/Users/damien/pelican-themes/stye'
 THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
