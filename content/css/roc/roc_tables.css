@@ -1,7 +1,7 @@
 .table_area{
   background-color: #FEFEFE;
   width: 90%;
-  padding: 20px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -14,7 +14,7 @@
 }
 
 .table_area th, .table_area td {
-  padding: 12px;
+  padding: 5px;
   text-align: middle;
   background-color: #F5F5F5;
 }
