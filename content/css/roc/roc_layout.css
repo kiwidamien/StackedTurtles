@@ -4,5 +4,5 @@
   padding-top: 15px;
   border: 1px solid #444;
   grid-template-columns: 2fr 1fr;
-  width: 100%;
+  max-width: 1200px;
 }
