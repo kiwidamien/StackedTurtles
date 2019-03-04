@@ -12,6 +12,7 @@
 .table_area table{
   width: 100%;
   margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 .table_area th, .table_area td {
