@@ -18,7 +18,7 @@ If we have a soft prediction, one way of generating a hard prediction is to gues
 |------ |------|-------------|----------|--------------|----------|
 | Score / probability | 70% | 15% | 7% | 5% | 3% |
 
-I'd want the "food classifier" to predict "Kills you", not because it is the most likely outcome, but because the chance is high enough that I would want to know (especially since the consequence of it being wrong is that I have to spend a little more on milk than I otherwise would have).
+I'd want the "food classifier" to predict **Kills me**, not because it is the most likely outcome, but because the chance is high enough that I would want to know (especially since the consequence of it being wrong is that I have to spend a little more on milk than I otherwise would have).
 
 The process of taking a soft prediction and turning it into a hard prediction is known as "thresholding". For non-trivial problems, where the right answer isn't just "take the category with the biggest score", thresholding the soft predictions into hard ones is an important part of the problem. This **doesn't** mean that you can just use the hard `predict` method of your model - all that does is force your software to make the thresholding decision for you! 
 
