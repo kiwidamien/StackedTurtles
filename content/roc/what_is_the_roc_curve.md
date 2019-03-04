@@ -10,7 +10,7 @@ Summary: ROC (Receiver Operator Characteristic) curves are a great way for measu
 
 We usually think of a classifier as being a model that takes in a set of features, and predicts a single class for that object. For example, a classifier might process a picture and classify it as a "cat" or a "dog". These predictions are called _hard predictions_, insofar as we only get the predicted class with no indication of the "confidence" that the model has in its prediction. A _soft prediction_ is when we assign each category a score, with a higher score meaning we have more confidence in that answer. One natural score to use is the "probability" that an image belongs to a certain category. For an example of the difference, an image classifier might classify the image on the left as a cat (hard prediction) but only give it a low score (soft prediction) as it isn't entirely sure it isn't a croissant.
 
-<img src="images/roc/catcroissant.png" width="80%" />
+<img src="images/roc/catcroissant.png" width="70%" />
 
 If we have a soft prediction, one way of generating a hard prediction is to guess the class with the highest score. If your model is well-trained, and your goal is to maximize accuracy, this is the best approach to take. If, however, the costs of misclassication are drastically different for the different classes, predicting accuracy might not be the right thing to measure. An example of this in a multiclass setting might be a test to determine if food is still good: after putting a sample of milk in I might receive the following predictions:
 
