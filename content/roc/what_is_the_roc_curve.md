@@ -223,10 +223,10 @@ The array `threshold` tells you the threshold used to evaluate each point, so on
 
 ## Acknowledgements 
 
-I'd like to thank [Brendan Rossin](https://github.com/brendenrossin) for pointing out an error I made while going through this example in a review session, which gave me the motivation to write this up properly.
+I'd like to thank [Brenden Rossin](https://github.com/brendenrossin) for pointing out an error I made while going through this example in a review session, which gave me the motivation to write this up properly.
 
 ## Related articles
 
-* Article on how probabilities from `predict_proba` are not probabilities (to come)
+* Article on how [probabilities from `predict_proba` are not probabilities](/are-you-sure-thats-a-probability.html)
 * Article on the proliferation of bad names in classification (to come)
 
