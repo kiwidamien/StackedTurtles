@@ -1,0 +1,8 @@
+Title: Are you sure that's a probability? 
+Author: Damien Martin
+Tags: Data science
+Date: 2019-05-23 08:00
+Category: Data Science
+Summary: Many of the classifiers in sklearn support a `predict_proba` method for calculating probabilities. Often, these "probabilities" are really just a score from 0 to 1, where a higher score means the model is more confident in the prediction, but it shouldn't be interpreted as a probability. This article shows us how to check if the "probabilities" should be interpreted as a actual probabilities, and a (limited) technique for correction.
+
+
