@@ -1,7 +1,0 @@
-Title: How to do cross-validation when upsampling data 
-Tags: Data munging, Pandas, Upsampling, Data leakage
-Date: 2019-05-20 11:00
-Category: Data Science
-Summary: Most of us know to split our data into a training and a testing set before we do our preprocessing, let alone our modeling. Often we are not as careful when doing cross-validation; we should really do things like _scale_ our data within cross-validation (otherwise our scaling has access to some information about the validation set, leading to it being too optimistic). The consequences of being a little sloppy and scaling our training data at once are small. When doing upsampling, it is critical to do this correctly. This article explains why this is important, and shows how to do it.
-
-
