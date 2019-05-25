@@ -1,0 +1,6 @@
+Title: Introducing the column transformer 
+Author: Damien Martin
+Tags: Data science, leakage, preprocessing, data munging
+Date: 2019-05-26 08:00
+Category: Data Science
+Summary: The `ColumnTransformer` allows us to easily apply different transformations to different features. For example, now we can scale some numerical features, while leaving binary flags alone! This article walks through two examples using `ColumnTransformer` for their preprocessing steps.
