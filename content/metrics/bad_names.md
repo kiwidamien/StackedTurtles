@@ -21,6 +21,7 @@ Metrics like _precision_, _recall_, and _F<sub>1</sub>_ scores don't treat the p
 ### Problematic names
 
 The different classes are described by the names True Positive (TP), False Positive (FP), True Negative (TN), and False Negative (FN). These names are problematic, as they invite confusion about their definition. The easiest one to remember is True Positive: this is the number of Positive cases our machine learning model identified as Positive. There really isn't any other way to interpret this. Consider the term False Positive, and the following explanations:
+
 * A FP is a case that is _actually_ _positive_, but we made the (_false_) identification of negative (wrong)
 * A FP is a case that is _actually_ negative, but we made the (_false_) identification of _positive_ (correct)
 
