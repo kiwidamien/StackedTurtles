@@ -1,6 +1,6 @@
 Title: The Bad Names In Classification Problems
 Date: 2019-06-01 12:00
-Tags: Metirics
+Tags: Metrics
 Category: Data Science 
 Summary: There are a proliferation of different metrics in classification problems: accuracy, precision, recall, and more! Many of these metrics are defined in terms of True Positives, True Negatives, False Positives, and False Negatives. Here we give alternatives for these poorly named classes.
 
@@ -25,6 +25,12 @@ The different classes are described by the names True Positive (TP), False Posit
 * A FP is a case that is _actually_ negative, but we made the (_false_) identification of _positive_ (correct)
 
 The problem is that we have to remember that the "positive"/"negative" refer to the _prediction_ rather than the actual nature of the class. The "true"/"false" refer to whether or not the prediction was correct. When we start building other concepts such as precision and recall on top of these already confusing names, it is no wonder that we can have trouble keeping them straight.
+
+### A Problem of Ego
+
+Sometimes ego can get in the way, claiming that it isn't that hard to keep these terms straight. After some experience, thinking for a few seconds is generally enough to remind ourselves of what the term means. At worst, knowing these (confusing) terms can be a way of marking whether or not someone "belongs" to the group of people that can talk about data in a meaningful way. After all, the reasoning goes, if you cannot keep these terms straight, how much could you have to say about data science or analysis?
+
+Choosing names that doesn't require us to break our chain of thought to recall the definition (even for a few seconds) makes arguments much easier to think about, even for seasoned practitioners. Poor names also erect artifical barriers for people learning data science.
 
 ### Better names
 
