@@ -6,6 +6,7 @@ Summary: There are a proliferation of different metrics in classification proble
 
 
 Many binary classifiers can be _naturally_ phrased in terms of us trying to detect something, and we have two classes: the _positive_ class where the thing we are trying to detect is present, and a _negative_ class where it is absent. Some examples are
+
 * __Metal detector__: Predicts if metal is present (positive class) or not (negative class)
 * __Disease detector__: Predicts if a disease is present (positive class) or not (negative class)
 * __Red light cameras__: Detects if a car moved through a red light (positive class) or not (negative class)
@@ -67,7 +68,7 @@ This article clamed that the traditional names for binary classification (TP/FP/
 
 ## Related Articles
 
-* Chad Sherrer's artice on Precision and Recall as conditional probabilities [_Confusion confusion_](https://cscherrer.github.io/post/confusion-confusion/)
+* Chad Scherrer's artice on Precision and Recall as conditional probabilities [_Confusion confusion_](https://cscherrer.github.io/post/confusion-confusion/)
 * [Interview Practice with Precision and Recall]() (to come)
 * [These aren't the metrics you're looking for]() (to come)
 
