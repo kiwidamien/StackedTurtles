@@ -41,7 +41,11 @@ Let's translate precision and recall into these new names.
 
 #### Precision
 
-Precision asks "how confident am I that times my alarm went off, it was actually a positive case?". A precision of 80% would mean that 80% of the time that the alarm went off, we have a positive case (that presumably requires action on our part). In our traditional language:
+Precision asks "how confident am I that times my alarm went off, it was actually a positive case?". A precision of 80% would mean that 80% of the time that the alarm went off, we have a positive case (that presumably requires action on our part). Phrased in terms of a conditional probability:
+
+$$\text{Precision} = \text{P}(\text{Was a positive case | Alarm went off})$$
+
+In our traditional language:
 
 $$\text{Precision} = \frac{\text{(positives detected)}}{\text{(number of positive identifications)}} = \frac{\text{TP}}{\text{TP} + \text{FP}}$$
 
@@ -51,7 +55,11 @@ $$\text{Precision} = \frac{\text{Hits}}{\text{Hits} + \text{(False Alarms)}}$$
 
 #### Recall
 
-Recall asks "what fraction of the positive cases did I detect?". A recall of 70% would mean that 70% of the positive cases would trigger the detector. The remaining 30% would go undetected. In our traditional language:
+Recall asks "what fraction of the positive cases did I detect?". A recall of 70% would mean that 70% of the positive cases would trigger the detector. The remaining 30% would go undetected. Phrased in terms of a conditional probability:
+
+$$\text{Recall} = \text{P}(\text{Set off alarm | Was a positive case})$$
+
+In our traditional language:
 
 $$\text{Recall} = \frac{\text{(positives detected)}}{\text{(total number of positive cases)}} = \frac{\text{TP}}{\text{TP} + \text{FN}}$$
 
