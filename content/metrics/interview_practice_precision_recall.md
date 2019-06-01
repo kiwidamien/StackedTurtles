@@ -56,10 +56,9 @@ Using this example, we are trying to detect fradulent claims. This makes the "po
 
 This would give you a basis for discussing how to trade recall vs precision. In this example, paying a claim you didn't have to is more expensive than paying someone to investigate the claim, so recall would be more important. The easiest way to maximize recall is to flag _every_ claim, which clearly makes the classifier useless, so even though recall is more important, phrasing it this way can help determine how you would evaluate a trade-off between precision and recall.
 
-To help get some experience with this, try answering the following questions by rephrasing the meaning of precision and recall in the context of each problem. When doing this, also practice evaluating what the downside of having too low a precision or recall is for that problem. Answers are available (but start collapsed).
-
-
 ## Sample problems
+
+To help get some experience with this, try answering the following questions by rephrasing the meaning of precision and recall in the context of each problem. When doing this, also practice evaluating what the downside of having too low a precision or recall is for that problem. Answers are available (but start collapsed).
 
 ### Problem 1: Disease detector
 
@@ -83,9 +82,9 @@ To help get some experience with this, try answering the following questions by 
 
 #### Answers
 
-1. 
-2.
-3.
+1. Todo
+2. Todo
+3. Todo
 
 ### Problem 3: 
 
@@ -95,9 +94,9 @@ To help get some experience with this, try answering the following questions by 
 
 #### Answers
 
-1.
-2.
-3.
+1. Todo
+2. Todo
+3. Todo
 
 ### Problem 4: 
 
@@ -107,9 +106,9 @@ To help get some experience with this, try answering the following questions by 
 
 #### Answers
 
-1.
-2.
-3.
+1. Todo
+2. Todo
+3. Todo
 
 ## Summary
 
@@ -123,4 +122,4 @@ The purpose of this article was to provide practice for typical interview questi
 
 * [These aren't the metrics you're looking for]()
 * [Bad names in Classification Problems](/the-bad-names-in-classification-problems.html)
-
+* [What is a ROC curve?](/what-is-a-roc-curve-a-visualization-with-credit-scores.html)
