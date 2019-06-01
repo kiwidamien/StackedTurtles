@@ -79,11 +79,14 @@ $$\text{Recall} = \frac{\text{Hits}}{\text{Hits} + \text{Overlooked}}$$
 As Netscape Designer Phil Karlton stated:
 > There are two hard problems in Computer Science: cache invalidation and naming things.
 
-This article clamed that the traditional names for binary classification (TP/FP/TN/FN) were problematic, as they require some thought to determine what the "positive" and "negative" refer to: the state of the clasifier (whether the "alarm" goes off or not) or the state of the observation (whether the case in question was _actually_ positive or negative). Alternative (but non-standard) names were put forward to try and simplify how we reason about these terms.
+This article clamed that the traditional names for binary classification (TP/FP/TN/FN) are problematic, as they require some thought to determine what the "positive" and "negative" refer to: the state of the clasifier (whether the "alarm" goes off or not) or the state of the observation (whether the case in question was _actually_ positive or negative). Alternative (but non-standard) names were put forward to try and simplify how we reason about these terms.
 
 ## Related Articles
 
-* Chad Scherrer's artice on Precision and Recall as conditional probabilities [_Confusion confusion_](https://cscherrer.github.io/post/confusion-confusion/)
 * [Interview Practice with Precision and Recall]() (to come)
 * [These aren't the metrics you're looking for]() (to come)
 
+## References
+
+* Chad Scherrer's artice on Precision and Recall as conditional probabilities [_Confusion confusion_](https://cscherrer.github.io/post/confusion-confusion/)
+* Don Norman's [_The Design of Everyday Things_](https://www.amazon.com/Design-Everyday-Things-Revised-Expanded-ebook/dp/B00E257T6C/ref=sr_1_1?keywords=dan+norman&qid=1559371585&s=books&sr=1-1), which discusses how people will tolerate poor design and poor naming.
