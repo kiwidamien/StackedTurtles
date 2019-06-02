@@ -66,14 +66,41 @@ To help get some experience with this, try answering the following questions by 
 2. What would a recall of 80% mean?
 3. What would a precision of 75% mean?
 4. If the recall is 80% and the precision is 75%, what is the TPR?
-5. If the recall is 80% and the precision is 75%, what is the FNR?
+5. If the recall is 80% and the precision is 75%, what is the FPR?
+
+Note: It may not be possible to answer some/any of these questions without additional information.
 
 #### Answers
 
+<div class="wrap-collabsible">
+  <input id="collapsible" class="toggle" type="checkbox">
+  <label for="collapsible" class="lbl-toggle">More Info</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
 1. The positive class is the presence of the disease.
 2. A recall of 80% would mean that 80% of the positive cases were found by the detector (if you submitted the entire population). Alternatively, a recall of 80% means that there is an 80% chance of someone with the disease setting off the detector. The problem with a low recall score is that we would miss people that were unhealthy. If the recall is 80%, we are would not detect 20% of the sick population.
 3. A precision of 75% means 75% of the times the detector went off, they were actually positive cases. The problem with a low precision score is spending time having people undergo further screenings or using medication unnecessarily. In this example, 25% of the people we flagged as being sick would have unnecessary followups.
 4. TPR is the same as recall; in this case it is 80%
+5. The FPR cannot be found from the information given.
+
+Let's look at the last claim in more detail. There are four numbers in the confusion matrix, but if we double all of them, our metrics don't change (i.e. the things we measure such as precision, recall, etc are normalized to the population). Given that we only have two independent numbers (precision and recall) we cannot expect to recover all the different metrics. We would expect given _three_ independent numbers, however, we could. (The number is three because all metrics can be written in terms of the four number TP/FP/TN/FN, but our metrics don't depend on the sum of these four numbers).
+
+How do we _know_ that FPR is one of the numbers we cannot recover from precision and recall alone? We could try an algebraic proof, but that isn't that useful for an interview. Instead, let's use the precision and recall given, but assume the percentage of people affected by the disease (the _baserate_) is different in the two cases. By showing we get different numbers for the FPR, we can conclude we cannot calculate the FPR without additional information such as the baserate.
+
+Consider a population with 1200 people, and 5% of the population (60 people) have the disease.
+- 80% recall states that we can detect 80% of these people, ie. 48 of the 60 will be detected.
+- 75% precision states that 75% of those detected have the disease, ie. the 48 detected people make up 75% of the detections. The classifier classifies 64 people as having the disease, 48 correctly and 16 times incorrectly.
+- The FPR is the fraction of the healthy population that set off the detector. There are 1140 healthy people, and 16 of them set off the detector, so the FPR is 16/1140=1.4%.
+
+What if the baserate had been 10% instead? Then we have 120 people out of 1200 that have the disease.
+- 80% recall tells us that 96 people with the disease will be detected (80% of the 120 diseased people)
+- 75% precision tells us 128 people will set off the detector (96 people is 75% of 128, the other 32 people that set off the detector are healthy)
+- The FPR is the fraction of the healthy population (1080) that set off the detector (25% of 128 = 32). The FPR is 32/1080 = 3%.
+
+Since our rate changes depending on the assumed baserate, we can conclude that we don't have enough information from precision and recall alone to calculate the FPR.
+</div>
+  </div>
+</div>
 
 
 ### Problem 2: Breathalyzer Tests
