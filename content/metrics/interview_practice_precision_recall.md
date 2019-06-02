@@ -73,7 +73,7 @@ Note: It may not be possible to answer some/any of these questions without addit
 #### Answers
 
 <button class="collapsible">Open Collapsible</button>
-<div class="content"i markdown=1>
+<div class="collapsible_content" markdown=1>
 
 1. The positive class is the presence of the disease.
 2. A recall of 80% would mean that 80% of the positive cases were found by the detector (if you submitted the entire population). Alternatively, a recall of 80% means that there is an 80% chance of someone with the disease setting off the detector. The problem with a low recall score is that we would miss people that were unhealthy. If the recall is 80%, we are would not detect 20% of the sick population.
