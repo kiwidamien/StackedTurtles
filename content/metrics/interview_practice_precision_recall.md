@@ -72,11 +72,12 @@ Note: It may not be possible to answer some/any of these questions without addit
 
 #### Answers
 
-<div class="wrap-collabsible">
-  <input id="collapsible" class="toggle" type="checkbox">
+<div class="wrap-collabsible" markdown=1>
+  <input id="collapsible" class="toggle" type="checkbox" markdown=1>
   <label for="collapsible" class="lbl-toggle">More Info</label>
-  <div class="collapsible-content">
-    <div class="content-inner">
+  <div class="collapsible-content" markdown=1>
+    <div class="content-inner" markdown=1>
+
 1. The positive class is the presence of the disease.
 2. A recall of 80% would mean that 80% of the positive cases were found by the detector (if you submitted the entire population). Alternatively, a recall of 80% means that there is an 80% chance of someone with the disease setting off the detector. The problem with a low recall score is that we would miss people that were unhealthy. If the recall is 80%, we are would not detect 20% of the sick population.
 3. A precision of 75% means 75% of the times the detector went off, they were actually positive cases. The problem with a low precision score is spending time having people undergo further screenings or using medication unnecessarily. In this example, 25% of the people we flagged as being sick would have unnecessary followups.
@@ -98,6 +99,7 @@ What if the baserate had been 10% instead? Then we have 120 people out of 1200 t
 - The FPR is the fraction of the healthy population (1080) that set off the detector (25% of 128 = 32). The FPR is 32/1080 = 3%.
 
 Since our rate changes depending on the assumed baserate, we can conclude that we don't have enough information from precision and recall alone to calculate the FPR.
+
 </div>
   </div>
 </div>
