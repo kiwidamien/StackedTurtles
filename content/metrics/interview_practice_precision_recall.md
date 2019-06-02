@@ -73,6 +73,15 @@ Note: It may not be possible to answer some/any of these questions without addit
 #### Answers
 
 <div>
+  <button class="collapsible">Answers</button>
+  <div class="collapsible_content" markdown=1>
+  
+  Hello
+  
+  </div>
+</div>
+
+<div>
 <button class="collapsible">Open Collapsible</button>
 <div class="collapsible_content" markdown=1>
 <ol>
@@ -112,17 +121,27 @@ Since our rate changes depending on the assumed baserate, we can conclude that w
 
 ### Problem 2: Breathalyzer Tests
 
+A breathalyzer registers someone's blood alcohol content to tell if they are "over the limit" or "under the influence" of alcohol. It is typically used at roadside police stops to determine if someone is legally able to drive.
+
 1. What is the positive class?
 2. What would a recall of 70% mean?
 3. What would a precision of 90% mean?
 
 #### Answers
 
-1. Todo
-2. Todo
-3. Todo
+1. The postive case would be detecting someone with blood alcohol content (BAC) over the limit.
+2. A recall of 70% means there is a 70% chance of someone who has a BAC over the limit of setting off the detector. A low recall would mean that people wiht high BAC are not gettin caught when stopped.
+3. A precision of 90% means that 90% of the people who blow a positive result actually have a BAC that is too high. Low precision would mean that a significant fraction of the people who blow a positive result would have a follow-up test (such as a blood test) or a ticket when they were within the legal limit.
 
-### Problem 3: 
+If people failing the breathalyzer are immediately ticketed, and have to contest the ticket, then it is preferrable to favor high precision (i.e. ensure that we only give tickets to those that we think are actually guilty, at the expense of letting some guilty people go). If they have to be submitted to a different field test (e.g. blood test) then we can be a little less insistent on precision, as the cost of falsely flagging someone is to pass them on to a secondary test.
+
+This example also shows one of the limitations of precision and recall as measures. If the legal limit is 0.08 mg/L, failing to flag someone that has 0.0805 mg/L counts as much against recall as failing to flag someone with a 0.10 mg/L BAC. Likewise, flagging someone with a 0.0795 mg/L counts as much against precision as flagging someone with 0.03 mg/L. In a real application, you would want to emphasize precision close to the limit, but transition to prioritizing recall for people well over the limit.
+
+For a breathalyzer, the input is generally just chemical, and we simply have to pick a threshold. If we are looking at a machine learning algorithm that has access to demographic information, we should be very careful when discretizing a continuous variable into two categories and treating mild infractions the same as serious ones.
+
+### Problem 3: Should we approve a loan?
+
+We are looking to develop a machine learning algorithm to predict whether someone will pay a loan back or not.
 
 1. What is the positive class?
 2. What would a recall of 75% mean?
@@ -130,11 +149,15 @@ Since our rate changes depending on the assumed baserate, we can conclude that w
 
 #### Answers
 
-1. Todo
-2. Todo
-3. Todo
+1. The positive class are the borrowers that pay back the loans.
+2. 75% recall means that 75% of the borrowers that would pay back the loan are approved by our system. We miss 25% of people that would have paid us back by rejecting them. In general, the problem with a low recall is that we are rejecting customers who we would have paid us back (and for whom we would have made interest).
+3. 85% precision means that of all the loans we approve, 85% pay us back. The remaining 15% of approved loans go into default. The problem with a low precision is that we are approving loans that are defaulting.
 
-### Problem 4: 
+In this example we would generally prefer to emphasize precision over recall, as approving a bad loan (and losing the capital investment) is more costly than missing out on the profit we could make from a good loan. 
+
+We have to be a little careful here too, as we are binarizing a continuous variable: there is a difference between someone who defaults after paying 1 year of a 5 year loan, and someone who defaults after paying 4 years of a 5 year loan. A product manager might expect you to look at the expected loss of a customer and threshold on that as a more useful (and nuanced) metric, rather than precision.
+
+### Problem 4: Should we 
 
 1. What is the positive class?
 2. What would a recall of 80% mean?
