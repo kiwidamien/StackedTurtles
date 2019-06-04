@@ -36,9 +36,7 @@ LOAD_CONTENT_CACHE = False
 PLUGIN_PATHS = ['/Users/damien/pelican-plugins']
 PLUGINS = ['assets', 'gravatar', 'neighbors', 'subcategory', 'series', 'readtime', 'ipynb.markup',
            'pelican_fontawesome', 'pelican_alias', 'render_math',
-           'pelican_javascript'] + ['liquid_tags.img', 'liquid_tags.video',
-           'liquid_tags.youtube', 'liquid_tags.vimeo',
-           'liquid_tags.include_code', 'liquid_tags.notebook']
+           'pelican_javascript']
 
 #THEME = '/Users/damien/pelican-themes/stye'
 THEME = 'theme/attila'  # Nice jumbotron, no left sidebar
