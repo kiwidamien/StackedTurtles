@@ -114,7 +114,7 @@ A breathalyzer registers someone's blood alcohol content to tell if they are "ov
 
 If people failing the breathalyzer are immediately ticketed, and have to contest the ticket, then it is preferrable to favor high precision (i.e. ensure that we only give tickets to those that we think are actually guilty, at the expense of letting some guilty people go). If they have to be submitted to a different field test (e.g. blood test) then we can be a little less insistent on precision, as the cost of falsely flagging someone is to pass them on to a secondary test.
 
-This example also shows one of the limitations of precision and recall as measures. If the legal limit is 0.08 mg/L, failing to flag someone that has 0.0805 mg/L counts as much against recall as failing to flag someone with a 0.10 mg/L BAC. Likewise, flagging someone with a 0.0795 mg/L counts as much against precision as flagging someone with 0.03 mg/L. In a real application, you would want to emphasize precision close to the limit, but transition to prioritizing recall for people well over the limit.
+This example also shows one of the limitations of precision and recall as measures. If the legal limit is 0.08%, failing to flag someone that has 0.0805% counts as much against recall as failing to flag someone with a 0.10% BAC. Likewise, flagging someone with a 0.0795% counts as much against precision as flagging someone with 0.03%. In a real application, you would want to emphasize precision close to the limit, but transition to prioritizing recall for people well over the limit.
 
 For a breathalyzer, the input is generally just chemical, and we simply have to pick a threshold. If we are looking at a machine learning algorithm that has access to demographic information, we should be very careful when discretizing a continuous variable into two categories and treating mild infractions the same as serious ones.
 
@@ -150,7 +150,7 @@ We have to be a little careful here too, as we are binarizing a continuous varia
 
 ## Summary
 
-When doing interview practice (and in actual interviews) you should translate from the more abstract "positive c;ass" and "negative class" to describe the meaning of precision and recall in the context of the problem you are trying to solve. The difference between precision and recall often trips up people when learning data science; they are nearly incomprehensible when talking to most executives.
+When doing interview practice (and in actual interviews) you should translate from the more abstract "positive class" and "negative class" to describe the meaning of precision and recall in the context of the problem you are trying to solve. The difference between precision and recall often trips up people when learning data science; they are nearly incomprehensible when talking to most executives.
 
 You should also have an argument for whether you should be optimizing for precision or recall. In a realistic problem, you shouldn't be optimizing for one or the other -- rather you should look at the _tradeoff_ between precision and recall, and pick the best tradeoff for the problem at hand.
 
