@@ -109,7 +109,8 @@ A breathalyzer registers someone's blood alcohol content to tell if they are "ov
 2. What would a recall of 70% mean?
 3. What would a precision of 90% mean?
 
-#### Answers
+<details markdown=1>
+<summary>**Answers**</summary>
 
 1. The postive case would be detecting someone with blood alcohol content (BAC) over the limit.
 2. A recall of 70% means there is a 70% chance of someone who has a BAC over the limit of setting off the detector. A low recall would mean that people wiht high BAC are not gettin caught when stopped.
@@ -121,6 +122,8 @@ This example also shows one of the limitations of precision and recall as measur
 
 For a breathalyzer, the input is generally just chemical, and we simply have to pick a threshold. If we are looking at a machine learning algorithm that has access to demographic information, we should be very careful when discretizing a continuous variable into two categories and treating mild infractions the same as serious ones.
 
+</details>
+
 ### Problem 3: Should we approve a loan?
 
 We are looking to develop a machine learning algorithm to predict whether someone will pay a loan back or not.
@@ -129,7 +132,8 @@ We are looking to develop a machine learning algorithm to predict whether someon
 2. What would a recall of 75% mean?
 3. What would a precision of 85% mean?
 
-#### Answers
+<details markdown=1>
+<summary>**Answers**</summary>
 
 1. The positive class are the borrowers that pay back the loans.
 2. 75% recall means that 75% of the borrowers that would pay back the loan are approved by our system. We miss 25% of people that would have paid us back by rejecting them. In general, the problem with a low recall is that we are rejecting customers who we would have paid us back (and for whom we would have made interest).
@@ -138,6 +142,9 @@ We are looking to develop a machine learning algorithm to predict whether someon
 In this example we would generally prefer to emphasize precision over recall, as approving a bad loan (and losing the capital investment) is more costly than missing out on the profit we could make from a good loan. 
 
 We have to be a little careful here too, as we are binarizing a continuous variable: there is a difference between someone who defaults after paying 1 year of a 5 year loan, and someone who defaults after paying 4 years of a 5 year loan. A product manager might expect you to look at the expected loss of a customer and threshold on that as a more useful (and nuanced) metric, rather than precision.
+
+</details>
+
 
 ### Problem 4: Should we 
 
