@@ -70,8 +70,8 @@ To help get some experience with this, try answering the following questions by 
 
 Note: It may not be possible to answer some/any of these questions without additional information.
 
-#### Answers
-
+<details markdown=1>
+<summary>**Answers**</summary>
 
 1. The positive class is the presence of the disease.
 2. A recall of 80% would mean that 80% of the positive cases were found by the detector (if you submitted the entire population). Alternatively, a recall of 80% means that there is an 80% chance of someone with the disease setting off the detector. The problem with a low recall score is that we would miss people that were unhealthy. If the recall is 80%, we are would not detect 20% of the sick population.
@@ -97,6 +97,9 @@ What if the baserate had been 10% instead? Then we have 120 people out of 1200 t
 
 
 Since our rate changes depending on the assumed baserate, we can conclude that we don't have enough information from precision and recall alone to calculate the FPR.
+
+</details>
+
 
 ### Problem 2: Breathalyzer Tests
 
