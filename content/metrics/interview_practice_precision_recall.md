@@ -40,6 +40,12 @@ Here we will assume that you are being asked a question by a data scientist or M
 
 A previous article, [_Bad Names In Classification Problems_](/the-bad-names-in-classification-problems.html), also defines precision and recall (and gives some alternatives to the names TP/FP/TN/FN). The TPR and FPR are the vertical and horizontal axes on the [ROC](/what-is-a-roc-curve-a-visualization-with-credit-scores.html) curve, respectively.
 
+## The short version
+
+**Recall** is more important where Overlooked Cases (False Negatives) are more costly than False Alarms (False Positive). The focus in these problems is finding the positive cases. 
+
+**Precision** is more important where False Alarms (False Positives) are more costly than Overlooked Cases (False Negatives). The focus in these problems is in weeding out the negative cases. 
+
 ## Sample interview question
 
 An interview question might be 
@@ -148,17 +154,29 @@ We have to be a little careful here too, as we are binarizing a continuous varia
 </details>
 
 
-### Problem 4: Should we 
+### Problem 4: Should we unlock a phone? 
+
+We are building a facial recognition algorithm to allow people to unlock their phone. If the phone recognizes the person as the authorized user, it will unlock the phone. If it doesn't recognize the user, it will prompt them to try again or try an alternative method (such as a passphrase).
 
 1. What is the positive class?
 2. What would a recall of 80% mean?
 3. What would a precision of 70% mean? 
 
+<details markdown=1>
 #### Answers
 
-1. Todo
-2. Todo
-3. Todo
+1. The positive class is recognizing the user as authorized.
+2. 80% recall means 80% of the times the authorized user tries to use this feature, the phone unlocks. The remaining 20% of the time, the authorized user was asked to try again or use a passphase.
+3. 70% precision means that out of all the times the phone was unlocked using this feature, it was unlocked by an authorized user. The remaining 30% of the times it was unlocked, it allowed in someone that was not authorized.
+
+Precision is the more important metric here: if precision is low that means this device isn't securing information very well on your phone. If recall is low, it just means the user has to try again (perhaps from a different angle) or resort to using a passphrase. This adds more friction, and users are likely to say the feature isn't worth the effort if recall is very low, but this is better than allowing people that look vaguely similar to unlock your phone (this would be high recall, low precision).
+
+As a product manager, you would also care about how precision and recall are distributed amongst users. There is a huge difference between having a recall of 80% over all attempts, compared to it always working for 80% of the population, and never working for 20% of the population. The reality is unlikely to be this extreme, but there probably is a difference between the recall and precision rates based on gender and ethnicity. For image recognition, you should consider the following:
+
+- Are there biases in the training data set? Often training sets will have some ethnic groups over-represented. Thankfully, this can be addressed by fixing the data set.
+- Darker skin tones don't reflect as much light, which gives sensors less signal to work off. This can be overcome by taking images in brighter conditions, but it will mean that many image recognition algorithms will be more responsive to lighter skin tones than darker tones. There isn't a way to fix this (it's physics!) but you can handicap your algorithm to refuse to classify any person if the ambient brightness is too low (even if it is very confident it could identify a light skin toned person). This would mean that users would have a uniform experience, regardless of ethnic group.
+
+</details>
 
 ## Summary
 
