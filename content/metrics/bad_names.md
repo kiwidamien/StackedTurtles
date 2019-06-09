@@ -83,7 +83,7 @@ This article clamed that the traditional names for binary classification (TP/FP/
 
 ## Related Articles
 
-* [Interview Practice with Precision and Recall]() (to come)
+* [Interview Practice with Precision and Recall](/interview-practice-with-precision-and-recall.html)
 * [These aren't the metrics you're looking for]() (to come)
 
 ## References
