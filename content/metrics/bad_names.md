@@ -48,7 +48,7 @@ Let's translate precision and recall into these new names.
 
 #### Precision
 
-Precision asks "how confident am I that times my alarm went off, it was actually a positive case?". A precision of 80% would mean that 80% of the time that the alarm went off, we have a positive case (that presumably requires action on our part). Phrased in terms of a conditional probability:
+Precision asks "how confident am I that when the alarm goes off, it actually is a positive case?". A precision of 80% would mean that 80% of the time that the alarm went off, we have a positive case (that presumably requires action on our part). Phrased in terms of a conditional probability:
 
 $$\text{Precision} = \text{P}(\text{Was a positive case | Alarm went off})$$
 
