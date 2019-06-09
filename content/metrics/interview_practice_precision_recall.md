@@ -163,7 +163,7 @@ We are building a facial recognition algorithm to allow people to unlock their p
 3. What would a precision of 70% mean? 
 
 <details markdown=1>
-#### Answers
+<summary>**Answers**</summary>
 
 1. The positive class is recognizing the user as authorized.
 2. 80% recall means 80% of the times the authorized user tries to use this feature, the phone unlocks. The remaining 20% of the time, the authorized user was asked to try again or use a passphase.
@@ -175,6 +175,49 @@ As a product manager, you would also care about how precision and recall are dis
 
 - Are there biases in the training data set? Often training sets will have some ethnic groups over-represented. Thankfully, this can be addressed by fixing the data set.
 - Darker skin tones don't reflect as much light, which gives sensors less signal to work off. This can be overcome by taking images in brighter conditions, but it will mean that many image recognition algorithms will be more responsive to lighter skin tones than darker tones. There isn't a way to fix this (it's physics!) but you can handicap your algorithm to refuse to classify any person if the ambient brightness is too low (even if it is very confident it could identify a light skin toned person). This would mean that users would have a uniform experience, regardless of ethnic group.
+
+</details>
+
+### Problem 5: Detect malicious programs
+
+When running a program for the first time, we are running some information about the program (such as where it was downloaded, size of the executable, etc) through a classifier. If the program is deemed safe, it will run. If it is deemed unsafe, the user will be prompted to confirm that the program is safe before running.
+
+1. What is the positive class?
+2. What does 85% recall mean?
+3. What does 75% precision mean?
+
+<details markdown=1>
+<summary>**Answers**</summary>
+
+1. The positive class is "this program is not safe to run" 
+2. 85% recall means that 85% of unsafe programs are detected, and showed the prompt. The other 15% of malicous programs did not require a prompt.
+3. A precision of 75% means that out of all the programs that set off the prompt, 75% of them were malicous. The other 25% of the times the dialog popped up, it was for programs that were fine.
+
+In this case we would want to prioritize recall. The cost of letting a malicous program run is high, and the cost of incorrectly flagging a program is low - we just need to prompt the user whether or not we are sure. An extreme version of this is to flag every program, which would be a recall of 100% and a low precision; this is one of the few examples where this might be an acceptable tradeoff.
+
+</details>
+
+### Problem 6: de-duplicate records
+
+You are writing a deduplication algorithm. Its goal is to flag entries in your database that are duplicates of existing records. It is more complicated than checking if two records are identical (Which is an easy problem), but instead tries to assess if differences are meaningful. For example:
+
+- The names  _Jane Smith_, _Ms Jane Smith_, and  _Jane J. Smith_, may refer to the same person
+- The addresses _101 Main St Apt 101_, _101 Main St, Apt 101_, _101 Main Street #101_ may all refer to the same street address
+
+Records that our algorithm detects as duplicates will be reviewed, and if we are sure they are duplicates, they are removed.
+
+1. What is the positive class?
+2. What does 85% recall mean?
+3. What does 75% precision mean?
+
+<details markdown=1>
+<summary>**Answers**</summary>
+
+1. The positive class is the record is a duplicate
+2. 85% recall means that 85% of the duplicate records are detected by our algorithm. The remaining 15% of duplicate records are not detected. The problem with a low recall is that we are not ending up with a clean database.
+3. 75% precision means that 75% of the flagged records are actually duplicates, while the remaining 25% of the flagged records are not duplicates. The problem with a low precision is that we have a lot of irrelevant records to filter through.
+
+In this case, recall is the more important metric as our goal is to clean our database. To get a better idea of how to determine how to manage the precision-recall tradeoff in this example, consider how much it costs for someone to review a records, and what the impact of keeping a duplicate record in the database are.
 
 </details>
 
