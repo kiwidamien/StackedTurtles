@@ -7,14 +7,20 @@ Summary: A definition cannot be _wrong_, but it can fail to be useful. Can you r
 
 # True by definition
 
-A definition creates a term that allows us to express a complicated idea, or make a fuzzy idea (hopefully) unambiguious. Making a definition also reduces our freedom to change the analysis to make things look more favorable, so that we can compare "like with like". For example, lets consider the fictious example of a rainy-day equipment review site `Umbrella.com`, and its attempt to measure how many users it loses a month, called user _churn_. 
+A definition creates a term that allows us to express a complicated idea, or make a fuzzy idea (hopefully) unambiguious. Definitions also provide a standard so we can easily see how things are changing over time, provided the definition doesn't change. Ultimately, however, a definition is only useful if it accounts for something we are actuallint interested in measuring or tracking. 
 
-To actually measure this, we need a more explicit definition of churn. What does it mean to lose a user? An online magazine company or newspaper that runs a subscription service has a reasonably clear definition to this question: a "lost user" is a cancelled subscription. The ad-supported `Umbrella.com` is trickier, as users just stop visiting the site without informing us of their intention to never return. How long after a user's most recent visit do we have to wait before claiming the user is no longer active?
+To make this more concrete, lets consider the ficitious example of a rainy-day equipment review site, `Umbella.com`. They want to measure how many users it is losing, which is generally referred to as (user) _churn_.
+
+To measure this, we need a more explicit definition of churn. What does it mean to lose a user? If `Umbrella.com` was a paid subscription service, a reasonable answer would be a user churns when she cancels her subscription. In our example, `Umbrella.com` is a free ad-supported website, and users lose interest and stop coming to the site. How long should we wait between visits before we deem that a user isn't comping back? A day? A week? A month?
 
 After a lot of back and forth, the product team at `Umbrella.com` arrive at the following defintion:
 > A churned user is a registered user that hasn't visited the site over the last 14 days.
 
+## The power of definitions
+
 The definition is important, because it helps shape conversations around the company. As a _definition_, using any number of days (e.g. 1 day, 14 days, or 144 days) makes sense. As a metric, you want it to be long enough that your long term users are not churning under the definition, but short enough that you can actually take action and see it reflected in the metric. A lot of time and thought should be put into your definition, especially if your definition is going to go into a metric as it is going to direct decisions.
+
+By setting the interval for 14 days, we are setting expectations about how often we think registered users come to the site. We are also setting up the idea that if you haven't been to our site in two weeks, you are not coming back. Hopefully we did some research, and showed that 90% of gaps between visits were shorter than 14 days, or some similar statistic. 
 
 ## ... and now some wrinkles
 
