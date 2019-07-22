@@ -52,6 +52,7 @@ Having a single source of truth allows us to operate without uncertainty, which 
 Dealing with the data is different. We want to use "multiple watches" to allow ourselves to estimate the uncertainty in our measurement. Any measurement that isn't just counting has an uncertainty attached to it. Even simple counting tasks, such as counting the number of unique users accessing your site, has some degree of uncertainty associated with it (thanks to ad blocking and private browsing modes). When assessing click though rates on ads, even if we can count what happened with no undertainty, the thing we are really trying to measure is the click-through rate, which is the rate in which our population would click on the ad, and we are inferring that from our _sample_ data. This inference introduces uncertainty as to how well our sample will generalize.
 
 The idea of a single source of truth comes from software engineering, where it is used to ensure that our application is in one consistent state. In data science, in contrast:
+
 * we should have a _single_ definition for our metric or target, 
 * we should construct features multiple different ways, to see what effect it has (and what the uncertainty is)
 * especially when using proxies, we should ensemble them to reduce "sterotyping" individual points, and make our inferences more robust.
