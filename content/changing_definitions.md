@@ -95,4 +95,4 @@ You might object to the idea that mathematicians try not to change definitions, 
 If you take an abstract algebra class, you will learn
 > A non-zero, non-ideal element $p$ of a commutative ring $R$ is prime if and only if $p|ab$ implies $p|a$ or $p|b$ for all $a$, $b$ in $R$.
 
-Don't worry if this definition doesn't make sense, but it is clear the second definition is not the same as the first definition. It is a _refinement_, in the sense that if you apply the second definition to the special case of the integers, you recover the first definition. So as long as we were interested in positive integers greater than one, people using the first and second definition would agree.
+Don't worry if this definition doesn't make sense, but it is clear the second definition is not the same as the first definition. It is a _refinement_, in the sense that if you apply the second definition to the special case of the integers, it implies the first definition. So as long as we were interested in positive integers greater than one, people using the first and second definition would agree.
