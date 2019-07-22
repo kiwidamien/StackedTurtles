@@ -25,6 +25,7 @@ By setting the interval for 14 days, we are setting expectations about how often
 ## ... and now some wrinkles
 
 After being in business a while, `Umbrella.com` notices a couple of things:
+
 - We are seeing registered users whose only interaction with the site is when they get directed here from Google. Once they arrive, the don't click any ads or links on a page. Overall, we feel this shouldn't count as a visit.
 - We are seeing in summer that there is less interest in umbrella reviews (outside of the coastal site). We are seeing that churn rates are high because our registered users are only browsing the site once a month, but are still coming back. Because it is more than two weeks between visits, they keep getting counted as churned.
 
