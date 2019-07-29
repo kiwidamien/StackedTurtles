@@ -39,20 +39,21 @@ We will never be able to have Ridge or Lasso support even a simple error such as
 
 ## An example where having different loss and scoring is reasonable.
 
-It might seem shocking that loss and scoring are different. After all, if we are going to optimize for something, wouldn't it make sense to optimize for it throughout? While this is generally true, we are far more comfortable with the idea that loss and scoring being different in classification problems. Consider a classifier for determining if someone had a disease, and we are aiming for high recall (i.e. we would rather make sure we find everyone with the disease) 
+It might seem shocking that loss and scoring are different. After all, if we are going to optimize for something, wouldn't it make sense to optimize for it throughout? While this is generally true, we are far more comfortable with the idea that loss and scoring being different in classification problems. Consider a classifier for determining if someone had a disease, and we are aiming for high recall (i.e. we would rather flag a healthy person eroneously than miss a sick person).
 ```python
 # Here are some parameters to search over
 params = {
   ....
 }
 
-rf_grid = GridSearchCV(RandomForestClassifier(), param_grid=params, cv=5, scoring='recall')
+rf_grid = GridSearchCV(RandomForestClassifier(), param_grid=params, 
+                       cv=5, scoring='recall')
 rf_grid.fit(X_train, y_train)
 ```
 
 It is possible to get 100% recall by simply predicting everyone has the disease. That is _not_ what the code above does. Instead, for each combination of hyperparameters we train a random forest in the usual way (minimizing the entropy or Gini score). Once we have all of those different trained models, _then_ we compare their recall and select the best one.
 
-This isn't fundamentally any different from what is happening when we find coefficients using MSE and then select the model with the lowest MAE, instead of using MAE as both the loss and the scoring. The difference is that recall is a bad loss function because it is trivial to optimize. In classification, we are a lot happier using a loss and a metric that are different.
+This isn't fundamentally any different from what is happening when we find coefficients using MSE and then select the model with the lowest MAE, instead of using MAE as both the loss and the scoring. The difference is that recall is a bad loss function because it is trivial to optimize. In classification, we are a lot happier using a loss function and a score functoin that are different.
 
 
 (I would put forward an opinion that because recall is a bad _loss_, it is also a bad _metric_. If I would not optimize against recall directly -- and I shouldn't -- it is because it is pathelogical, and so I shouldn't use it to select between my models either. Instead, in a given problem, I should more carefully consider the trade-offs between false positives and false negatives, and use that to pick an appropriate scoring method. I also believe I am in the minority in this view that recall is a pathelogical score, so it is probably best you don't repeat this point of view while on an interview.)
