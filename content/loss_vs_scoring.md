@@ -60,7 +60,63 @@ This isn't fundamentally any different from what is happening when we find coeff
 
 ## Making a custom score
 
-Now that we understand the difference between a loss and a scorer, how do we implement a custom score? The first step is to see if we need to, or if it is already implemented for us.
+Now that we understand the difference between a loss and a scorer, how do we implement a custom score? The first step is to see if we need to, or if it is already implemented for us. We can find a list of build-in scores with the following code:
+```python
+import sklearn
+print(sorted(sklearn.metrics.SCORERS.keys()))
+```
+This lists the 35 (at the time of writing) different scores that sklearn already recognizes.
+
+If the score you want isn't on that list, then you can build a custom scorer. The easiest way to do this is to make an ordinary python function `my_score_function(y_true, y_predict, **kwargs)`, then use sklearn's `make_scorer` to create an object with all the properties that sklearn's grid search expects. This sounds complicated, but let's build mean absolute error as a scorer to see how it would work. Note this scorer is already built-in, so in practice we would use that, but this is an easy to understand scorer:
+```python
+from sklearn.metrics import make_scorer
+import numpy as np
+
+def mean_abs_error(y_true, y_predict):
+  return np.abs(np.array(y_true)-np.array(y_predict)).mean()
+
+mean_abs_scorer = make_scorer(mean_abs_error, greater_is_better=False)
+```
+
+The `make_scorer` function takes two arguments: the function you want to transform, and a statment about whether you want to maximize the score (like accuracy and $R^2$) or minimize it (like MSE or MAE). In the standard implementation, it is assumed that the a higher score is better, which is why we see the functions we want to minimize appear in the negative form, such as `neg_mean_absolute_error`: minimizing the mean absolute error is the same as maximizing the _negative_ of the mean absolute error. The `make_scorer` function allows us to specify directly whether we should maximize or minimize.
+
+We can now use the scorer in cross-validation like so:
+```python
+# This was our original way of using cross-validation using MAE:
+# Note we would use the scoring parameter in GridSearchCV or others
+rcv = RidgeCV(alphas, scoring='neg_mean_absolute_error', cv=5).fit(X_train, y_train)
+
+# This is equivalent, using our custom scorer
+rcv = RidgeCV(alphas, scoring=mean_abs_scorer, cv=5).fit(X_train, y_train)
+```
+
+### Unfortunate choice of terminology
+
+In the scikit-learn documentation, they make an unfortunate distinction is made between scores you attempt to maximize, and scores you attempt to minimize. They call a score you try to maximize a "score", and a score you try to minimize a "loss" in [this part of the documentation](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.make_scorer.html) when describing `greater_is_better`.
+
+I am not using those terms the same way here! It isn't you that is confused! I don't use the same terminology as sklearn for a few reasons:
+
+* The function described, `make_scorer` should make ... scorers. It seems perverse to say some scorers return scores, and some return losses, which sklearn tries to do. This scorer is a score, and this scorer is a loss is just far too confusing.
+* The term loss is commonly used in fitting algorithms in literate. This gives a nice distinction between a loss (used when fitting) and a score (used when choosing between fit models). Sklearn's usage "uses up" a perfectly good term "loss" instead of just talking about a score we are trying to minimize.
+
+### Implementing MAPE
+
+The scorer we implemented about wasn't that useful, as we could already use the predefined `'neg_mean_absolute_error'` string to accomplish the same goal. Let's implement a new score, mean absolute percentage error (MAPE), that isn't predefined in sklearn. The definition of MAPE is 
+
+$$ \text{MAPE} = \frac{1}{n}\sum_{i=1}^n |\text{\% error in }y_{\text{predict, i}}| = \frac{1}{n}\sum_i \frac{|y_{\text{true, i}} - y_{\text{predict, i}}|}{|y_{\text{true, i}}|} $$
+
+In code, this is
+```python
+def mape(y_true, y_predict):
+  # Note this blows up if y_true = 0
+  # Ignore for demo -- in some sense an unsolvable
+  # problem with MAPE as an error metric
+  y_true = np.array(y_true)
+  y_predict = np.array(y_predict)
+  return np.abs((y_true - y_predict)/y_true).mean()
+
+mape_scorer = make_scorer(mape, greater_is_better=False)
+```
 
 ## Making a custom loss
 
