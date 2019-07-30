@@ -104,7 +104,7 @@ I am not using those terms the same way here! It isn't you that is confused! I d
 
 The scorer we implemented about wasn't that useful, as we could already use the predefined `'neg_mean_absolute_error'` string to accomplish the same goal. Let's implement a new score, mean absolute percentage error (MAPE), that isn't predefined in sklearn. The definition of MAPE is 
 
-$$ \text{MAPE} = \frac{1}{n}\sum_{i=1}^n |\text{\% error in }y_{\text{predict, i}}| = \frac{1}{n}\sum_i \frac{|y_{\text{true, i}} - y_{\text{predict, i}}|}{|y_{\text{true, i}}|} $$
+$$ \text{MAPE} = \frac{1}{n}\sum_{i=1}^n |\text{% error in }y_{\text{predict, i}}| = \frac{1}{n}\sum_i \frac{|y_{\text{true, i}} - y_{\text{predict, i}}|}{|y_{\text{true, i}}|} $$
 
 In code, this is
 ```python
