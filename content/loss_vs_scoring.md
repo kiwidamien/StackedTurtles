@@ -56,7 +56,7 @@ It is possible to get 100% recall by simply predicting everyone has the disease.
 This isn't fundamentally any different from what is happening when we find coefficients using MSE and then select the model with the lowest MAE, instead of using MAE as both the loss and the scoring. The difference is that recall is a bad loss function because it is trivial to optimize. In classification, we are a lot happier using a loss function and a score functoin that are different.
 
 
-(I would put forward an opinion that because recall is a bad _loss_, it is also a bad _metric_. If I would not optimize against recall directly -- and I shouldn't -- it is because it is pathelogical, and so I shouldn't use it to select between my models either. Instead, in a given problem, I should more carefully consider the trade-offs between false positives and false negatives, and use that to pick an appropriate scoring method. I also believe I am in the minority in this view that recall is a pathelogical score, so it is probably best you don't repeat this point of view while on an interview.)
+(I would put forward an opinion that because recall is a bad _loss_, it is also a bad _scorer_. If I would not optimize against recall directly -- and I shouldn't -- it is because it is pathelogical, and so I shouldn't use it to select between my models either. Instead, in a given problem, I should more carefully consider the trade-offs between false positives and false negatives, and use that to pick an appropriate scoring method. I also believe I am in the minority in this view that recall is a pathelogical score, so it is probably best you don't repeat this point of view while on an interview.)
 
 
 ## Making a custom score
@@ -123,7 +123,7 @@ mape_scorer = make_scorer(mape, greater_is_better=False)
 
 Making a custom loss is a lot harder, and I have devoted a separate (upcoming) [post](/custom_loss.html) to it. The simple approaches are
 
-* Write your own estimator in sklearn. [Alex Millar](https://alex.miller.im/posts/linear-model-custom-loss-function-regularization-python/) has done this in one of his posts, which my article borrows from.
+* Write your own estimator in sklearn. [Alex Miller](https://alex.miller.im/posts/linear-model-custom-loss-function-regularization-python/) has done this in one of his posts, which my article borrows from.
 * Write a custom loss in Keras. Neural nets can be used for large networks with interpretability problems, but we can also use just a single neuron to get linear models with completely custom loss functions.
 
 ## Summary
