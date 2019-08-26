@@ -7,14 +7,14 @@ Summary: A definition cannot be _wrong_, but it can fail to be useful. Can you r
 
 # True by definition
 
-A definition creates a term that allows us to express a complicated idea, or make a fuzzy idea (hopefully) unambiguious. Definitions also provide a standard so we can easily see how things are changing over time, provided the definition doesn't change. Ultimately, however, a definition is only useful if it accounts for something we are actuallint interested in measuring or tracking. 
+A definition creates a term that allows us to express a complicated idea, or make a fuzzy idea (hopefully) unambiguious. Definitions also provide a standard so we can easily see how things are changing over time, provided the definition doesn't change. Ultimately, however, a definition is only useful if it accounts for something we are actually interested in measuring or tracking. 
 
-To make this more concrete, lets consider the ficitious example of a rainy-day equipment review site, `Umbella.com`. They want to measure how many users it is losing, which is generally referred to as (user) _churn_.
+To make this more concrete, lets consider the ficitious example of a rainy-day equipment review site, `Umbrella.com`. They want to measure how many users it is losing, which is generally referred to as (user) _churn_.
 
 To measure this, we need a more explicit definition of churn. What does it mean to lose a user? If `Umbrella.com` was a paid subscription service, a reasonable answer would be a user churns when she cancels her subscription. In our example, `Umbrella.com` is a free ad-supported website, and users lose interest and stop coming to the site. How long should we wait between visits before we deem that a user isn't comping back? A day? A week? A month?
 
 After a lot of back and forth, the product team at `Umbrella.com` arrive at the following defintion:
-> A churned user is a registered user that hasn't visited the site over the last 14 days.
+> A churned user is a registered user that hasn't had a logged in session on the site over the last 14 days.
 
 ## The power of definitions
 
