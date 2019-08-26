@@ -1,7 +1,7 @@
 Title: Encoding categorical variables
 Tags: pandas, categorical
 Slug: encoding-categorical-variables
-Date: 2019-08-25 17:10
+Date: 2019-08-25 20:10
 Category: Data Science
 Summary: Non-numeric features generally have to be _encoded_ into one or more numeric features before applying machine learning models. This article covers some of the different encoding techniques, the `category_encoders` package, and some of the pros and cons of each method.
 
@@ -256,18 +256,22 @@ If there are only a few examples per category, this technique is not going to be
 
 ### Hash Encoder
 
-Hash encoders is an encoder that is suitable for a large number of levels. It has a lot of different compromises, but scales extremely well. The user specifies the number of binary output columns that they want as output.
+Hash encoders are suitable for categorical variables with a large number of levels. It has a lot of different compromises, but scales extremely well. The user specifies the number of binary output columns that they want as output.
 
 The central part of the hashing encoder is the _hash function_, which maps the value of a category into a number. For example, a (bad) hash function might treat "a=1", "b=2", and sum all the values together of the label together. For example:
 ```python
-hash("critic") = 3 + 18 + 9 + 20 + 9 + 3 = 62
+hash("critic") = 3 + 18 + 9 + 20 + 9 + 3 = 62 # bad hash function
 ```
 Because we are not memorizing the different levels, it deals with new levels gracefully. If we said that we wanted 4 binary features, we can take the value written in binary, and select the lowest 4 bits. For example, `hash("critic") = 62`, and in binary `62=0b111110`; taking the lower 4 bits would give the values `1`, `1`, `1`, `0`.
 
-It can be hard to see why this series of steps would lead to a useful encoding. Here is the basic intuition:
+It can be hard to see why this series of steps would lead to a useful encoding! It might be useful to compare it to One-hot encoding (OHE):
 
-* One-hot encoding gives problems because tree-based methods don't deal well with a lot of features. Hash encoding limits the number of output features, so we (hope) a good fraction of them have "feature_1" as 0 and 1, so trees can still select them and split on them.
-* Instead, we can think of each level as having a roughly 50% chance of getting a 0 or a 1 in each of the output features. If there are interesting properties shared by different levels, we hope that some of the features that share values will be selected by the tree models (and the others are ignored). As we get more output columns, the chances of "correlated" levels having the same value in at least one column goes up.
+* OHE allows us to find the effect for each level, and generally works pretty well for linear models, but ....
+* Because only a small fraction of the data happens to belong to any one level (if there are a lot of levels), it is hard for tree-based models to split on them.
+* BUT if we have a bunch of different features, then for any two levels we would expect about half the levels to get encoded as `1`, and half to get encoded as `0`.
+* If the hash function doesn't produce strong correlations amongst the columns, then wiht enough columns we expect to find some that have "similar" levels mapping to the same values. Tree based models are encouraged to split on those features.
+
+Even though the hash function isn't actually random, the idea is that it is so messy and meaningless that we can guide our intuition by thinking of it as assigning each level a random number. Better yet, we calculate this number, so we don't have to store it.
 
 Earlier, I claimed that "sum the values of letters in the level" wasn't a good hash function. That is because it is too easy for two words to have the same hash, so it is impossible for us to tell them apart after the encoding. For example, `hash("general")=62`, so the naive hash suggested would never be able to distinguish between the professions of "critic" and "general". The supplied hash functions make it unlikely to get collisions, but it is something to be aware of.
 
@@ -325,7 +329,61 @@ Compared to `HashEncoder`, the output is still reasonably interpretable and unde
 #### When to avoid
 This is a pretty flexible encoding scheme, but isn't build directly into `scikit-learn`. It offers some advantages over `TargetEncoder`, but `TargetEncoder` works nicely out-of-the-box.
 
+Even if you have a lot of levels, you can do a little bit of preprocessing to bucket the rare categories together instead of memorizing all the averages for each level.
+
 This technique doesn't extend naturally to regression problems.
+
+## A "Gotcha"
+
+Two of the encoders presented in this article, namely the `OneHotEncoder` and `HashingEncoder`, change the number of columns in the dataframe. This can lead to problems when using multiple encoders. For example, this will work:
+```python
+encode_grade = ce.OneHotEncoder(cols=['grade'], return_df=True)
+encode_purpose = ce.TargetEncoder(cols=['purpose'], return_df=True)
+
+# df_train_process1 will have more columns (because of OHE)
+df_train_process1 = encode_grade.fit_tranform(df_train)
+df_train_process2 = encode_purpose.fit_tranform(df_train_process1, df_train_process1['repaid'])
+
+# Now do the test set:
+df_test_process1 = encode_grade.fit_transform(df_test)
+df_test_process2 = encode_purpose.fit_transform(df_test_process1)
+```
+
+But the following _won't_:
+```python
+encode_grade = ce.OneHotEncoder(cols=['grade'], return_df=True)
+encode_purpose = ce.TargetEncoder(cols=['purpose'], return_df=True)
+
+# df_train_process1 will have more columns (because of OHE)
+df_train_process1 = encode_grade.fit_tranform(df_train)
+df_train_process2 = encode_purpose.fit_tranform(df_train_process1, df_train_process1['repaid'])
+
+# Now do the test set, this will give an error
+# Note the order is opposite to the training order
+df_test_process1 = encode_purpose.fit_transform(df_test)
+
+# We don't get here .....
+df_test_process2 = encode_grade.fit_transform(df_test_process1, df_test_process1['repaid'])
+```
+The problem is, `encode_purpose` is expecting to see more columns because it was trained _after_ the one-hot encoding. It doesn't matter that this encoder only touchers the column purpose; it will throw an error because it doesn't see the type of dataframe it expects to see. This can make things fragile and give hard-to-spot bugs.
+
+We also have these annoying "temporary" dataframes such as `df_train_process1` and `df_test_process1`, which only exist as placeholders to allow us to finish processing. A nice way of solving both problems is to use pipelines, which ensure the steps are always done in the same order:
+```python
+from sklearn.pipeline import Pipeline
+
+encoding_pipeline = Pipeline([
+  ('encode_grade', ce.OneHotEncoder(cols=['grade'], return_df=True)),
+  ('encode_purpose', ce.TargetEncoder(cols=['purpose'], return_df=True))
+])
+
+# Get the encoded training set:
+df_train_encoded = encoding_pipeline.fit_transform(df_train, df_train['repaid'])
+
+# Get the encoded test set, not no target passed!
+df_test_encoded = encoding_pipeline.transform(df_test)
+```
+
+More details on encoding using Pipelines, and their more sophisticated implementation `ColumnTransformers`, are given in [this article](https://kiwidamien.github.io/introducing-the-column-transformer.html).
 
 ## Summary
 
@@ -343,14 +401,15 @@ This technique doesn't extend naturally to regression problems.
   The answers to these questions will help determine which encoders are suitable for your problem.
 * You can choose different encodings for each column in your dataframe.
 * The category encoders package does a better job of dealing with categories robustly than the scikit-learn encoders.
+* You should put your encoders in a pipeline, as discussed in the article ["Introducing the Column Transformer"](https://kiwidamien.github.io/introducing-the-column-transformer.html)
 
 This article has focused on the ideas behind the different encoding schemes; this [gist](https://gist.github.com/kiwidamien/1ee8d6217610be9ed1dcda81dbc9eba4) goes through the code on a similar example.
-
 
 ## References
 
 * [Are you getting burned by one-hot encoding?](/are-you-gettting-burned-by-one-hot-encoding.html) A deeper look at one hot encoding.
 * [Why `pd.get_dummies` is Evil, Use Category Encoders Instead](/get-dummies-is-evil.html)
+* [Introducing the ColumnTransformer](https://kiwidamien.github.io/introducing-the-column-transformer.html)
 * [Derivations and Conjugate Priors](https://kiwidamien.github.io/derivations-and-conjugate-priors-average-ratings.html) shows how the James-Stein encoder interpolates between the group mean and the population mean.
 * [Category Encoders](https://contrib.scikit-learn.org/categorical-encoding/) reference page (and links within)
 * [Distributed Robust Algorithm for CoUnt-based LeArning](https://www.youtube.com/watch?v=7sZeTxIrnxs) (DRACuLa)
