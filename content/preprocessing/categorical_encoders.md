@@ -112,7 +112,7 @@ This [gist](https://gist.github.com/kiwidamien/1ee8d6217610be9ed1dcda81dbc9eba4)
 
 ### LabelEncoder / OrdinalEncoder
 
-Also called an OrdinalEncoder, this maps each level to an individual number. By default, the strings will be assigned numbers in increasing alphabetical order. If the grades in our training set are `A`, `B`, `C`, and `D` then OrdinalEncoder will map them to 1, 2, 3, 4 respectively. If a level is missing from the dataset (e.g. such as `C` missing from the dataset in our example) then we would have `A`&rightarrow; 1, `B` &rightarrow; 2, and `D` &rightarrow; 3.
+Also called an OrdinalEncoder, this maps each level to an individual number. By default, the strings will be assigned numbers in increasing alphabetical order. If the grades in our training set are `A`, `B`, `C`, and `D` then OrdinalEncoder will map them to 1, 2, 3, 4 respectively. If a 'C' was missing from the training set then we would have `A`&rightarrow; 1, `B` &rightarrow; 2, and `D` &rightarrow; 3.
 
 Here is the default usage:
 ```
@@ -128,13 +128,13 @@ df_test_transformed = encoder.transform(df_test)
 
 If we have a value that isn't seen in the data set, the `OrdinalEncoder` will return `-1` by default. You can change this with the `handle_error` argument to `OrdinalEncoder` to make it use `nan` or raise an error instead.
 
-If we want to specify the mapping as well, it is a little tricker. The documentation is outdated on how to do this. Let's say we want to ensure that `A`, `B`, `C`, `D` map to 1, 2, 3, 4 respectively. We need to write function that takes the category value (`A` -- `D`) and returns the category, then pass that in as a mapping:
+If we want to specify the mapping as well, it is a little tricker. The documentation is outdated on how to do this. Let's say we want to ensure that `A`, `B`, `C`, `D` map to 1, 3, 5, and 10 respectively. We need to write function that takes the category value (`A` -- `D`) and returns the category, then pass that in as a mapping:
 ```python
 import category_encoders as ce
 
 def map_for_grades(grade):
-  "Returns 1 for 'A', 2 for 'B', etc"
-  return ord(grade) - ord(`A`) + 1
+  "Returns 1 for 'A', 3 for 'B', 5 for 'C' and  10 for others"
+  return {'A': 1, 'B': 3, 'C':5}.get(grade, 10)
 
 encoder = ce.OrdinalEncoder(mapping={'col': 'grade', 'mapping': map_for_grades},
                             return_df=True)
@@ -150,9 +150,13 @@ After encoding, our loan dataframe would take the form
 | annual_income | debt_to_income | loan_amount | purpose | grade | repaid |
 | --- | --- | --- | --- | --- | --- |
 | 120,000 | 0.100 | 3,500 | medical | 1 | True |
-| 65,000 | 0.250 | 2,000 | refinance | 2 | False |
-| 60,000 | 0.200 | 2,200 | refinance | 2 | True |
-| 45,000 | 0.312 | 5,500 | auto | 4 | True |
+| 130,000 | 0.500 | 13,800 | medical | 5 | False |
+| 220,000 | 0.400 | 33,500 | medical | 3 | False |
+| 65,000 | 0.250 | 2,000 | refinance | 3 | False |
+| 60,000 | 0.200 | 2,200 | refinance | 3 | True |
+| 45,000 | 0.312 | 5,500 | auto | 10 | True |
+| 75,000 | 0.111 | 2,000 | auto | 3 | True |
+| 24,000 | 0.400 | 500 | other | 5 | False |
 
 #### When to use it?
 When the categories have an obvious order (i.e. ordinal categories)
@@ -160,7 +164,7 @@ When the categories have an obvious order (i.e. ordinal categories)
 #### Does the mapping from categories to levels matter?
 If the model is using tree-based methods, only the ordering matters.
 
-If you are using linear models, or models based off linear models (e.g. SVMs), then the actual values matter. If you encode `A` as 1, `B` as 2, `C` as 3, the model has baked in moving from `A` to `B` is as different as moving from `B` to `C`.
+If you are using linear models, or models based off linear models (e.g. SVMs), then the actual values matter. If you encode `A` as 1, `B` as 2, `C` as 3, the model has baked-in moving from `A` to `B` is as different as moving from `B` to `C`.
 
 #### When to avoid?
 Don't use this encoding method if you don't have ordered categories.
@@ -193,7 +197,7 @@ The output of the encoder is
 | 75,000 | 0.111 | 2,000 | 1 | 0 | 0 | 0 | B | True |
 | 24,000 | 0.400 | 500 | 0 | 0 | 0 | 1 | C | False |
 
-There are lots of issues and opinions around One-hot encoding, such as whether you should drop a column or not (the so-called "dummy variable trap"). Category encoders _doesn't_ drop a column, so a row of all zeros would occur if you see a column that you haven't seen in training. A more detailed article about one-hot encoding is [here](/are_you_gettting_burned_by_one_hot_encoding.html)
+There are lots of issues and opinions around One-hot encoding, such as whether you should drop a column or not (the so-called "dummy variable trap"). Category encoders _doesn't_ drop a column, so a row of all zeros would occur if you see a column that you haven't seen in training. A more detailed article about one-hot encoding is [here](/are-you-getting-burned-by-one-hot-encoding.html).
 
 #### When to use?
 This is a good choice if there are only a few levels.
@@ -238,7 +242,7 @@ We see that only 1/3 of medical bills are repaid, and that "medical" is replaced
 | auto | 2 | 1 |
 | other | 1 | 0 |
 
-The sole exception is `other`, where 100% of examples in the training set were repaid, but it was encoded as `0.5000`. For only _one_ example, TargetEncoder will use the average of the dataset. (This is actually [hard-coded into the TargetEncoder](https://github.com/scikit-learn-contrib/categorical-encoding/blob/f2e408efe58362f20573a903090d70629a327faf/category_encoders/target_encoder.py#L172) class!)
+The sole exception is `other`, where 0% of examples in the training set were repaid, but it was encoded as `0.5000`. For only _one_ example, TargetEncoder will use the average of the dataset. (This is actually [hard-coded into the TargetEncoder](https://github.com/scikit-learn-contrib/categorical-encoding/blob/f2e408efe58362f20573a903090d70629a327faf/category_encoders/target_encoder.py#L172) class!)
 
 The `smoothing` parameter in `TargetEncoder` allows us to interpolate between the overall average (e.g. the average number of repaid loans) and the average number in our category. Roughly speaking, as the number of examples in a particular level increase, the more the average will increase. This is similar to Laplace Smoothing in Naive Bayes, but that adds "fake counts" rather than doing a direct re-weighting. As `smoothing` increases, the overall average becomes more dominant for the same number of rows.
 
@@ -254,7 +258,11 @@ If there are only a few examples per category, this technique is not going to be
 
 Hash encoders is an encoder that is suitable for a large number of levels. It has a lot of different compromises, but scales extremely well. The user specifies the number of binary output columns that they want as output.
 
-The central part of the hashing encoder is the _hash function_, which maps the value of a category into a number. For example, a (bad) hash function might treat "a=1", "b=2", etc, so `hash("critic") = 3 + 18 + 9 + 20 + 9 + 3 = 62`. Because we are not memorizing the different levels, it deals with new levels gracefully. If we said that we wanted 4 binary features, we can take the value written in binary, and select the lowest 4 bits. For example, `hash("critic") = 62`, and in binary `62=0b111110`; taking the lower 4 bits would give the values `1`, `1`, `1`, `0`.
+The central part of the hashing encoder is the _hash function_, which maps the value of a category into a number. For example, a (bad) hash function might treat "a=1", "b=2", and sum all the values together of the label together. For example:
+```python
+hash("critic") = 3 + 18 + 9 + 20 + 9 + 3 = 62
+```
+Because we are not memorizing the different levels, it deals with new levels gracefully. If we said that we wanted 4 binary features, we can take the value written in binary, and select the lowest 4 bits. For example, `hash("critic") = 62`, and in binary `62=0b111110`; taking the lower 4 bits would give the values `1`, `1`, `1`, `0`.
 
 It can be hard to see why this series of steps would lead to a useful encoding. Here is the basic intuition:
 
