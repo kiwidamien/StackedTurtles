@@ -1,0 +1,9 @@
+annual_income,debt_to_income,loan_amount,purpose,grade,repaid
+120000,0.100,3500,medical,A,True
+130000,0.500,13800,medical,C,False
+220000,0.400,33500,medical,B,False
+65000,0.250,2000,refinance,B,False
+60000,0.200,2200,refinance,B,True
+45000,0.312,5500,auto,D,True
+75000,0.111,2000,auto,B,True
+24000,0.400,500,other,C,False
