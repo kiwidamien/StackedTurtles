@@ -1,9 +1,8 @@
 Title: Are You Getting Burned By One-Hot Encoding?
 Tags: pipelines, preprocessing, categorical
-Date: 2019-09-01 13:00
+Date: 2019-08-31 13:00
 Category: Data Science
 Slug: are-you-getting-burned-by-one-hot-encoding
-Status: draft
 Summary: A common technique for transforming categorical variables into a form suitable for machine learning is called "one-hot encoding" or "dummy encoding". This article discusses some of the limitations and folklore around this method (such as the so-called "dummy variable trap").
 
 Many machine learning algorithms are not able to use non-numeric data. While many features we might use, such as a person's age, or height, are numeric there are many that are not. Usually these features are represented by strings, and we need some way of transforming them to numbers before using scikit-learn's algorithms. The different ways of doing this are called _encodings_.
@@ -42,7 +41,7 @@ Each of the four different species (`Cat`, `Dog`, `Snake`, and `Rabbit`) are ref
 
 Each species is now represented by a 1 in the appropriate column, with no implicit ordering. We could pass this to a machine learning algorithm, along with other features, to make predictions.
 
-## Problems with OHE 
+## Problems with OHE
 
 One-hot encoding is a particularly simple encoding scheme. When should we use it (or, perhaps more importantly, when should we avoid it)? One-hot encoding is a good choice for
 
@@ -95,7 +94,7 @@ What does this model look like if we drop `Species_Cat`? To get the cost of feed
 cost = 10 + 5*Species_Dog + (-2)*Species_Rabbit + (-5)*Species_Snake
 ```
 
-The coefficients are both unique and interpretable: the coefficient of `Species_X` tells you how much more expensive it is to buy food for Species `X` compared to a cat. 
+The coefficients are both unique and interpretable: the coefficient of `Species_X` tells you how much more expensive it is to buy food for Species `X` compared to a cat.
 
 ### Why I don't care about the dummy variable trap (in ML models)
 
@@ -124,14 +123,14 @@ Basically, this advice amounts to "keep the number of levels small". If the numb
   * Instead of dealing with neighborhoods of New York like `Chinatown` and `DUMBO`, you use the boroughs (Manhatten, Queens, the Bronx, Brooklyn, and Staten Island).
 * __Keep the first K levels with an "Other"__
   Many problems have some common levels that are most important to get right from a business perspective, and then other categories that you don't have a lot of data on. It might be worth lumping levels together _not_ because we thing they are similar, but we don't really have eonugh data to say anything about them. For example, a California company might with customers in all states, but 80% of its business is from California, 15% for Oregon, and the remaining 5% across the other 48 states. An encoding such as `(State_CA, State_OR, State_OTHER)` makes sense in this context.
-  
+
 Summarizing the "dummy variable trap" discussion:
 1. If regularizing, or dealing with possible unknown values, don't drop a level.
 2. If doing a statistical analysis (i.e. no test set and no regularization) and are looking to interpret the coefficient, drop a level.
 
 ## Summary
 
-One-hot encoding replaces each _level_ (distinct value) in a categorical feature as its own feature. This encoding works well if there are only a few levels. 
+One-hot encoding replaces each _level_ (distinct value) in a categorical feature as its own feature. This encoding works well if there are only a few levels.
 
 * Tree-models struggle if there are a large number of levels, regardless of how much data we have.
 * Linear models can deal with a large number of levels, provided we have enough data to accurately estimate the coefficients.
