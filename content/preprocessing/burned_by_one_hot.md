@@ -122,6 +122,7 @@ Basically, this advice amounts to "keep the number of levels small". If the numb
 
     * Instead of dealing with species, maybe you have classes `Cats`, `Dogs`, `Birds`, `Reptiles`, `Fish`
     * Instead of dealing with neighborhoods of New York like `Chinatown` and `DUMBO`, you use the boroughs (Manhatten, Queens, the Bronx, Brooklyn, and Staten Island).
+
 * __Keep the first K levels with an "Other"__
   Many problems have some common levels that are most important to get right from a business perspective, and then other categories that you don't have a lot of data on. It might be worth lumping levels together _not_ because we thing they are similar, but we don't really have eonugh data to say anything about them. For example, a California company might with customers in all states, but 80% of its business is from California, 15% for Oregon, and the remaining 5% across the other 48 states. An encoding such as `(State_CA, State_OR, State_OTHER)` makes sense in this context.
 
