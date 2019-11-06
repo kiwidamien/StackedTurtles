@@ -329,3 +329,4 @@ Look at the [example gist](https://nbviewer.jupyter.org/gist/kiwidamien/f808d4b5
 * [`set_option` documentation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.set_option.html)
 * [Example gist](https://nbviewer.jupyter.org/gist/kiwidamien/f808d4b5e4efeb072d60c14def32253a) 
 * [Documentation on styling](https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html)
+* [Article with advanced styling examples](https://pbpython.com/styling-pandas.html)
