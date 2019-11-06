@@ -306,7 +306,7 @@ plt.rcParams['figure.figsize'] = (12, 10)
 Often, one of the most frustrating things is formatting floats. The summary in formatting numbers is pretty useful:
 
 * To set the number format for all dataframes, use `pd.options.display.float_format` to a _function_.
-* To set the number format for a specific set of columns, use `df.style.format(format_dict)`, where `format_dict` has column names as keys, and format _strings_ as values.
+* To set the number format for a specific set of columns, use `df.style.format(format_dict)`, where `format_dict` has column names as keys, and format _strings_ as values. (Note: functions will also work as values, such as the upper case example)
 * If you use `df.style.format(....)`, you get a styler object back, not a dataframe. The default options won't be set.
 * You can use `df.select_dtypes(float).columns` to get the names of all the float columns, which can be used to generate a dictionary with default format strings, that you can then selectively override.
 
