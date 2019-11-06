@@ -315,7 +315,7 @@ A nice function for applying the default style and overwrites is
 def style_columns(df, format_dict, default_float_format='{:,2f}'):
     full_format_dict = {col: default_float_format for col in df.select_dtypes(float).columns}
     # merge the two dictionaries, giving priority to format_dict
-    full_format_dict = {full_format_dict, **format_dict}
+    full_format_dict = {**full_format_dict, **format_dict}
     return df.style.format(full_format_dict)
 
 # Usage:
