@@ -1,6 +1,6 @@
 Title: Stylish Pandas
 Tags: tricks, formatting, notebook
-Date: 2018-11-05 18:25
+Date: 2019-11-05 18:25
 Category: Data Science
 Summary: As the _Zen of Python_ states, "readability counts". With a few simple tips and tricks, we can make our Pandas dataframes a lot more readable.
 
