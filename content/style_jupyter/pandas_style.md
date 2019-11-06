@@ -23,7 +23,7 @@ According to the _Zen of Python_, "readability counts". This article goes throug
 An example DataFrame with code is posted in [this gist](https://nbviewer.jupyter.org/gist/kiwidamien/f808d4b5e4efeb072d60c14def32253a), which uses campaign finance data. Let's look at a slightly simplified version, which contains fewer columns:
 
 | Last Name | First Name | Party | Individual Contrib| Candidate Contrib | Transfers | Other | Total Funding | Individual % of total |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Clinton | Hillary | Democrat | 2.311585e+08 | 997159.15 | 33940000.00 | 8446040.85 | 2.745417e+08 | 0.841980 |
 | Sanders | Bernard | Democrat | 2.306704e+08 | 0 | 1500000.00 | 3252100.00 | 2.354225e+08 | 0.979814 |
 | Cruz	| Rafael | Republican | 9.211106e+07 | 0 | 250012.93 | 263277.07 | 9.262435e+07 | 0.994458 |
@@ -52,7 +52,7 @@ pd.options.display.float_format = format_float
 The head of our dataframe would now be displayed as 
 
 | Last Name | First Name | Party | Individual Contrib| Candidate Contrib | Transfers | Other | Total Funding | Individual % of total |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Clinton | Hillary | Democrat | 231,158,512.33 | 997,159.15 | 33,940,000.00 | 8,446,040.85 | 274,541,697.77 | 0.84 |
 | Sanders | Bernard | Democrat | 230,670,405.61 | 0.00 | 1,500,000.00 | 3,252,100.00 | 235,422,542.44 | 0.98 |
 | Cruz	| Rafael | Republican | 92,111,063.05 | 0.00 | 250,012.93 | 263,277.07 | 992,624,351.05 | 0.99 |
@@ -82,7 +82,7 @@ contribution.head().style.format(format_dict)
 The output is
 
 | Last Name | First Name | Party | Individual Contrib| Candidate Contrib | Transfers | Other | Total Funding | Individual % of total |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Clinton | Hillary | Democrat | 2.311585e+08 | 997159.15 | 33940000.00 | 8446040.85 | 2.745417e+08 | 84.2% |
 | Sanders | Bernard | Democrat | 2.306704e+08 | 0 | 1500000.00 | 3252100.00 | 2.354225e+08 | 98.0% |
 | Cruz	| Rafael | Republican | 9.211106e+07 | 0 | 250012.93 | 263277.07 | 9.262435e+07 | 99.4% |
@@ -113,7 +113,7 @@ contribution.head().style.format(format_dict)
 This will display
 
 | Last Name | First Name | Party | Individual Contrib| Candidate Contrib | Transfers | Other | Total Funding | Individual % of total |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Clinton | Hillary | Democrat | $231,158,512.33 | $997,159.15 | $33,940,000.00 | $8,446,040.85 | $274,541,697.77 | 84.2% |
 | Sanders | Bernard | Democrat | $230,670,405.61 | $0.00 | $1,500,000.00 | $3,252,100.00 | $235,422,542.44 | 98.0% |
 | Cruz	| Rafael | Republican | $92,111,063.05 | $0.00 | $250,012.93 | $263,277.07 | $992,624,351.05 | 99.4% |
@@ -176,7 +176,7 @@ contribution.head().style.format(format_dict)
 ```
 
 | Last Name | First Name | Party | Individual Contrib| Candidate Contrib | Transfers | Other | Total Funding | Individual % of total |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | CLINTON | Hillary | Democrat | $231,158,512.33 | $997,159.15 | $33,940,000.00 | $8,446,040.85 | $274,541,697.77 | 84.2% |
 | SANDERS | Bernard | Democrat | $230,670,405.61 | $0.00 | $1,500,000.00 | $3,252,100.00 | $235,422,542.44 | 98.0% |
 | CRUZ	| Rafael | Republican | $92,111,063.05 | $0.00 | $250,012.93 | $263,277.07 | $992,624,351.05 | 99.4% |
@@ -226,7 +226,7 @@ contributions.head()
 <tr>
     <td>CLINTON</td>
     <td>Hillary</td>
-    <td>Democrat</td>
+    <td style='background-color: blue; color: white'>Democrat</td>
     <td>$231,158,512.33</td>
     <td>$997,159.15</td>
     <td>$33,940,000.00</td>
@@ -237,7 +237,7 @@ contributions.head()
 <tr>
     <td>SANDERS</td>
     <td>Bernard</td>
-    <td>Democrat</td>
+    <td style='background-color: blue; color: white'>Democrat</td>
     <td>$230,670,405.61</td>
     <td>$0.00</td> 
     <td>$1,500,000.00</td>
@@ -247,8 +247,8 @@ contributions.head()
 </tr>
 <tr>
     <td>CRUZ</td>
-    <td>Rafael<td>
-    <td>Republican</td>
+    <td>Rafael</td>
+    <td style='background-color: red; color: white'>Republican</td>
     <td>$92,111,063.05</td>
     <td>$0.00</td>
     <td>$250,012.93</td>
@@ -259,7 +259,7 @@ contributions.head()
 <tr>
     <td>TRUMP</td>
     <td>Donald</td>
-    <td>Republican</td>
+    <td style='background-color: red; color: white'>Republican</td>
     <td>$36,959,857.71</td>
     <td>$49,950,643.36</td>
     <td>$2,201,313.93</td>
@@ -270,7 +270,7 @@ contributions.head()
 <tr>
     <td>CARSON</td>
     <td>Benjamin</td> 
-    <td>Republican</td>
+    <td style='background-color: red; color: white'>Republican</td>
     <td>$63,461,402.63</td>
     <td>$25,000.00</td>
     <td>$0.00</td>
