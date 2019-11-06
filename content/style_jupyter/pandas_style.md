@@ -204,7 +204,7 @@ def party_color(party_value):
 We can now use `applymap` on the styler object to color the "Party" column, like so:
 ```python
 (
-contributions.head()
+contribution.head()
  .style
  .format(format_dict)
  .applymap(party_color, subset=['Party'])
@@ -319,7 +319,7 @@ def style_columns(df, format_dict, default_float_format='{:,2f}'):
     return df.style.format(full_format_dict)
 
 # Usage:
-style_columns(contributions, {'Individual % of total': '{:.1%}'})
+style_columns(contribution, {'Individual % of total': '{:.1%}'})
 ```
 
 Look at the [example gist](https://nbviewer.jupyter.org/gist/kiwidamien/f808d4b5e4efeb072d60c14def32253a) to get a view of a notebook that uses these tip and tricks.
