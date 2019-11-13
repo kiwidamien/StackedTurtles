@@ -2,6 +2,7 @@ Title: How to save Jupyter's environment (and kernels)
 Tags: python, engineering, package, best-practices, environment, conda, Jupyter
 Date: 2019-11-13 19:30
 Category: Tools
+Slug: save-jupyters-environment
 Summary: An earlier article, ["Save the environment with conda"](/save-the-environment-with-conda-and-how-to-let-others-run-your-programs.html), showed how to make a new environment and use it with Jupyter. This article walks through how to fix Jupyter if it isn't using the correct environment.
 
 

@@ -2,7 +2,7 @@ Title: Save the environment with conda (and how to let others run your programs)
 Tags: python, engineering, package, best-practices, environment, conda
 Date: 2019-01-22 19:30
 Category: Tools
-Summary: Environments allow you to distribute software to other users, where you don't know what packages they have installed. This is a better solution than using `reuirements.txt`, as the packages you install won't interfere with the users system. 
+Summary: Environments allow you to distribute software to other users, where you don't know what packages they have installed. This is a better solution than using `requirements.txt`, as the packages you install won't interfere with the users system. 
 
 ## Save the environment with conda (and how to let others run your programs)
 
@@ -72,7 +72,7 @@ If you want Jupyter notebooks to see your new environment, you need a couple of 
 # kernel menu
 (test_env) $ python -m ipykernel install --user --name myenv --display-name "test kernel"
 ```
-When loading a jupyter notebook, you can use the menu options **Kernel->Change Kernel->test kernel** to ensure you are using the `test_env` environment.
+When loading a jupyter notebook, you can use the menu options **Kernel->Change Kernel->test kernel** to ensure you are using the `test_env` environment. (Update 2019-11-13: This process doesn't always work, [this article](/save-jupyters-environment) gives you ways of checking and fixing it if it doesn't.)
 
 
 Now you want to make an `environment.yaml` file that will allow others to recreate the environment from scratch. To make this file, we use the `export` command and send the output to `environment.yaml`:
