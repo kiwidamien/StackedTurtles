@@ -28,7 +28,7 @@ $ source activate play_environment
 
 # use ipykernel to register your new environment as a kernel named
 # play environment
-(play_environment) $ python -m ipykernel install --user --name play_environment --display_name "play environment"
+(play_environment) $ python -m ipykernel install --user --name play_environment --display-name "play environment"
 ```
 
 If this works, you should be able to launch Jupyter from _any_ terminal, and from the kernel drop down list, select "play environment".
