@@ -18,6 +18,32 @@ By default, Jupyter outputs our dataframes in a Jupyter notebook in nice HTML ta
 
 According to the _Zen of Python_, "readability counts". This article goes through some tricks to make your Jupyter notebook dataframes a little more readable.
 
+## td;dr
+
+For those that just some standard formatting for their projects, this is what I will typically put at the beginning of my notebooks.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Show up to 15 cols, 50 rows by default
+pd.set_option('display.max_cols', 15)
+pd.set_option('display.max_rows', 50)
+# Suitable default display for floats
+pd.options.display.float_format = '{:,.2f}'.format
+
+%matplotlib inline
+plt.rcParams['figure.figsize'] = (12, 10)
+
+# This one is optional -- change graphs to SVG
+# Only use if you don't have a lot of points/lines
+# on your graph.
+# Can also just use ['retina'] if you don't want SVG.
+%config InlineBackend.figure_formats = ['retina', 'svg']
+```
+
+The rest of this post shows how you can customize this for specific dataframes or needs.
+
 ## Number formatting
 
 An example DataFrame with code is posted in [this gist](https://nbviewer.jupyter.org/gist/kiwidamien/f808d4b5e4efeb072d60c14def32253a), which uses campaign finance data. Let's look at a slightly simplified version, which contains fewer columns:
