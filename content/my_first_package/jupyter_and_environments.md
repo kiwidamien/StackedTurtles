@@ -51,12 +51,11 @@ A kernel is connected to an environment via a _kernel specification file_ called
 ```bash
 $ jupyter kernelspec list
 Available kernels:
-  blog_env            /Users/damien/Library/Jupyter/kernels/blog_env
-  grading             /Users/damien/Library/Jupyter/kernels/grading
-  myenv               /Users/damien/Library/Jupyter/kernels/myenv
-  play_environment    /Users/damien/Library/Jupyter/kernels/play_environment
-  prohet_env          /Users/damien/Library/Jupyter/kernels/prohet_env
+  python2             /Users/damien/Library/Jupyter/kernels/python2
   python3             /Users/damien/Library/Jupyter/kernels/python3
+  bb8                 /Users/damien/Library/Jupyter/kernels/bb8
+  play_environment    /Users/damien/Library/Jupyter/kernels/play_environment
+  hades               /Users/damien/Library/Jupyter/kernels/hades
 ```
 
 Let's look at the `play_environment` kernel specification file. It can happen that the kernel specification has the wrong version of Python (I haven't been able to tell _when_ this occurs).
