@@ -85,8 +85,7 @@ Once you have made this change, you can restart Jupyter, and your kernel will be
 Above we showed what the issue is and how to diagnose it. Here we include a short list of steps for what you should do when you create a new environment. Replace `<env_name>` with the name of the environment you want to create.
 
 
-1. Create your environment with `conda create --name <env_name> <list of packages you want to install>`.
-
+1. Create your environment with `conda create --name <env_name> <list of packages you want to install>`.<br/>
    Include `jupyter` and `ipykernel` in the list of packages.
 
 2. Activate your newly created environment with `conda activate <env_name>`
