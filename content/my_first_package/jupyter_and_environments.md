@@ -92,14 +92,12 @@ Above we showed what the issue is and how to diagnose it. Here we include a shor
 2. Activate your newly created environment with `conda activate <env_name>`
 
 3. Find the name of your Python executable using `which python`.
-
    On my system, this is `/Users/damienmartin/anaconda3/envs/<env_name>/bin/python`. We will use this in step 6.
 
 4. Create the kernel for Jupyter with `python -m ipykernel install --user --name <env_name> --display_name "<env_name>"`
 
 5. Locate the kernel file with `jupyter kernelspec list`
-
-   For me, the kernel specification file is in `~/Library/Jupyter/kernels/<env_name>`, but this command will tell you what it is on your system.
+For me, the kernel specification file is in `~/Library/Jupyter/kernels/<env_name>`, but this command will tell you what it is on your system.
 
 6. In your favorite editor (e.g. atom, vim, VS Code), open the `kernel.json` file from the directory you found in step 4.
 
