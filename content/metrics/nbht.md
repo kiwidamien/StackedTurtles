@@ -77,11 +77,11 @@ Suppose that the actual conversion rates are page A converts at 31.0%, and B con
 |  1,000,000 |            0.102  |            0.4925 |            0.0791 |            0.5874 |        **0.0058** |            0.1107 |    0.2296 |
 | 10,000,000 |        **0.0001** |        **0.0022** |        **0.0198** |            0.1127 |        **0.0258** |            0.3449 |    0.0843 |
 
-Here I have emphasized the experiments that had a $p$-value less than 0.05. Remember this means that even if there was no effect, we would still expect to see a p-value of 0.05 or smaller in 1 out of 20 experiments! That is because if there is no effect, the $p$-value is uniformly distributed over the interval [0,1]! This is precisely because the p-value is the probability of discovering a difference by chance _if there is no difference_. 
+I have emphasized experiments that had a $p$-value less than 0.05. Remember this means that even if there was no effect, we would still expect to see a p-value of 0.05 or smaller in 1 out of 20 experiments! That is because if there is no effect, the $p$-value is uniformly distributed over the interval [0,1]! This is precisely because the p-value is the probability of discovering a difference by chance _if there is no difference_. 
 
 The $p$-value **doesn't** tell us if there is a difference what the probability is of seeing it. As argued above, the chance that there is _some_ difference, if we go to enough decimal places is approximately 100%. In our generated dataset, once we got to sample sizes of 10 million, four out of 6 of our data science groups could detect a difference. In reality, we would not duplicate an experiment 6 times -- we would only have one group look at it. So, as a rough estimate, 1/3 of the time with a sample size of 10 million we would detect the difference between a conversion rate of 31.0% and 31.5%.
 
-If we go to 50 million, all 6 teams saw a p-value of 0.0000 (i.e. zero to at least 4 decimal places). With a sample size of 50 million, we are pretty confident we will see a statistically significant result. But do we care about increasing conversion by 0.5 percentage points? Another way of asking this is if we had 100 million clients to run an A/B test with (50 million to see variation A, 50 million to see variation B), is this the most valuable A/B test we could run? Or are there bigger gains we could make elsewhere? Assuming the answer is that there are more valuable things we could be doing than running this experiment with 100 million clients, an experiment with 50 million people per variation would find a statistically significant result (p-value << 0.05), but not one that was practically significant.
+If we go to N=50 million, all 6 teams saw a p-value of 0.0000 (i.e. zero to at least 4 decimal places). With a sample size of 50 million, we are pretty confident we will see a statistically significant result. But do we care about increasing conversion by 0.5 percentage points? Another way of asking this is if we had 100 million clients to run an A/B test with (50 million to see variation A, 50 million to see variation B), is this the most valuable A/B test we could run? Or are there bigger gains we could make elsewhere? Assuming the answer is that there are more valuable things we could be doing than running this experiment with 100 million clients, an experiment with 50 million people per variation would find a statistically significant result (p-value << 0.05), but not one that was practically significant.
 
 Suppose we thought that this experiment _would_ be worth running for a 0.5 percentage point expected gain with 10,000 clients (i.e. 5000 see variation A and 5000 see variation B). Looking at our table, we see _none_ of our six teams in the simulation saw anything. That is, 5000 clients isn't enough to detect a difference this small. Even though this difference of 0.5 percentage points is "worth" an experiment of 10k clients, such an experiment would be a waste because it won't detect anything. So we may as well spend those clients doing something else.
 
@@ -114,22 +114,53 @@ We generally don't have access to $\pi_A$ and $\pi_B$, but can use the values we
 In our example, we have $\phi_A = 0.315$, $\phi_B = 0.320$, so $h \approx 0.011$ (i.e. a (very) small effect).  
 
 
+### The large sample behavior of Cohen's $h$
+
+Let's repeat the same thought experiment we had above, where we get a lot of teams to calculate the value of $h$ from an experiment. If each team calculates $h$ using their sample data, the distribution of $h$ will be an (approximately) normal distribution around the true value. The bigger the number $N$ of clients that see each variation, the "tighter" the distribution of our different teams will be around the true value. If the effect size is there but small, we will have many teams that _see_ and effect, but all those teams agree the effect is small.
+
+This differs from the $p$ value in one critical way. A very small $p$ value tells you the experiment has, with high probability, detected a difference. If there is no effect, your $p$-value will be distributed randomly, so different teams will have wildly different values. It _doesn't_ tell you anything about the size of that difference. Cohen's $h$, on the other hand, tells you about the size of the effect and different teams will get similar values for $h$. There is no contradiction here - like many things in statistics, any single team's calculation of $h$ based off the single sample will have a confidence interval you can calculate, so whether or not there is an effect depends on whether that confidence interval contains $0$.
+
+### The inconsistency of Cohen's $h$
+
+There is one troubling aspect of Cohen's $h$, which is it is inconsistent about which outcome you term a success. In our example, we have looked at two pages with conversion rates of 0.310 amd 0.315. The value of Cohen's $h$ was approximately 0.011, which qualified as a "small" effect. 
+
+But suppose we reversed the definition of "conversion" to **not** take the action described. Then the "conversion" rate of page A is 0.69, and the "conversion" rate of page B is 0.689. The value of Cohen's $h$ is now 0.003, which is significantly smaller.
+
+You might object that this is a silly distinction, as it should be clear what event should count as a conversion. To see why this is an issue, imagine that instead of picking a version of webpages, we were picking between two coins that might be weighted differently, so they may have a different distribution of heads vs tails. If we were trying to quantify how "off" these two coins were from each other, it shouldn't matter if we are measure the probability of getting heads vs the probability of getting tails -- if one of these measures says "the coins are significantly different" the other one should too. What the calculation above shows is that our choice of whether to think of $\pi_A$ as the probability coin $A$ gives heads can give a different result than if we think of $\pi_A$ as the probabiltiy coin $A$ gives tails, even when the question is "do coins A and B have the same proportion of heads vs tails as each other?"
+
+## Summary
+
+The "textbook" hypothesis testing method is null hypothesis testing, which is centered around the $p$-value. A $p$-value really has one job: it makes a guarantee that if the null hypothesis was exactly true, how unlikely it would be to get a result at least as extreme as the one you actually saw. That is, it limits the probability of you rejecting the null hypothesis _if the null hypothesis is true_. The problem is, no one believes the null hypothesis actually is true, and in most cases we are almost certain it is not (because it states something like "these two rates are **exactly** equal"). From a business or problem-solving perspective, we are generally more interested in whether or not the difference in two webpages (or ads, or medicines) is large enough for us to switch our treatment, and the $p$-value _doesn't_ answer that question.
+
+More specifically, if there is _any_ difference at all, at a large enough sample size we will start to see a small $p$-value. If the effect size is small, maybe we can get a better payoff by running a different experiment instead. When we run an actual experiment, we should consider what the smallest effect we consider to be important is, and [design our experiment](/power_analysis.html) around that.
+
+In bullets:
+
+- The $p$-value tells you what the probability is of getting a result as extreme as the one you saw if the null hypothesis is true (typically that your variations are **exactly** the same)
+- The traditional null hypothesis test states that if your $p$ value is less than some threshold $\alpha$, you reject the null hypothesis and claim there is a difference.
+- By construction, if there really is no difference (i.e. the null hypothesis is correct) you will reject the null hypothesis with probability $\alpha$.
+- There is always some difference between two variations, even if it is small! So the real probability that you reject the null hypothesis is always actually less than $\alpha$ =)
+- Even though rejecting the null is "always" the right thing to do, what we are generally interested in is which variation is better. Often when we have a large $p$-value, we know there is some difference between the variations (i.e. the null is wrong) but we cannot tell which one is better, but we are okay with it because the difference is likely small.
+
+Focusing on the outcomes:
+- If there is no difference, taking really large samples doesn't force your $p$-values to zero. They stay a uniform distribution!
+- If there **is** a difference, you can make the $p$-value really small provided you get a large enough sample.
+- A low $p$-value just means that it is unlikely this result happened by chance, it doesn't mean the effect is important.
+  - Our example was changing conversion rates from 31.0% to 31.5%, which was very significant if we have 50 million people look at each variation, but a 0.5 percentage point change wasn't actually that important. 
+- Textbooks focusing on just the $p$-value _once the data has been collected_ have done hypothesis testing a disservice. In our next article on [designing experiments](/power_analysis.html) we show how to think about the smallest effect you would like to detect, and then determine the sample size you would need to detect it reliablely. As a spoiler, it is easier to detect big effects than small ones (i.e. you need smaller samples to detect bigger changes).
+
+Finally, there is Cohen's $h$:
+
+- Cohen's $h$ is a standardized measure of the difference in proportions between two treatments (e.g. webpages)
+- While there is always a difference between treatments, so a $p$-value would go to zero as the samples get larger, $h$ tends toward a stable value as the sample size gets larger.
+- The values different teams measure for $h$ is (approximately) normally distributed around the "true" value. The distribution gets narrower around the true value as the sample size gets larger.
 
 
 
-One common use of data science is to analyze the performance of different alternatives, such as 
 
-- how well does model A do at predicting the number of units we will sell vs model B? We use this to select the model.
-- what is the conversion rate of page A vs page B? We use this to select which page to use.
-- which ad has a higher conversion rate (ad A or ad B)? We use this to select which ad to use.
-- which pricing model brings in more revenue (A or B)? We use this to seelct which pricing model to use.
-- which traffic routing model works better .... etc
-
-The web and ad models are the traditional "A/B tests", and are the esaiest ones to set up. You make two copies of your page (or ad), and randomly show them to individuals, and measure the conversion rate from each one. Some of the other examples are more complicated, because you typically need to consider interference effects, which is when the expereince shown to one customer effects the experience of another customer. This [blog post](https://eng.lyft.com/experimentation-in-a-ridesharing-marketplace-b39db027a66e) from Lyft walks through an example where offering discounts to randomly selected customers can give "conversion rates" that are unrealisitic if both the subsidized and unsubsidized riders are completing for a limited number of drivers.
-
-
-Web experiments are simpler because the web page I get served doesn't affect the availability of conversions for other people. To concentrate on just the conversion rate, rather than how to control for interference, we 
 ## References
 
 - [Lyft's blog post on experimental interference](https://eng.lyft.com/experimentation-in-a-ridesharing-marketplace-b39db027a66e)
-- [Nina Zumel's talk on "Myth's of Data Science](https://github.com/WinVector/ODSCWest2017/blob/master/MythsOfDataScience/MythsOfDataScience.pdf)
+- [Nina Zumel's talk on "Myth's of Data Science](https://github.com/WinVector/ODSCWest2017/blob/master/MythsOfDataScience/MythsOfDataScience.pdf) has some excellent slides on Cohen's $d$ and Cohen's $h$.
+- Wikipedia's article on [Cohen's h](https://en.wikipedia.org/wiki/Cohen%27s_h)
+
