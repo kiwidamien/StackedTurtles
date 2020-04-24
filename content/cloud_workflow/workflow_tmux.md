@@ -110,17 +110,21 @@ ubuntu@ip-xxx-xxx-xxx-xxx$ jupyter notebook
       or http://127.0.0.1:8888/?token=1627c05cd6feff33811e680f076719bc06bb74b40ac544bd
 ```
 
-Any `tmux` commands start with <kbd>Ctrl</kbd>+<kbd>B</kbd> (you can think of this as putting you in "control mode", as in VIM). To detatch a sessoin, first use  <kbd>Ctrl</kbd>+<kbd>B</kbd> to go into control mode, and then hit <kbd>d</kbd> to detatch the session. This will take you back to the login session you started with. If your login session closes (e.g. you exit, switch off your wifi, or shutdown your computer), this session will close, but your _detatched_ session won't.
+Any `tmux` commands start with <kbd>Ctrl</kbd>+<kbd>b</kbd> (you can think of this as putting you in "control mode", as in VIM). To detatch a sessoin, first use  <kbd>Ctrl</kbd>+<kbd>b</kbd> to go into control mode, then hit <kbd>d</kbd> to detatch the session. This will take you back to the login session you started with. If your login session closes (e.g. you exit, switch off your wifi, or shutdown your computer), your _detatched_ session remains open.
 
-There are a few other tmux commands we will show at the bottom, but we don't actually need them to finish this task. If you forgot the token, you can always run
+In the appendix, we will show some other `tmux` commands you can use to jump between sessions, but we don't need them for running Jupyter notebooks.
+
+If you forgot the token, you can always run 
 ```bash
 ubuntu@ip-xxx-xxx-xxx-xxx$ jupyter notebook list
 ```
-to get a list of all running servers. You can do this from any session.
+from any session to get a list of all running servers.
+
 
 ### The safe way of starting Jupyter servers
 
 This list is almost the same as before:
+
 1. SSH to the remote machine: `ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44`
 2. On the remote machine:
   * Run `tmux`
@@ -128,17 +132,14 @@ This list is almost the same as before:
   * Press <kbd>Ctrl</kbd> + <kbd>b</kbd>, followed by <kbd>d</kbd> to detatch the session.
   * Use the command `exit` to end the (login) session. The detatched session still runes.
 3. SSH in again from your local machine, but this time with a tunnel:
-```bash
-ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44
-```
+   
+   `ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44`
+
 4. In a browser, go to `https://localhost:12345/?token=.....`, using the token found in step 2
 
 If you ever get disconnected, or restart your local machine, you just need to run steps 3 and 4 again.
 
 If you forget the token, you can ssh back onto AWS and run the command `jupyter notebook list` to get a list of all running servers.
-
-## `tmux` tricks
-
 
 ## Summary
 
@@ -160,6 +161,9 @@ If you forget the token, you can ssh back onto AWS and run the command `jupyter 
 ## References
 
 * [Xiaoru Li](https://www.xiaoru.li/post/playing-with-tmux/) has a really nice overview of tmux, and some of the different commands you can use with it.
+
+
+## Appendix: tmux tricks
 
 
 Log on to AWs
