@@ -1,4 +1,4 @@
-Title: Setting up Jupyter on the Cloud (where you can disconnect)
+Title: Setting up Jupyter on the Cloud 
 Tags: AWS, cloud, tmux
 Date: 2020-04-23 11:00
 Category: Tools
@@ -12,7 +12,7 @@ Here is what we would ideally like to happen:
 2. We can close our computer / switch it off / put it into airplane mode, and AWS continues to work on our problem
 3. We can log back in later and see where we are with our long running job.
 
-Here we will walk you through using `tmux` in order to get a Jupyter session running that won't quit if your computer gets disconnected. We assume that you already have an EC2 instance (or other remote machine) setup already, with a key `~/.ssh/aws_key.pem` and public IP address `11.22.33.44` already. If you don't, you can follow the instructions in [this post]() on how to set one up using the dashboard, or [this point]() on how to set one up using Python. We also assume that you have Python installed on your EC2 instance
+We walk you through using `tmux` in order to get a Jupyter session running that won't quit if your computer gets disconnected. We assume that you already have an EC2 instance (or other remote machine) setup already, with a key `~/.ssh/aws_key.pem` and public IP address `11.22.33.44` already. If you don't, you can follow the instructions in [this post]() on how to set one up using the dashboard, or [this post]() on how to set one up using Python. We also assume that you have Python installed on your EC2 instance
 
 ## Connecting to Jupyter the simple way
 
@@ -76,7 +76,6 @@ If we go to `https://localhost:12345` in our browser, we will be connected with 
 3. In a new terminal, SSH to the remote machine again, but this time with a tunnel: 
 
    `ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44`
-
 4. In a browser, go to `https://localhost:12345/?token=.....`, using the token found in step 2
 
 
