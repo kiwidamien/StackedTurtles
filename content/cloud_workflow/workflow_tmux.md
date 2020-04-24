@@ -109,7 +109,7 @@ ubuntu@ip-xxx-xxx-xxx-xxx$ jupyter notebook
       or http://127.0.0.1:8888/?token=1627c05cd6feff33811e680f076719bc06bb74b40ac544bd
 ```
 
-Any `tmux` commands start with <kbd>Ctrl</kbd>+<kbd>B</kbd> (you can think of this as putting you in "control mode", as in VIM). To detatch a sessoin, first use  <kbd>Ctrl</kbd>+<kbd>B</kbd> to go into control mode, and then hit <kbd>d</kdb> to detatch the session. This will take you back to the login session you started with. If your login session closes (e.g. you exit, switch off your wifi, or shutdown your computer), this session will close, but your _detatched_ session won't.
+Any `tmux` commands start with <kbd>Ctrl</kbd>+<kbd>B</kbd> (you can think of this as putting you in "control mode", as in VIM). To detatch a sessoin, first use  <kbd>Ctrl</kbd>+<kbd>B</kbd> to go into control mode, and then hit <kbd>d</kbd> to detatch the session. This will take you back to the login session you started with. If your login session closes (e.g. you exit, switch off your wifi, or shutdown your computer), this session will close, but your _detatched_ session won't.
 
 There are a few other tmux commands we will show at the bottom, but we don't actually need them to finish this task. If you forgot the token, you can always run
 ```bash
