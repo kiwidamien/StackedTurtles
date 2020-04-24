@@ -194,4 +194,3 @@ Setup
 localhost$ ssh -i <login key> -NL 12345:localhost:8888 ubuntu@<ip_address>
 ``` 
 
-
