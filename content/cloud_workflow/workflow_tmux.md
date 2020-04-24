@@ -7,6 +7,7 @@ Summary: This article shows how you can run Jupyter on a remote server, connect 
 One of the advantages of working on a remote machine is that you can run extremely long computations without having to worry about your computer running slowly or running out of battery. If you have tried logging onto an AWS instance, however, you might have run into an issue where if you get disconnected, your process is terminated. This means that if you need to close your laptop for a meeting, need to travel, or even get momentarily disconnected, you could lose all that work.
 
 Here is what we would ideally like to happen:
+
 1. We start a job on AWS (e.g. run a Python script in Jupyter)
 2. We can close our computer / switch it off / put it into airplane mode, and AWS continues to work on our problem
 3. We can log back in later and see where we are with our long running job.
@@ -17,7 +18,7 @@ Here we will walk you through using `tmux` in order to get a Jupyter session run
 
 Before showing how to connect in a way that is tolerant to shutting down your computer, let's outline the main steps to connect to Jupyter (on AWS) from your browser on your computer.
 
-### Step 1: SSH onto the remote machine
+#### Step 1: SSH onto the remote machine
 Let's show how you can connect to Jupyter on your EC2 instance. First, we need to log in:
 ```bash
 localhost$ ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44
@@ -26,7 +27,7 @@ ubuntu@ip-xxx-xxx-xxx-xxx$
 ```
 For the prompts, we will show any command you need to run on your computer with `localhost$` (such as the `ssh` command), and any prompts for the remote computer we will show with `ubuntu@ip-xxx-xxx-xxx-xxx$`.
 
-### Step 2: Start Jupyter
+#### Step 2: Start Jupyter
 On your remote machine, start Jupyter. Your output will look similar to the following:
 ```bash
 ubuntu@ip-xxx-xxx-xxx-xxx$ jupyter notebook
@@ -73,9 +74,9 @@ If we go to `https://localhost:12345` in our browser, we will be connected with 
 1. SSH to the remote machine: `ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44`
 2. On the remote machine, start Jupyter with `jupyter notebook`. Copy the token.
 3. In a new terminal, SSH to the remote machine again, but this time with a tunnel: 
-```bash
-ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44
-```
+
+   `ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44`
+
 4. In a browser, go to `https://localhost:12345/?token=.....`, using the token found in step 2
 
 
