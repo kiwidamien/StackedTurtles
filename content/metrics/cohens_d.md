@@ -15,10 +15,12 @@ Our target would be the **final weight** of our subject, after the diet regemine
 
 One very simple model we could apply is a linear model, in which case we would be most interested in the coefficient of the different `diet_plan` variables. By choosing the plan with the smallest coefficient (i.e. most negative, or if there are no negative coefficients, least positive coefficient), we have a candidate for the most effective diet plan. (We would have to check the robustness of the linear assumption, and the process that people were selected into different groups, before being very certain). In a more complicated model, we might need to include interaction effects between initial weight and height, and the diet plan chosen.
 
-# avg 5.4 ft, weight 180 lbs (men and women)
-# 1.2
 Let's say we find the following model with _unscaled_ features:
-$$\text{final weight in lbs} = 1.2 * (\text{height_subject_feet}) + 0.98 * (\text{initial_weight_in_lbs}) - 10*(\text{is_female}) + 0*(\text{is_diet_A}) - (2.3\text{is_diet_B}) - 6.50$$
+```python
+final_weight_in_lbs = (1.2 * (height_subject_feet) + 0.98 * (initial_weight_in_lbs) 
+                       - 10*(is_female) + 0*(is_diet_A) - 2.3 * (is_diet_B) 
+                       - 6.50)
+```
 How much more important is height than initial weight in this model? We don't want to claim that height is more important just because it has a bigger coefficient. Someone that is an extra foot taller is _much_ more noticable that somoene that is an extra pound heavier. We could claim that increasing the height of someone by 1 foot has the same effect as increasing the initial weight by 1.23 pounds to get some idea of the trade-off, but more often we standardize our features using $z$ scores.
 
 ## Feature normalization with $z$ scores

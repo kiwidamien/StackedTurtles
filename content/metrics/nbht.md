@@ -4,12 +4,15 @@ Tags: p_values, cohen, effect size, sample size, power
 Date: 2020-01-19 18:00
 Category: Data Science
 Summary: p-values are commonly used to determine if an effect is statistically significant. Cohen's D gives a measure of how important an effect is. It is possible to see a statistically significant difference (p value small) even if the effect isn't important (D small).
+Status: draft
+
 
 One of the common questions we might have as data scientists is deciding which version of a webpage, email, or web advertisment to use. For each of these, we have a "call to action" (such as signing up, making an order, following a link, etc). If someone does the action we are asking them for, we call it a __conversion__. The question we are generally tasked with is
 
-> Given different versions of <page/email/ad>, which one lead to the largest conversion rate?
+> Given different versions of (page/email/ad), which one lead to the largest conversion rate?
  
 If we just wanted to determine the raw fraction of people that converted, this would be a simple SQL query. The challenges are:
+
 - We want to estimate which page/email/ad has the largest **underlying** conversion rate, not just the highest sample rate.<br/>
   If we show an ad to 1000 people and 510 convert, if we did the same experiment again, maybe only 505 people convert. Our samples are trying to access the "true" conversion rate, which we only know if we take an infinitely large number of people from our experiment.
 - Often there is a **control** or **status quo** variation to beat.<br/>
