@@ -160,41 +160,54 @@ If you forget the token, you can ssh back onto AWS and run the command `jupyter 
 ## References
 
 * [Xiaoru Li](https://www.xiaoru.li/post/playing-with-tmux/) has a really nice overview of tmux, and some of the different commands you can use with it.
+* [A guide to customizing your tmux conf](https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/) is a nice post walking through some simple tmux configurations.
+
+## Appendix: `tmux` tricks
+
+The `tmux` command can be used for detatching sessions, or splitting a terminal into multiple panes (similar to using separate panes in an editor). The name `tmux` stands for _Terminal Multiplexer_. 
+
+TMUX has a command mode, which you can enter with <kbd>Ctrl</kbd> + <kbd>b</kbd>, which you can follow by some commands:
+
+| command | what it does          |
+| ------- | ----------------------|
+| `d`            | Detatches the session        |
+| `$ <name>`     | Renames session to `<name>`  |
+| `%`            | Splits terminal horizontally |
+| `"`            | Splits terminal vertically   |
+| <arrow>        | Moves between panes in that direction |
 
 
-## Appendix: tmux tricks
+The tmux command also takes additional arguments on the command line, such as `tmux <command> <args>`. Here are some common ones:
 
+1. `tmux ls`: list all the tmux sessions
+2. `tmux attach`: attach to the most recent sessoin
+3. `tmux attach -t <name>`: attach to the session with name `<name>` 
 
-Log on to AWs
+In our article, we launched `tmux`, then launched a jupyter notebook inside the new session, and then detatched from the session. What we could do instead is
+
 ```bash
-localhost$ ssh -i <login key> ubuntu@<ip_address>
+ubuntu@xxx-xxx-xxx-xxx$ tmux
+---- <new session starts> -------
+# <Ctrl> + b to enter command mode, then write "$ notebook_session"
+# Gives this session the name "notebook_session
+
+ubuntu@xxx-xxx-xxx-xxx$ jupyter notebook
+
+# Detatch the session, use <Ctrl> + b to enter command mode, then hit d
+---- <back at regular terminal ----
+
+# note the name
+ubuntu@xxx-xxx-xxx-xxx$ tmux ls
+notebook_session: 1 windows (created Sat May  2 14:38:33 2020)
+
+# if we want to go back to the session:
+ubuntu@xxx-xxx-xxx-xxx$ tmux attach -t notebook_sessoin
+
+---- <back in the session> --------
 ```
-Then setup Jupyter:
+
+If you are using mutiple sessions, giving them separate names can help you keep track (the default naming is 0, 1, 2, etc). You can also skip the renaming step by creating sessions with the slightly more verbose command
 ```bash
-aws$ tmux
-aws$ jupyter notebook
-
-Then Ctrl + b, followed by d to detatch the session
-
-Optional: Give session a meaningful name
-Ctrl + b, followed by `$` to enter a meaningful name
-
-## Tmux
-
-# List sessions
-`$ tmux ls`
-
-# Attach to the most recent session
-`$ tmux attach`
-
-# Attach to a specific session, e.g. 0
-`$ tmux attach -t 0`
-
-# Detatch again
-Ctrl + b followed by d
-
-Setup
-```bash
-localhost$ ssh -i <login key> -NL 12345:localhost:8888 ubuntu@<ip_address>
-``` 
-
+# equivalent to "tmux" followed by <Ctrl> + b, then "$ session_name"
+ubuntu@xxx-xxx-xxx-xxx$ tmux new -s session_name  
+```
