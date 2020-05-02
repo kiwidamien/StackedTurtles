@@ -160,6 +160,7 @@ If you forget the token, you can ssh back onto AWS and run the command `jupyter 
 ## References
 
 * [Xiaoru Li](https://www.xiaoru.li/post/playing-with-tmux/) has a really nice overview of tmux, and some of the different commands you can use with it.
+* [Tactical tmux](https://danielmiessler.com/study/tmux/) is a good, clean overview of tmux commands, including windows and panes.
 * [A guide to customizing your tmux conf](https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/) is a nice post walking through some simple tmux configurations.
 
 ## Appendix: `tmux` tricks
