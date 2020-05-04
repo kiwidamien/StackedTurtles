@@ -6,11 +6,13 @@ Summary: p-values are commonly used to determine if an effect is statistically s
 
 
 Let's say we had an experiment that was looking at the effect of diet on weight. Maybe some of the features we would include are
+
 - height of the subject (continuous)
 - gender (categorical)
 - race (categorical)
 - initial weight (continuous)
 - diet plan (categorical)
+
 Our target would be the **final weight** of our subject, after the diet regemine comes to an end.
 
 One very simple model we could apply is a linear model, in which case we would be most interested in the coefficient of the different `diet_plan` variables. By choosing the plan with the smallest coefficient (i.e. most negative, or if there are no negative coefficients, least positive coefficient), we have a candidate for the most effective diet plan. (We would have to check the robustness of the linear assumption, and the process that people were selected into different groups, before being very certain). In a more complicated model, we might need to include interaction effects between initial weight and height, and the diet plan chosen.
@@ -73,6 +75,7 @@ Ultimately Cohen's D is a heuristic about effect size. Bigger Cohen's $D$ means 
 In a followup article on [hypothesis tests and sample size](nbht.md) we will look at how we can use Cohen's H instead of a $p$-value to more easily intepret the outcome of an experiment.
 
 The main takeaways:
+
 - When we standardize features using $z$-scores we can more directly compare coefficients to see the "importance" of features.
 - When looking at the $z$-scores of features, higher $z$ scores mean "more atypical", as we are measuring the deviation from the mean of that feature in units of that features standard deviatoin.
 - The formula for $z$-scores is $z = (x - \mu)/\sigma$, where $\mu$ is the mean of the feature and $\sigma$ is the standard deviation.
