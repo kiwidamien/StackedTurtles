@@ -13,7 +13,7 @@ Contrast this with a climate forecast. If the climate forecast was like the weat
 Business models are (typically) more like the climate change model, where we want to know "if I want to make X as good as possible, so what actions should I take?" A supermarket trying to serve customers would _like_ a model that would tell it how many customers would be in a store in any given hour to help it staff its registers efficiently, but would _love_ a model that would tell it how to price things to create a consistent stream of customers (with an aim of profit maximization).
 
 
-![When a measure becomes a target, it ceases to be a good measure](images/cartoon_sales_quota.jpg)
+![When a measure becomes a target, it ceases to be a good measure](images/cartoon_sales_quota.png)
 _When a measure becomes a target, it ceases to be a good measure_
 
 
