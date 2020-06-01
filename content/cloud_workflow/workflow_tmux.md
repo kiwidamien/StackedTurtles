@@ -157,13 +157,13 @@ If you forget the token, you can ssh back onto AWS and run the command `jupyter 
 <ul>
 <li> To allow our browser to "see" Jupyter on AWS we can use an SSH tunnel, where the command is <br/>
   <code>
-  ssh -i &gt;identity file&lt; -NL &gt;remote port&lt;:localhost:&gt;local port&lt; ubuntu@&gt;ip address&lt;
+  ssh -i &lt;identity file&gt; -NL &lt;remote port&gt;:localhost:&lt;local port&gt; ubuntu@&lt;ip address&gt;
   </code>
   
-  This builds a tunnel from <code>&gt;ip address&lt;:&gt;remote port&lt;</code> to <code>localhost:&gt;local port&lt;</code>
+  This builds a tunnel from <code>&lt;ip address&gt;:&lt;remote port&gt;</code> to <code>localhost:&lt;local port&gt;</code>
 </li>
-<li> If Jupyter runs on <code>&gt;ip address&lt;:&gt;remote port&lt;</code> and we have built a tunnel, we can access it at 
-<code>https://localhost:&gt;local port&lt;</code></li>
+<li> If Jupyter runs on <code>&lt;ip address&gt;:&lt;remote port&gt;</code> and we have built a tunnel, we can access it at 
+<code>https://localhost:&lt;local port&gt;</code></li>
 <li> Every process is owned by the session it starts in.</li> 
 <li> When we SSH into a machine, we start a login session which closes when we either log out, or lose the connection.</li>
 <li> <code>tmux</code> is a tool that allows us to run <i>non-login</i> sessions, that will persist even once we log out.</li>
