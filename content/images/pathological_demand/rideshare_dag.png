@@ -1,0 +1,13 @@
+digraph {
+	Demand
+	"Price Shown"
+	"Prob accept"
+	"Num app views"
+	"Num rides"
+	Demand -> "Price Shown"
+	Demand -> "Num app views"
+	Demand -> "Prob accept"
+	"Price Shown" -> "Prob accept"
+	"Num app views" -> "Num rides"
+	"Prob accept" -> "Num rides"
+}
