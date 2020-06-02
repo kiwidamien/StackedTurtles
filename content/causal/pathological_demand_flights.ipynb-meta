@@ -1,0 +1,8 @@
+Title: Pathological demand with flights - using instrumental variables
+Author: Damien Martin
+Tags: Data science, Causal, Instrumental Variables, demand, confounding
+Date: 2020-06-01 08:00
+Category: Data Science
+Summary: Man predictive models learn correlations between your features and your target, and apply those to make predictions. If you change your strategies, you risk changing these correlations. We look at an example where _increasing_ prices leads to _increased_ salesm and how to use an instrumental variable to solve it.
+Series: Introduction to Pricing and Pathological Demand
+series_index: 2
