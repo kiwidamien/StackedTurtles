@@ -12,7 +12,10 @@ Here is what we would ideally like to happen:
 2. We can close our computer / switch it off / put it into airplane mode, and AWS continues to work on our problem
 3. We can log back in later and see where we are with our long running job.
 
-We walk you through using `tmux` in order to get a Jupyter session running that won't quit if your computer gets disconnected. We assume that you already have an EC2 instance (or other remote machine) setup already, with a key `~/.ssh/aws_key.pem` and public IP address `11.22.33.44` already. If you don't, you can follow the instructions in [this post]() on how to set one up using the dashboard, or [this post]() on how to set one up using Python. We also assume that you have Python installed on your EC2 instance
+We walk you through using `tmux` in order to get a Jupyter session running that won't quit if your computer gets disconnected. We assume that you already have an EC2 instance (or other remote machine) setup already, with a key `~/.ssh/aws_key.pem` and public IP address `11.22.33.44` already. If you don't, you can follow the instructions in [this post]() on how to set one up using the dashboard, or [this post]() on how to set one up using Python. We also assume that you have Python installed on your EC2 instance.
+
+You can skip the simple way, and just jump to getting a disconnection-tolerant jupyter server running by jumping to [this section](#the-safe-way-of-starting-jupyter-servers).
+
 
 ## Connecting to Jupyter the simple way
 
@@ -71,13 +74,17 @@ If we go to `https://localhost:12345` in our browser, we will be connected with 
 
 ### Summary of simple connections
 
-1. SSH to the remote machine: `ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44`
-2. On the remote machine, start Jupyter with `jupyter notebook`. Copy the token.
-3. In a new terminal, SSH to the remote machine again, but this time with a tunnel: 
+<ol>
+<li> SSH to the remote machine: <code>ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44</code></li>
+<li> On the remote machine, start Jupyter with <code>jupyter notebook</code>. Copy the token.</li>
+<li> In a new terminal, SSH to the remote machine again, but this time with a tunnel: <br/>
 
-   `ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44`
-4. In a browser, go to `https://localhost:12345/?token=.....`, using the token found in step 2
+   <code>ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44</code><br/>
 
+Here 12345 is the arbitrary port you are opening on your machine.
+</li>
+<li> In a browser, go to <code>https://localhost:12345/?token=.....</code>, using the token found in step 2</li>
+</ol>
 
 ## Why do you get disconnected?
 
@@ -119,22 +126,27 @@ ubuntu@ip-xxx-xxx-xxx-xxx$ jupyter notebook list
 ```
 from any session to get a list of all running servers.
 
-
+<a name="the-safe-way-of-starting-jupyter-servers">
 ### The safe way of starting Jupyter servers
+</a>
 
-This list is almost the same as before:
+This list is almost the same as before, assuming that your cloud public IP is 11.22.33.44:
 
-1. SSH to the remote machine: `ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44`
-2. On the remote machine:
-  * Run `tmux`
-  * Then run `jupyter notebook` in the new session. Copy the token.
-  * Press <kbd>Ctrl</kbd> + <kbd>b</kbd>, followed by <kbd>d</kbd> to detatch the session.
-  * Use the command `exit` to end the (login) session. The detatched session still runes.
-3. SSH in again from your local machine, but this time with a tunnel:
+<ol>
+<li> SSH to the remote machine: <code>ssh -i ~/.ssh/aws_key.pem ubuntu@11.22.33.44</code></li>
+<li> On the remote machine:
+  <ul>
+  <li> Run <code>tmux</code></li>
+  <li> Then run <code>jupyter notebook</code> in the new session. Copy the token.</li>
+  <li> Press <kbd>Ctrl</kbd> + <kbd>b</kbd>, followed by <kbd>d</kbd> to detach the session.</li>
+  <li> Use the command <code>exit</code> to end the (login) session. The detatched session still runes.</li>
+  </ul>
+<li> SSH in again from your local machine, but this time with a tunnel:<br/>
    
-   `ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44`
-
-4. In a browser, go to `https://localhost:12345/?token=.....`, using the token found in step 2
+   <code>ssh -i ~/.ssh/aws_key.pem -NL 8888:localhost:12345  ubuntu@11.22.33.44</code>
+</li>
+<li> In a browser, go to <code>https://localhost:12345/?token=.....</code>, using the token found in step 2</li>
+</ol>
 
 If you ever get disconnected, or restart your local machine, you just need to run steps 3 and 4 again.
 
@@ -142,19 +154,25 @@ If you forget the token, you can ssh back onto AWS and run the command `jupyter 
 
 ## Summary
 
-* To allow our browser to "see" Jupyter on AWS we can use an SSH tunnel, where the command is
-  ```bash
-  ssh -i <identity file> -NL <remote port>:localhost:<local port> ubuntu@<ip address>
-  ```
-  This builds a tunnel from `<ip address>:<remote port>` to `localhost:<local port>`
-* If Jupyter runs on `<ip address>:<remote port>` and we have built a tunnel, we can access it at `https://localhost:<local port>`
-* Every process is owned by the session it starts in.
-* When we SSH into a machine, we start a login session which closes when we either log out, or lose the connection.
-* `tmux` is a tool that allows us to run _non-login_ sessions, that will persist even once we log out.
-  * We showed some advanced techniques (listing sessions, naming sessions, and attaching to former sessions) that might be useful in other contexts.
-  * We don't need the more advanced techniques if all we want to do is run a Jupyter notebook
-* [Step-by-step instructions](#the-safe-way-of-starting-jupyter-servers) are included.
-
+<ul>
+<li> To allow our browser to "see" Jupyter on AWS we can use an SSH tunnel, where the command is <br/>
+  <code>
+  ssh -i &lt;identity file&gt; -NL &lt;remote port&gt;:localhost:&lt;local port&gt; ubuntu@&lt;ip address&gt;
+  </code>
+  
+  This builds a tunnel from <code>&lt;ip address&gt;:&lt;remote port&gt;</code> to <code>localhost:&lt;local port&gt;</code>
+</li>
+<li> If Jupyter runs on <code>&lt;ip address&gt;:&lt;remote port&gt;</code> and we have built a tunnel, we can access it at 
+<code>https://localhost:&lt;local port&gt;</code></li>
+<li> Every process is owned by the session it starts in.</li> 
+<li> When we SSH into a machine, we start a login session which closes when we either log out, or lose the connection.</li>
+<li> <code>tmux</code> is a tool that allows us to run <i>non-login</i> sessions, that will persist even once we log out.</li>
+  <ul>
+  <li> We showed some advanced techniques (listing sessions, naming sessions, and attaching to former sessions) that might be useful in other contexts.</li>
+  <li> We don't need the more advanced techniques if all we want to do is run a Jupyter notebook.</li>
+  </ul>
+<li> <a href="#the-safe-way-of-starting-jupyter-servers">Step-by-step instructions</a> are included.</li>
+</ul>
 
 
 ## References

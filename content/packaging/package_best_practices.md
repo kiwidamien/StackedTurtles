@@ -1,3 +1,6 @@
+title: Package best practices
+status: draft
+
 ## References
 
 * A [great presentation](https://blog.ionelmc.ro/presentations/packaging/#slide:1) on "Less known packaging features and tricks"
