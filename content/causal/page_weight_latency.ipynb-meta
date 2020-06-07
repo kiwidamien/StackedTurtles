@@ -1,0 +1,8 @@
+Title: How can reducing page memory size _increase_ latency?
+Author: Damien Martin
+Tags: Metrics, Simpson's paradox, aggregation, confounding
+Date: 2020-06-06 23:00
+Category: Data Science
+Summary: In 2009, YouTube made improvements which reduced the video player from 1.2MB to 98kB. However, the time taken to download the page seemed to increase. 
+Series: Simpson's Paradox
+series_index: 1
