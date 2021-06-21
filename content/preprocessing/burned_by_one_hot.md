@@ -80,13 +80,13 @@ Suppose we are making a "model" that predicts how much it costs to feed a partic
 cost = 10*Species_Cat + 15*Species_Dog + 8*Species_Rabbit + 5*Species_Snake
 ```
 
-Another way we could write the same model is to start with a cost of $6, and reduce each coefficient by $6
+Another way we could write the same model is to start with a cost of $6, and reduce each coefficient by $6.
 
 ```python
 cost = 6 + 4*Species_Cat + 9*Species_Dog + 2*Species_Rabbit + (-1)*Species_Snake
 ```
 
-This model produces the exact same answers for any time I make a prediction (remember than exactly one of the variables `Species_X` is equal to one, the rest are zero). There was nothing special about $6 as the starting choice; we could have picked any value we wanted, provided we adjusted the coefficients as well. The argument is that this makes the coefficients completely arbitrary and non-interpretable.
+This model produces the exact same answers any time I make a prediction (remember than exactly one of the variables `Species_X` is equal to one, the rest are zero). There was nothing special about $6 as the starting choice; we could have picked any value we wanted, provided we adjusted the coefficients as well. The argument is that this makes the coefficients completely arbitrary and non-interpretable.
 
 What does this model look like if we drop `Species_Cat`? To get the cost of feeding cats correct, we are forced to set the intercept to $10, and that fixes the other coefficients as well:
 
@@ -98,7 +98,7 @@ The coefficients are both unique and interpretable: the coefficient of `Species_
 
 ### Why I don't care about the dummy variable trap (in ML models)
 
-There are two reasons I dislike the dropping a variable:
+There are two reasons I dislike dropping a variable:
 
 1. Introduces a bias toward the dropped variable when regularizing
 2. Makes dealing with new levels difficult
@@ -107,11 +107,11 @@ Looking at the example where we dropped `Species_cat` from the model, the amount
 
 What would our model look like if we didn't drop `Species_cat`? We have a non-unique model, as desribed above, except that regularization will attempt to keep all the intercepts as small as possible. The intercept can be thought of as the "typical" cost to keep a pet, with the (regularized) coefficients of each species being the offset. Now no features are getting special or biased treatment.
 
-The other reason I dislike dropping one of the columns is dealing with a new species (such as "fish") that is in the test set, but not in the training sett. If we don't drop a column, the natural thing to do is put all zeros (i.e. this animal is not any of the animals we have seen). If we dropped a column (such as "cat") then there is no longer a way to encode the new variable. A good compromise is to include another column called "other", and drop that if you want to avoid the dummy trap.
+The other reason I dislike dropping one of the columns is dealing with a new species (such as "fish") that is in the test set, but not in the training set. If we don't drop a column, the natural thing to do is put all zeros (i.e. this animal is not any of the animals we have seen). If we dropped a column (such as "cat") then there is no longer a way to encode the new variable. A good compromise is to include another column called "other", and drop that if you want to avoid the dummy trap.
 
 ## Best practices
 
-If you have decided that you want to one-hot encoding, here are some best practices:
+If you have decided that you want to one-hot encode, here are some best practices:
 
 1. Count the number of features you have as the number of levels + number of "numerical features" when estimating how much data you need. For example, linear models often have a guideline of having the number of rows being at least 5 times the number of features (e.g. example of the feature `Species` really counts as 4 features)
 2. For tree-based models, try to keep the number of levels less than 5 (roughly each level has around 20% of the data)
