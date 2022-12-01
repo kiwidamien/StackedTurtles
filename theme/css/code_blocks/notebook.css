@@ -1,0 +1,18 @@
+/*
+  Monokai Pygments Theme
+*/
+
+/*
+.input_area .n { color: #000; }
+.input_area .p { color: #000; }
+*/
+
+.prompt {
+	width: 0px;
+	min-width: 0px;
+	display: none;
+}
+
+.prompt::after{
+	content: "";
+}
